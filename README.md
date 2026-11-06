@@ -1,5 +1,7 @@
 # 蘇清的返鲜冰箱 | SuQing's Freshness Fridge
 
+当前工坊ID、可见性与上传状态见[workshop-item.json](publishing/workshop-item.json)。release/中的冻结manifest保留准备时状态；其中历史uploaded=false不代表当前工坊状态。
+
 工坊条目：[已上传并核验的私有条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。源码仓库：[suching8848/suqing-freshness-fridge](https://github.com/suching8848/suqing-freshness-fridge)。2026-11-06已完成私有上传与原生内容读回；未公开，游戏内验收状态不变。
 
 Version: **0.1.0-rc.2**, Project Zomboid **42.21 single-player**.

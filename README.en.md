@@ -1,5 +1,7 @@
 # SuQing's Freshness Fridge
 
+Current item identity, visibility and upload status: [workshop-item.json](publishing/workshop-item.json). Frozen manifests under release/ retain their preparation-time state; an old uploaded=false value there does not describe the current Steam item.
+
 Workshop item: [uploaded and verified private item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Source repository: [suching8848/suqing-freshness-fridge](https://github.com/suching8848/suqing-freshness-fridge). Private upload and native content readback completed on2026-11-06. The item is not public; gameplay acceptance is unchanged.
 
 **0.1.0-rc.2 — Project Zomboid 42.21, single-player candidate.**
