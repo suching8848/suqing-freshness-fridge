@@ -1,0 +1,15 @@
+{
+  "IGUI_CraftingCategories_SuQingFreshnessFridge": "SuQing's Freshness Fridge",
+  "IGUI_SuQingFreshnessFridge_Name": "SuQing's Freshness Fridge",
+  "IGUI_SuQingFreshnessFridge_BuildDescription": "Gradually restores directly stored perishable food while powered and enabled. Sandbox capacity: 50–1000, default 200. Restoration is credited only during continuously observed, loaded and powered intervals; no unloaded/offline catch-up.",
+  "IGUI_Moveables_SuQing_FreshnessFridge": "SuQing's Freshness Fridge",
+  "IGUI_SuQingFreshnessFridge_TurnOn": "Enable freshness restoration",
+  "IGUI_SuQingFreshnessFridge_TurnOff": "Disable freshness restoration",
+  "IGUI_SuQingFreshnessFridge_GlobalOff": "Freshness restoration disabled in sandbox",
+  "IGUI_SuQingFreshnessFridge_Unpowered": "Unpowered: restoration paused",
+  "IGUI_SuQingFreshnessFridge_Restoring": "Restoration enabled: powered",
+  "IGUI_SuQingFreshnessFridge_Off": "Restoration off: ordinary refrigeration",
+  "IGUI_SuQingFreshnessFridge_Capacity": "Base capacity: %1",
+  "IGUI_SuQingFreshnessFridge_Hours": "Game hours to restore one full fresh-life interval: %1",
+  "IGUI_SuQingFreshnessFridge_ObservedOnly": "Directly stored food only. No credit for unloaded, offline or unverified-power intervals."
+}

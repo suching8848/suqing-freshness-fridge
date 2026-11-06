@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "native_control_flow_checks": 12,
+  "native_guard_passes": 120,
+  "native_guard_assertions": 260,
+  "game_started": false,
+  "world_created": false,
+  "in_game_tested": false,
+  "native_display_cases": 6,
+  "native_display_assertions": 2642,
+  "native_display_rot_updates": 144,
+  "native_precision_cases": 1,
+  "native_precision_passes": 3600,
+  "native_precision_assertions": 3605,
+  "native_capacity_cases": 6,
+  "native_capacity_assertions": 37,
+  "runtime_model_cases": 64,
+  "runtime_model_assertions": 407
+}

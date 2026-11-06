@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "checks": [
+    "native Food.update directly calls private updateRotting",
+    "native rot replacement follows updateAge and isRotten",
+    "native rotten-removal setting can delete an existing food",
+    "isRotten compares actual age against threshold rather than the legacy boolean flag",
+    "isPowered queries current object power and contains no power-history lookup",
+    "installed frame order is pre-event, world update, GameTime helper, post-event",
+    "pre-event runs before the exit-save branch",
+    "generator maintains current activation, fuel, and last processed hour",
+    "SP cell processes native items before moving objects and players",
+    "OnPlayerUpdate can restore transient food shields before the normal player superclass update",
+    "player superclass update owns timed-action updates and completion",
+    "OnSave fires before the current cell is serialized"
+  ],
+  "game_jar_sha256": "e1a69eb743ede60b213a0fe7f8b83d4fcab773036d256cc4543a336f3b058a33",
+  "game_started": false,
+  "source": "javap -p -c against the current installed game JAR",
+  "limits": "Static control-flow audit. It does not validate world streaming, UI rendering, or native hook interoperation in a game session."
+}

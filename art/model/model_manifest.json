@@ -1,0 +1,42 @@
+{
+  "generator": "tools/assets_build.py",
+  "seed": 20261105,
+  "mesh_vertices": 1180,
+  "mesh_triangles": 562,
+  "obj_axes": "X east / Y south / Z up; current installed Viewpoint convention",
+  "bounds_xyz": [
+    [
+      -0.33,
+      -0.355,
+      0.0
+    ],
+    [
+      0.33,
+      0.382,
+      0.8454999999999999
+    ]
+  ],
+  "sprite_names": [
+    "suqing_freshness_fridge_01_0",
+    "suqing_freshness_fridge_01_1",
+    "suqing_freshness_fridge_01_2",
+    "suqing_freshness_fridge_01_3"
+  ],
+  "facings": [
+    "S",
+    "E",
+    "N",
+    "W"
+  ],
+  "viewpoint_rotations_degrees": [
+    0,
+    -90,
+    180,
+    90
+  ],
+  "pack": "SuQingFreshnessFridge_tiles",
+  "tiledef_name": "suqing_freshness_fridge_01",
+  "tiledef_number": 7825,
+  "source": "Original procedural mesh and hand-authored texture atlas, inspired by vanilla mini-fridge proportions. No third-party mesh or texture copied.",
+  "validation_scope": "Offline generation/readback. In-game 2D/Viewpoint placement and appearance remain for user acceptance."
+}

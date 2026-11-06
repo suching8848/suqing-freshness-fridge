@@ -1,0 +1,15 @@
+{
+  "IGUI_CraftingCategories_SuQingFreshnessFridge": "蘇清的返鲜冰箱",
+  "IGUI_SuQingFreshnessFridge_Name": "蘇清的返鲜冰箱",
+  "IGUI_SuQingFreshnessFridge_BuildDescription": "通电并开启后，逐渐恢复直接放入的可腐坏食物。容量可在沙盒中设为50–1000，默认200。仅结算已加载且持续观察到供电的时间；离区和离线不补返鲜。",
+  "IGUI_Moveables_SuQing_FreshnessFridge": "蘇清的返鲜冰箱",
+  "IGUI_SuQingFreshnessFridge_TurnOn": "开启返鲜",
+  "IGUI_SuQingFreshnessFridge_TurnOff": "关闭返鲜",
+  "IGUI_SuQingFreshnessFridge_GlobalOff": "返鲜已被沙盒总开关关闭",
+  "IGUI_SuQingFreshnessFridge_Unpowered": "未通电：返鲜暂停",
+  "IGUI_SuQingFreshnessFridge_Restoring": "返鲜已开启：通电工作中",
+  "IGUI_SuQingFreshnessFridge_Off": "返鲜已关闭：按普通冰箱冷藏",
+  "IGUI_SuQingFreshnessFridge_Capacity": "基础容量：%1",
+  "IGUI_SuQingFreshnessFridge_Hours": "恢复一个完整新鲜期所需时间：%1游戏小时",
+  "IGUI_SuQingFreshnessFridge_ObservedOnly": "只处理直接放入的食物；离区、离线和未知供电区间不补返鲜。"
+}

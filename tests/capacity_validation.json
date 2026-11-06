@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-11-05T21:49:56.891922+08:00",
+  "scope": "Offline Kahlua mocks with unmodified vanilla UI, timed-action and transfer functions; all native trait float32 values 50–1000.",
+  "output": "CAPACITY_LUA assertions=1949 failures=0",
+  "oracleSource": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\tests\\runtime_native_trait_table.json",
+  "assertions": 1949,
+  "failures": 0,
+  "passed": true,
+  "oracleSha256": "8496e5860d7376ab320ae5decf6ca8ad253d2a50d4c13d2282fff3ab6ce06101",
+  "vanillaInventoryPaneSha256": "8cce738cc0dfec8655d2970c42572596bf6294b85e4917a245dc41d1827a56be",
+  "limits": [
+    "No live UI or save exercised.",
+    "Pure Java external direct calls bypass Lua getter/method overlays.",
+    "Native object bridge verification is reported separately by runtime native tests."
+  ]
+}

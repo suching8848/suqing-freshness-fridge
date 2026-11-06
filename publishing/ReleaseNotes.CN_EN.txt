@@ -1,0 +1,6 @@
+0.1.0-rc.2 — 待发布 / Prepared, not published
+中文：独立原生建造与搬运的返鲜冰箱，默认200容量、每10游戏小时恢复一个食品自身完整新鲜期，独立沙盒、开关和可选Viewpoint模型。自动删除关闭时采用相关显示修正；其他自动删除策略与PZO组合仍需实测。只计持续加载与供电时间，退出与离区不补算。
+English: Independently built/moved freshness fridge with default capacity 200, 10 game hours per native fresh-life interval, separate sandbox settings/switches and optional Viewpoint model. Includes the relevant correction with automatic rotten-food removal disabled; other removal policies/PZO combinations need gameplay checks. Only continuously loaded/powered time counts, without offline or unloaded catch-up.
+
+发布资料修订：同步用户修改的中英开场文案，运行代码未变。
+Publication copy revision: synchronized the user-edited opening copy in both languages; runtime code unchanged.

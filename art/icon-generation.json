@@ -1,0 +1,11 @@
+{
+  "tool": "built-in imagegen",
+  "generated_original": "C:\\Users\\15792\\.codex\\generated_images\\01a1abf3-a00f-72f1-a96a-93db4fce4ecc\\exec-68179a3a-6003-4a80-bbc1-b3403c012975.png",
+  "project_source": "art/icon-source.png",
+  "references": [
+    "art/model/model_four_views.png",
+    "art/cover-candidates_20261105/B_夜间工坊.png"
+  ],
+  "purpose": "Dedicated text-free mod icon; independently generated rather than a resized cover.",
+  "prompt": "Use case: stylized-concept. Asset type: dedicated small raster mod icon for SuQing's Freshness Fridge in Project Zomboid, designed to remain immediately recognizable at 64px and 128px. Generate a NEW standalone icon, not a crop or miniature of the cover. Input image 1 is a reference for the actual compact mini-fridge appliance shape, ivory enamel cabinet, lavender top/control band, single door and handle. Input image 2 is a series style/color reference only, do NOT reproduce its character, workshop scene or title. Icon composition: one large clearly silhouetted ivory-and-lavender mini-fridge in a simple front three-quarter view, filling most of the canvas, an oversized gold-rimmed analog clock with one clear curved rewind arrow as a compact badge at the upper right, and one bright fresh red apple with green leaf at the lower left. The fridge remains the dominant shape. Premium crisp pixel-art-influenced anime game-item illustration, chunky clean contours, simplified surfaces, restrained highlights; match the chosen cover's white/lavender and purple-gold identity. Flat deep plum background, strong light/dark contrast, minimal restrained thin gold edge accent, generous safe padding so nothing touches or clips the edge. One finished square icon only. No character, no room, no shelves, no food baskets, no floral clutter, no multi-panel sheet, no mockup. NO TEXT, NO LETTERS, NO NUMERALS, NO title, no logo, no watermark; clock tick marks and two simple hands only. Prioritize a readable silhouette and a few large shapes over decorative details."
+}

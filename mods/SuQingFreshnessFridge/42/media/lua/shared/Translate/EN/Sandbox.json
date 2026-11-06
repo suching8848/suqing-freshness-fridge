@@ -1,0 +1,11 @@
+{
+  "Sandbox_SuQingFreshnessFridge": "SuQing's Freshness Fridge",
+  "Sandbox_SuQingFreshnessFridge_Enabled": "Enable freshness restoration",
+  "Sandbox_SuQingFreshnessFridge_Enabled_tooltip": "Disabling preserves the appliance, contents and per-fridge switches. Ordinary native refrigeration and aging apply.",
+  "Sandbox_SuQingFreshnessFridge_Capacity": "Fridge capacity",
+  "Sandbox_SuQingFreshnessFridge_Capacity_tooltip": "50–1000, default 200. Applies to new and loaded freshness fridges. Reducing capacity never deletes contents; native over-capacity insertion rules apply.",
+  "Sandbox_SuQingFreshnessFridge_RestoreHours": "Game hours to restore one full fresh-life interval",
+  "Sandbox_SuQingFreshnessFridge_RestoreHours_tooltip": "Default 10, range 0.25–1000. Lower is faster. Uses each food's native fresh-life interval. Credit requires continuously observed loaded/powered time.",
+  "Sandbox_SuQingFreshnessFridge_AllowRotten": "Allow restoration of rotten food",
+  "Sandbox_SuQingFreshnessFridge_AllowRotten_tooltip": "Gradually restores rotten food that still exists. Burning, poison, contamination, cooking and remaining portions are preserved. Fertilized eggs and foods without standard shelf-life thresholds are excluded."
+}

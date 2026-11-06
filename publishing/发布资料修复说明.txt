@@ -1,0 +1,14 @@
+发布资料修复结果
+准备时间：2026-11-06T21:49:29.875712+08:00
+项目：SuQingFreshnessFridge 0.1.0-rc.2
+中英用户开场文案已同步。介绍 5048 个 UTF-8 字节。
+候选清单：D:\steam\steamapps\common\ProjectZomboid\CodexRepos\suqing-freshness-fridge\release\0.1.0-rc.2_20261106_214929_publication-repair\release-manifest.json
+原生上传目录：D:\steam\steamapps\common\ProjectZomboid\CodexRepos\suqing-freshness-fridge\release\0.1.0-rc.2_20261106_214929_publication-repair\workshop-upload\SuQingFreshnessFridge
+工坊 ZIP：D:\steam\steamapps\common\ProjectZomboid\CodexRepos\suqing-freshness-fridge\release\0.1.0-rc.2_20261106_214929_publication-repair\SuQingFreshnessFridge-0.1.0-rc.2-workshop-ready.zip
+手动 ZIP：D:\steam\steamapps\common\ProjectZomboid\CodexRepos\suqing-freshness-fridge\release\0.1.0-rc.2_20261106_214929_publication-repair\SuQingFreshnessFridge-0.1.0-rc.2-manual.zip
+运行逻辑、选定美术及独立 icon 未变；旧候选与个人安装不覆盖。返鲜公开默认10游戏小时，个人0.25设置不打包。CN/EN键与占位符核对、原生字段读回、图片格式/尺寸/字节限制、ZIP CRC及全成员读回通过。
+没有启动游戏、部署、修改名单/配置/存档、Git提交/推送或工坊上传。
+仍待验收：PZO display with enabled/unknown rotten-food removal, Viewpoint visuals/collision, multiplayer
+本次检查不替代游戏内验证；行为回归数字仅沿用与未改运行文件绑定的历史记录。
+
+Publication copy synchronized in both languages. A new native-upload candidate and verified archives were created; the runtime logic, selected artwork and independent icon are unchanged. No deployment, gameplay test, Git commit/push or Workshop upload was performed. Gameplay acceptance boundaries remain as recorded in the manifest.

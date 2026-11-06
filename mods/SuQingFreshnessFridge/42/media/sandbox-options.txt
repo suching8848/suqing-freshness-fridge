@@ -1,0 +1,33 @@
+VERSION = 1,
+option SuQingFreshnessFridge.Enabled
+{
+    type = boolean,
+    default = true,
+    page = SuQingFreshnessFridge,
+    translation = SuQingFreshnessFridge_Enabled,
+}
+option SuQingFreshnessFridge.Capacity
+{
+    type = integer,
+    min = 50,
+    max = 1000,
+    default = 200,
+    page = SuQingFreshnessFridge,
+    translation = SuQingFreshnessFridge_Capacity,
+}
+option SuQingFreshnessFridge.RestoreHours
+{
+    type = double,
+    min = 0.25,
+    max = 1000.0,
+    default = 10.0,
+    page = SuQingFreshnessFridge,
+    translation = SuQingFreshnessFridge_RestoreHours,
+}
+option SuQingFreshnessFridge.AllowRotten
+{
+    type = boolean,
+    default = true,
+    page = SuQingFreshnessFridge,
+    translation = SuQingFreshnessFridge_AllowRotten,
+}

@@ -1,0 +1,15 @@
+2026-11-05 Asia/Shanghai - offline parser verification
+
+PASS current PZ TexturePackPage integer/string readers: SuQingFreshnessFridge_tiles_0, four full RGBA sprite rectangles, PNG 42783 bytes.
+PASS current installed Viewpoint ObjReader: 13488 vertex components, 1686 indices; fridge.mtl.
+
+Environment: Project Zomboid installation's bundled jre64 Java runtime,
+projectzomboid.jar, and installed Viewpoint 0.1.6.1 Viewpoint.jar.
+Invocation source: tools/assets_native_readback.java
+Viewpoint parser tested the actual exported Z-up OBJ, including explicit normals.
+
+Scope: offline binary and mesh parser calls. No engine/world bootstrap, OpenGL
+context, running game connection, or in-game acceptance. The .tiles file was
+separately read back by tools/assets_validate.py against the v1 format audited
+from the current IsoWorld.LoadTileDefinitions reader. This is not a claim that
+tile placement or Viewpoint appearance has been tested in-game.

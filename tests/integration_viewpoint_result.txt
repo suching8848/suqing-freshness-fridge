@@ -1,0 +1,8 @@
+source (0,1,0) parses as [-0.0, 0.0, -1.0, -0.0, 0.0, 1.0, 0.0, 1.0]
+PASS S bind 0 -> [0.0, 0.0, -1.0]
+PASS E bind -90 -> [-1.0, 0.0, -6.123234E-17]
+PASS N bind 180 -> [1.2246469E-16, 0.0, 1.0]
+PASS W bind 90 -> [1.0, 0.0, -6.123234E-17]
+manifest errors=[]
+model keys=[suqing_fridge]
+sprite keys=[suqing_freshness_fridge_01_0, suqing_freshness_fridge_01_1, suqing_freshness_fridge_01_2, suqing_freshness_fridge_01_3]

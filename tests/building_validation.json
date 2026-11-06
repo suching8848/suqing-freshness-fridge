@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-05T21:49:55.8153580+08:00",
+  "scope": "Offline native script component parsing plus Lua mocks; no game process started or operated.",
+  "native": [
+    "BUILDING_TRANSLATOR assertions=36 failures=0",
+    "BUILDING_NATIVE assertions=115 failures=0"
+  ],
+  "kahlua": [
+    "BUILDING_LUA assertions=37 failures=0"
+  ],
+  "coverage": [
+    "Dedicated native build category and four sprite facings",
+    "Exact physical material counts and disjoint digital/classic watch families",
+    "Native torch fuel use, retained screwdriver/mask, no skill gate",
+    "Idempotent fridge initialization preserves contents and ModData",
+    "Actual vanilla movable save/restore and nonempty-container pickup restriction",
+    "Actual vanilla build cancellation, invalid placement, failed payment and successful creation control flow"
+  ],
+  "limits": [
+    "Inventory payment implementation is mocked; the production recipe uses native BuildLogic.",
+    "Item Icon key is grammar-checked but omitted from native Item.Load to avoid GL texture initialization.",
+    "In-game menu appearance, textures, full save/reload and real pickup/place need user acceptance."
+  ]
+}

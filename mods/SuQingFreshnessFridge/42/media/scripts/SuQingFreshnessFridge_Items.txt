@@ -1,0 +1,13 @@
+module SuQingFreshnessFridge
+{
+    /* A movable furniture item only. Building creates the placed entity;
+       pickup/rotation/place reuse native movable logic and never repay costs. */
+    item Mov_FreshnessFridge
+    {
+        DisplayCategory = Furniture,
+        ItemType = base:moveable,
+        Icon = SuQingFreshnessFridge,
+        Weight = 10.0,
+        WorldObjectSprite = suqing_freshness_fridge_01_0,
+    }
+}

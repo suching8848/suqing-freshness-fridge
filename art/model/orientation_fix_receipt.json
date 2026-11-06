@@ -1,0 +1,24 @@
+{
+  "date_local": "2026-11-05 Asia/Shanghai",
+  "result": "PASS",
+  "fixed_issue": "Viewpoint east/west rotations previously disagreed with the 2D sprites after current ObjReader horizontal-axis conversion.",
+  "sources_fixed": ["tools/assets_build.py", "tools/assets_validate.py"],
+  "final_bind_degrees_S_E_N_W": [0, -90, 180, 90],
+  "renderer_space_front_vectors_S_E_N_W": [[0,0,-1],[-1,0,0],[0,0,1],[1,0,0]],
+  "two_dimensional_sprites_changed": false,
+  "evidence": [
+    "Current local PZVoxelStudio mini-fridge binds S=0, E=-90, N=180, W=90.",
+    "tests/integration_viewpoint.java actually calls installed Viewpoint ObjReader, PackBind.place, and PackManifest.parse.",
+    "tests/integration_viewpoint_result.txt contains the passing four-facing assertions and empty manifest errors.",
+    "tools/assets_build.py regenerated runtime model, material, PNG, tiles, texture pack and manifest.",
+    "tools/assets_validate.py passed complete binary/pixel/geometry/material/four-facing readback.",
+    "Current PZ TexturePackPage and Viewpoint ObjReader were rerun against final pack and OBJ and passed."
+  ],
+  "integration_review": {
+    "tile_custom_item": "CustomItem names the exact SuQingFreshnessFridge.Mov_FreshnessFridge script item; native ISMoveableSpriteProps uses this value for creation.",
+    "power": "Native IsoObject.addToWorld first creates sprite containers, then registers objects with fridge/freezer containers with the chunk generator list. IsoThumpable.addToWorld calls this superclass method. A single fridge container is recognized by native getGeneratorPowerConsumption as the ordinary single-compartment fridge rate.",
+    "registration": "Installed Viewpoint ModelPacksLua.register returns a primitive Java boolean. The Lua wrapper marks registered only for ok and truthy result and retries on immediate load, OnGameBoot, OnGameStart.",
+    "load_order": "Building and Runtime explicitly require shared Core; client Building requires shared Building. Optional Viewpoint file does not require Core and correctly tolerates absent Viewpoint."
+  },
+  "limitations": "Offline parser and source/control-flow verification only. No game bootstrap or UI operation. In-game placement, visuals, collision and electrical behavior remain user acceptance."
+}

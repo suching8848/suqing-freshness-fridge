@@ -1,0 +1,188 @@
+蘇清的返鲜冰箱 / SuQing's Freshness Fridge
+发布资料草稿；尚未发布或上传；本轮不更改个人安装、存档及启用名单。
+核对时间：2026-11-06（北京时间，以文末生成时刻为准）
+候选版本：0.1.0-rc.2
+
+===== 中文 Steam BBCode 介绍 =====
+[h1]蘇清的返鲜冰箱[/h1]
+把仍然存在的可腐坏食物放入独立返鲜冰箱，在通电与开启返鲜时，逐步恢复它们的新鲜度。采用原生建造、容器与家具搬运流程，附带四向精灵以及可选的独立 Viewpoint 模型。
+
+[h2]如何建造与使用[/h2]
+[list]
+[*]打开原生建造菜单，选择「蘇清的返鲜冰箱」；没有额外技能门槛。
+[*]消耗：小金属板×4、电线×2，以及闹钟、电子表、怀表、经典指针腕表各1件。
+[*]工具：螺丝刀、焊接面罩保留；焊枪消耗1原生用量并保留工具本体。电子表接受6种原版版本，经典腕表接受8种原版版本。
+[*]接入市电或发电机供电。建成后默认开启返鲜；右键「关闭返鲜／开启返鲜」切换。关闭返鲜后仍遵循普通冰箱的冷藏规则。
+[*]食物必须直接放入冰箱；装在冰箱内其他包中的食物不会处理。多件符合条件的食物各自按其原生新鲜期计算。
+[/list]
+
+[h2]沙盒设置[/h2]
+[list]
+[*]启用返鲜：默认开启。
+[*]基础容量：默认200，整数范围50–1000；适用于新建与已加载的本模组冰箱。调小容量不会删除内容物，超容时按原版规则限制继续放入。
+[*]恢复一个完整新鲜期所需时间：默认10游戏小时，范围0.25–1000；数值越小越快。每个有效游戏小时净减少「该食物的原生新鲜期÷此设置」的食物年龄，最低为0。它不表示所有腐坏程度都固定10小时恢复。
+[*]允许恢复腐坏食物：默认开启，仅作用于仍然存在且符合条件的食物。
+[/list]
+
+[h2]返鲜范围与时间[/h2]
+只结算当前单人会话中连续观察到、已加载且通电的时间。退出游戏不计时；离开加载范围、停用模组及未知供电区间不补返鲜。单次超过15游戏分钟的异常时钟跳变会重新计时，不补算该区间。
+
+返鲜只改变食物年龄，不净化毒素或污染，不修复烧焦，也不改变生熟、营养、配方内容及吃剩份量。受精蛋、无标准保鲜期的食物不处理。已被删除或替换的物品不会重建。
+
+[h2]腐坏食物与兼容限制[/h2]
+原版腐坏食物自动删除关闭时，当前候选不再通过临时降低年龄保护食品，只暂时暂停其已有的腐坏替换规则，并在处理结束、转移或保存时恢复。原版自动删除启用或取值未知时，仍走原有年龄保护路径；该分支在 PZO 跨帧调度下的显示行为尚未完成游戏内验收。其他模组的删除、替换或直接修改可能影响可恢复范围。
+
+容量桥接仅针对本模组冰箱的正常 Lua 收纳与转移流程。整理有方／杂乱无章按原版规则影响有效容量；直接从 Java 查询或限制容器容量的自动存取模组可能仍受原生100上限影响，需要单独适配。
+
+[h2]搬运、停用与支持范围[/h2]
+搬运前清空冰箱，再使用原生家具搬运功能；搬运期间不返鲜，各台开关状态随搬运保留。移除本模组前，请清空并拆除自定义冰箱，正常保存退出。
+
+适用：Project Zomboid 42.21，单人候选版。提供简体中文与英文，保留现有 CH 资源；无需其他模组即可使用核心功能。Viewpoint 仅为可选模型支持，未安装时使用普通四向精灵。
+
+已保留离线回归与资源读回记录；本轮只核对资料，没有重新运行测试或启动游戏。实际菜单、碰撞、供电切换、保存重进与 Viewpoint 视觉表现仍按用户游戏内验收记录确认；不承诺联机支持、完美碰撞或已经完成 Viewpoint 实测。
+
+Mod ID：[b]SuQingFreshnessFridge[/b]
+
+===== English Steam BBCode description =====
+[h1]SuQing's Freshness Fridge[/h1]
+An independently buildable, movable fridge that gradually restores the freshness of directly stored perishable food while powered and enabled. It uses native construction, containers and furniture moving, with original four-facing sprites and an optional independent Viewpoint model.
+
+[h2]Build and use[/h2]
+[list]
+[*]Open the native build menu and select “SuQing's Freshness Fridge.” No additional skill requirement is imposed.
+[*]Consumed materials: 4 small metal sheets, 2 electric wires, and one each of an alarm clock, digital watch, pocket watch and classic analog wristwatch.
+[*]Tools: screwdriver and welding mask are retained. The blowtorch spends one native fuel use and remains intact. Six vanilla digital-watch variants and eight classic analog-watch variants are accepted.
+[*]Supply grid or generator power. Restoration starts enabled; right-click “Disable freshness restoration” / “Enable freshness restoration” to toggle it. With restoration disabled, ordinary refrigeration rules apply.
+[*]Place food directly inside. Food inside a bag stored in the fridge is excluded. Eligible foods restore individually according to their own native fresh-life intervals.
+[/list]
+
+[h2]Sandbox settings[/h2]
+[list]
+[*]Enable freshness restoration: on by default.
+[*]Base capacity: 200 by default, integer range 50–1000. Applies to new and loaded appliances. Reducing capacity never deletes contents; normal over-capacity insertion limits apply.
+[*]Game hours to restore one full fresh-life interval: 10 by default, range 0.25–1000. Lower is faster. Each credited game hour subtracts “that food's native fresh-life interval ÷ this setting” from its age, to a minimum of zero. This is not a promise that every rotten item becomes fresh in exactly 10 hours.
+[*]Allow restoration of rotten food: on by default; only existing eligible items can recover.
+[/list]
+
+[h2]Restoration and time accounting[/h2]
+Credit requires continuously observed, loaded and powered intervals in the current single-player session. Time spent outside the game earns no credit. Unloaded, mod-absent and unverified-power intervals receive no catch-up. A single clock jump exceeding 15 game minutes is re-anchored without restoration credit.
+
+Restoration changes food age. It does not remove poison or contamination, repair burning, or change cooking state, nutrition, ingredients or remaining portions. Fertilized eggs and foods without standard shelf-life thresholds are excluded. Deleted or replaced items are not reconstructed.
+
+[h2]Rotten-food and compatibility limits[/h2]
+When native automatic rotten-food removal is disabled, this candidate no longer temporarily reduces age for protection. Only an existing per-item rotten replacement rule is temporarily suspended, then restored after processing, transfer or saving. Enabled or unknown native removal policies retain the previous age-guard path; its display behavior under PZO staggered callbacks still requires in-game acceptance. Other mods that delete, replace or directly edit food can affect what remains recoverable.
+
+The scoped capacity bridge covers this fridge's normal Lua storage and transfer paths. Organized/Disorganized use native effective-capacity rules. Automation mods querying or restricting capacity directly through Java may still encounter the native 100 cap and require separate adaptation.
+
+[h2]Moving, removal and support[/h2]
+Empty the fridge before native furniture pickup. A carried appliance does not restore food, and its individual restoration switch survives moving. Before removing this mod, empty and dismantle its custom appliances, then save and exit normally.
+
+Target: Project Zomboid 42.21, single-player candidate. Simplified Chinese and English are included, with existing CH resources retained. Core functionality requires no external mod. Viewpoint is optional; ordinary four-facing sprites work without it.
+
+Existing offline regression and asset-readback records are retained. This preparation pass only checked files and text; it did not rerun tests or start the game. Menu display, collision, power transitions, save/reload and Viewpoint visuals remain subject to user-operated in-game acceptance. Multiplayer support, perfect collision and completed Viewpoint gameplay acceptance are not claimed.
+
+Mod ID: [b]SuQingFreshnessFridge[/b]
+
+===== 简短中英发布说明 / Short bilingual release notes =====
+0.1.0-rc.2（候选）
+中文：提供可原生建造与搬运的返鲜冰箱、可调容量（默认200、50–1000）、返鲜速度（默认10游戏小时恢复一个完整新鲜期）、独立开关、中英文本及可选Viewpoint模型。原版腐坏食物自动删除关闭时，改用腐坏替换规则保护以避免临时年龄改写；启用或未知自动删除策略仍保留旧保护路径，其PZO显示行为待实测。仅连续观察到的加载与供电时间计入返鲜，退出与离区不补算。现有离线记录通过，游戏内验收另行记录；尚未发布。
+English: Build and move an independent freshness fridge with configurable capacity (default 200, range 50–1000), restoration speed (default 10 game hours per full fresh-life interval), per-fridge switches, Chinese/English text and an optional Viewpoint model. With native rotten-food removal disabled, replacement-rule protection avoids temporary age edits. Enabled/unknown removal policies retain the old guard path, whose PZO display behavior needs gameplay acceptance. Only continuously observed loaded/powered time earns credit; no offline or unloaded catch-up. Existing offline checks pass; in-game acceptance is recorded separately. Not published.
+
+===== 事实核对与维护事项（内部，不粘贴为工坊正文） =====
+1. 源码：D:\steam\steamapps\common\ProjectZomboid\CodexRepos\suqing-freshness-fridge
+   运行资源源目录：mods\SuQingFreshnessFridge
+   个人运行目录：C:\Users\15792\Zomboid\mods\SuQingFreshnessFridge
+   两端mod.info均为0.1.0-rc.2；支持字段versionMin=42.21、versionMax=42.21。
+   对两端所有文件（含隐藏文件、所有版本目录）按相对路径、SHA-256完整递归比较：50/50，差异0；没有新增、缺失或内容不一致。完整文件哈希清单附于文末。
+2. 实际建造定义是B42 native entity / CraftRecipe，支付由原生BuildLogic负责。未发现SkillsRequired、额外解锁配方或额外技能门槛。Xui显示名绑定IGUI_SuQingFreshnessFridge_Name，分类翻译为同名。右键菜单由OnFillWorldObjectContextMenu提供。
+3. ItemType=base:moveable，搬运物品SuQingFreshnessFridge.Mov_FreshnessFridge，重量10；没有把它描述为额外制造配方产出的随身食物容器。
+4. 从sandbox-options.txt、Core.Config、CN/EN Sandbox.json交叉核对：Enabled=true；Capacity=200、50–1000；RestoreHours=10、0.25–1000；AllowRotten=true。个人存档0.25只是本机调值，不得写成默认值。本子任务未解析当前存档确认该调值。
+5. Core.SP排除client/server；Runtime.Start显式要求SP。mod.info没有require字段，loadModAfter列出Viewpoint及若干兼容加载顺序，不等于必需前置。不得把loadModAfter列为必装依赖。
+6. Core与Runtime确认：直接Food、符合标准新鲜/腐坏阈值、已开启、总开关开启、已加载、原生isPowered以及连续观察均为条件。退出、离区、超过0.25游戏小时单次跳变等不补返鲜；已被删除或替换的食物不会重建。
+7. 0.1.0-rc.2只对自动删除关闭分支取消年龄护栏；启用或未知的自动删除分支保留年龄护栏，不能把当前个人档修复推广为所有PZO环境已解决。不得以修改DaysForRottenFoodRemoval、PZO或沙盒作为发布前隐含动作。
+8. 已有测试记录（本轮仅读取，未执行）：runtime_validation_report.json为PASS，64模型案例/407断言，原生显示6案例/2642断言等；capacity_validation.json为passed，1949断言/0失败。现有README仍写候选尚未完成游戏内验收，发布前应由主任务与用户本轮实测证据对照更新；不能自动抹掉或虚构验收状态。
+9. 已实际查看现有poster.png及128px icon.png：封面B「夜间工坊」，含银白长发、紫眼、双角、浅紫翼、白尾与中文标题，无游戏版本号；icon是独立冰箱+回转时钟+苹果构图，无长标题，128px仍可辨认。两者不生成、不改动。
+10. 美术记录指向art/cover-candidates_20261105/B_夜间工坊.png（1254×1254）与art/icon-source.png；发布poster与选中封面逐字节一致；icon与独立128导出逐字节一致。文末实时读回提供尺寸与哈希。
+11. README包含个人安装绝对路径、旧测试入口回收信息、个人名单计数、仅配置备份等维护历史；工坊正文已改写为通用使用说明。正式发布包若直接附现有README，应另做文档清理，保留在源码维护记录中的历史事实，不把个人路径当公众使用步骤。
+12. 本轮授权仅准备发布资料：没有初始化/操作Git、没有Java或游戏进程调用、没有Steam上传/发布，没有修改运行目录或存档。游戏内、世界、菜单和Viewpoint操作由用户完成。
+
+===== 实时完整文件SHA-256清单（source / installed） =====
+生成时间：2026-11-06 17:49:09 +08:00
+42\icon.png | source=0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b | installed=0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b
+42\media\lua\client\SuQingFreshnessFridge_Building.lua | source=f440ae9aff263fceaa87f32e24a3d97e6d7e84cf8d2c03fff7a7e068db5983e6 | installed=f440ae9aff263fceaa87f32e24a3d97e6d7e84cf8d2c03fff7a7e068db5983e6
+42\media\lua\client\SuQingFreshnessFridge_Runtime.lua | source=c8244b7c48e2284dc4d936eca677913d0c81c8190fab834872ea1e169a157f1c | installed=c8244b7c48e2284dc4d936eca677913d0c81c8190fab834872ea1e169a157f1c
+42\media\lua\client\SuQingFreshnessFridge_UI.lua | source=eb436e4aae536173b8b30457431449872d0c86ade5abf97c9945260f0cf6f850 | installed=eb436e4aae536173b8b30457431449872d0c86ade5abf97c9945260f0cf6f850
+42\media\lua\client\SuQingFreshnessFridge_Viewpoint.lua | source=de83b0bb4735c379da0845115fb58752c6366d19de68666b8a31eb90762a0b65 | installed=de83b0bb4735c379da0845115fb58752c6366d19de68666b8a31eb90762a0b65
+42\media\lua\shared\SuQingFreshnessFridge\Building.lua | source=82e9624c488513cebfc20feb376ad501c6457f8df3d1de30599f891bfefcc5c3 | installed=82e9624c488513cebfc20feb376ad501c6457f8df3d1de30599f891bfefcc5c3
+42\media\lua\shared\SuQingFreshnessFridge\Capacity.lua | source=0693422a5a4435438ccd327776278a63d41f4a9d4b25aadcfe0abcb1240506c3 | installed=0693422a5a4435438ccd327776278a63d41f4a9d4b25aadcfe0abcb1240506c3
+42\media\lua\shared\SuQingFreshnessFridge\Core.lua | source=6b967d32d3eb1e3bcf2f8d174e780a120dca8b349009644f5ce543eb216ee769 | installed=6b967d32d3eb1e3bcf2f8d174e780a120dca8b349009644f5ce543eb216ee769
+42\media\lua\shared\Translate\CH\IG_UI.json | source=bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f | installed=bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f
+42\media\lua\shared\Translate\CH\ItemName.json | source=92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1 | installed=92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1
+42\media\lua\shared\Translate\CH\Mod.json | source=fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff | installed=fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff
+42\media\lua\shared\Translate\CH\Moveables.json | source=cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6 | installed=cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6
+42\media\lua\shared\Translate\CH\Recipes.json | source=69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d | installed=69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d
+42\media\lua\shared\Translate\CH\Sandbox.json | source=3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc | installed=3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc
+42\media\lua\shared\Translate\CH\Tooltip.json | source=6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70 | installed=6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70
+42\media\lua\shared\Translate\CN\IG_UI.json | source=bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f | installed=bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f
+42\media\lua\shared\Translate\CN\ItemName.json | source=92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1 | installed=92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1
+42\media\lua\shared\Translate\CN\Mod.json | source=fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff | installed=fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff
+42\media\lua\shared\Translate\CN\Moveables.json | source=cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6 | installed=cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6
+42\media\lua\shared\Translate\CN\Recipes.json | source=69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d | installed=69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d
+42\media\lua\shared\Translate\CN\Sandbox.json | source=3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc | installed=3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc
+42\media\lua\shared\Translate\CN\Tooltip.json | source=6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70 | installed=6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70
+42\media\lua\shared\Translate\EN\IG_UI.json | source=384ff1f2755de411a75ea81b2765508fd377bc345db4d8348485d289995e140f | installed=384ff1f2755de411a75ea81b2765508fd377bc345db4d8348485d289995e140f
+42\media\lua\shared\Translate\EN\ItemName.json | source=68abef4db620541f8f19b7a1a9314885c9ff096f1e7ae28aff7f59abe835e5c3 | installed=68abef4db620541f8f19b7a1a9314885c9ff096f1e7ae28aff7f59abe835e5c3
+42\media\lua\shared\Translate\EN\Mod.json | source=d9a7de2c487c83675ed8c5f717ea1a76edafc7cc12bda4f2816f9fca9c880b1f | installed=d9a7de2c487c83675ed8c5f717ea1a76edafc7cc12bda4f2816f9fca9c880b1f
+42\media\lua\shared\Translate\EN\Moveables.json | source=3d1f4fa18fde9a0991c124a49a91ddf788e316d9e4688556d1745c9f9a1b1565 | installed=3d1f4fa18fde9a0991c124a49a91ddf788e316d9e4688556d1745c9f9a1b1565
+42\media\lua\shared\Translate\EN\Recipes.json | source=eb0aed17c6defd61c04cb98606235f0960ccacc3e54dcc3ae0920525aed7083e | installed=eb0aed17c6defd61c04cb98606235f0960ccacc3e54dcc3ae0920525aed7083e
+42\media\lua\shared\Translate\EN\Sandbox.json | source=168305958d26afd18b6e320a5be481a582258b5bb47cacc5d50719b212be5b39 | installed=168305958d26afd18b6e320a5be481a582258b5bb47cacc5d50719b212be5b39
+42\media\lua\shared\Translate\EN\Tooltip.json | source=6f5a4b6b1a1b033f1c6b03ece14daf6f762dad23f9e167a89bec917c4c6e8c7e | installed=6f5a4b6b1a1b033f1c6b03ece14daf6f762dad23f9e167a89bec917c4c6e8c7e
+42\media\models\SuQingFreshnessFridge\fridge_atlas.png | source=374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2 | installed=374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2
+42\media\models\SuQingFreshnessFridge\fridge.mtl | source=f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae | installed=f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae
+42\media\models\SuQingFreshnessFridge\fridge.obj | source=b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468 | installed=b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468
+42\media\sandbox-options.txt | source=40e827675232722e54e3b5e3d544478cd51f06d4b66a22a709a30ccf0da55be3 | installed=40e827675232722e54e3b5e3d544478cd51f06d4b66a22a709a30ccf0da55be3
+42\media\scripts\SuQingFreshnessFridge_Building.txt | source=d0b5c5c828e9ad9b9e139324e8cadc641e140bd604b45e1757edc2c70b6bde33 | installed=d0b5c5c828e9ad9b9e139324e8cadc641e140bd604b45e1757edc2c70b6bde33
+42\media\scripts\SuQingFreshnessFridge_Items.txt | source=285aa5eba94b5bdf0776c2344afc93a2167c1cd684d8fb4602f35d12c32cc4c4 | installed=285aa5eba94b5bdf0776c2344afc93a2167c1cd684d8fb4602f35d12c32cc4c4
+42\media\scripts\SuQingFreshnessFridge_Xui.txt | source=608db9b746b8c27037dfb71d28662b0233e5839eae4ee207122eae5b8a08092a | installed=608db9b746b8c27037dfb71d28662b0233e5839eae4ee207122eae5b8a08092a
+42\media\suqing_freshness_fridge_01.tiles | source=7159fe7835664b3f658f4e552c138cb41ae6aa522ca0a53f0b134c73a806955c | installed=7159fe7835664b3f658f4e552c138cb41ae6aa522ca0a53f0b134c73a806955c
+42\media\texturepacks\SuQingFreshnessFridge_tiles.pack | source=dce61fbaf4720858031c3448c91bd0feedba47dead88c54ba56c40584e23ef2f | installed=dce61fbaf4720858031c3448c91bd0feedba47dead88c54ba56c40584e23ef2f
+42\media\textures\Item_SuQingFreshnessFridge.png | source=7a0f4e59573374d998d41a63a59e4a9f85dc40ace61e1532862cfd866c0c499f | installed=7a0f4e59573374d998d41a63a59e4a9f85dc40ace61e1532862cfd866c0c499f
+42\media\textures\SuQingFreshnessFridge\suqing_freshness_fridge_01_0.png | source=23339a3afdb27e110652b2fa927867315ccbcc81101c1b4663e656d19a9497da | installed=23339a3afdb27e110652b2fa927867315ccbcc81101c1b4663e656d19a9497da
+42\media\textures\SuQingFreshnessFridge\suqing_freshness_fridge_01_1.png | source=38598e7e98a3b2561498e216c1f89bea9d6df95324a62f1f0f2b7fef22a1398f | installed=38598e7e98a3b2561498e216c1f89bea9d6df95324a62f1f0f2b7fef22a1398f
+42\media\textures\SuQingFreshnessFridge\suqing_freshness_fridge_01_2.png | source=d8c5269fddc558aab2c41dfa593a1b0572cc46430cc5be192d1be1c65bdc7e63 | installed=d8c5269fddc558aab2c41dfa593a1b0572cc46430cc5be192d1be1c65bdc7e63
+42\media\textures\SuQingFreshnessFridge\suqing_freshness_fridge_01_3.png | source=0a234b14637e544ae99356042566be58e8f54fca8a53a85f68372a45ba89fde7 | installed=0a234b14637e544ae99356042566be58e8f54fca8a53a85f68372a45ba89fde7
+42\media\viewpoint\fridge_atlas.png | source=374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2 | installed=374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2
+42\media\viewpoint\fridge.mtl | source=f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae | installed=f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae
+42\media\viewpoint\fridge.obj | source=b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468 | installed=b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468
+42\media\viewpoint\package.properties | source=5d7b856cd5216184f16a59207b0232593589318bef929dd97f3588d55d89e46d | installed=5d7b856cd5216184f16a59207b0232593589318bef929dd97f3588d55d89e46d
+42\mod.info | source=1442ccd5fb3c0da6172472690bd468638f4b9de3a993b18f681a608bd034ea10 | installed=1442ccd5fb3c0da6172472690bd468638f4b9de3a993b18f681a608bd034ea10
+42\poster.png | source=327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19 | installed=327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19
+common\README.txt | source=573cebeb2c79a03bc0f3cbaea38909a837e65bb1b4a0103ca1ba037b22170df5 | installed=573cebeb2c79a03bc0f3cbaea38909a837e65bb1b4a0103ca1ba037b22170df5
+
+===== 本轮PNG实际读回 =====
+[
+  {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-candidates_20261105\\B_夜间工坊.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
+  },
+  {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\mods\\SuQingFreshnessFridge\\42\\poster.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
+  },
+  {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\mods\\SuQingFreshnessFridge\\42\\icon.png",
+    "width": 128,
+    "height": 128,
+    "sha256": "0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b"
+  },
+  {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\icon-exports\\icon-128.png",
+    "width": 128,
+    "height": 128,
+    "sha256": "0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b"
+  }
+]

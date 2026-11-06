@@ -1,0 +1,58 @@
+{
+  "status": "selected",
+  "generated_with": "built-in imagegen",
+  "candidates": [
+    {
+      "file": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-candidates_20261105\\A_暖灯厨房.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "PNG",
+      "sha256": "a5d96e005a5bc0dfb444a034b88720dd6486848cab86109ba489ea4948f7de78"
+    },
+    {
+      "file": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-candidates_20261105\\B_夜间工坊.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "PNG",
+      "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
+    },
+    {
+      "file": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-candidates_20261105\\C_清晨储藏间.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "format": "PNG",
+      "sha256": "4a5743c7ab74c0bee4bef5dbe4a73bdeda04e1e3f313016b079b079d17776fed"
+    }
+  ],
+  "existing_poster_replaced": true,
+  "selected": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-candidates_20261105\\B_夜间工坊.png",
+  "selected_sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19",
+  "selection_evidence": "User chose B in chat 01a1ab48-f69a-7c71-af61-c48b69223c67 on 2026-11-05.",
+  "exportedAt": "2026-11-05T21:55:23.035549+08:00",
+  "poster": {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\mods\\SuQingFreshnessFridge\\42\\poster.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
+  },
+  "icon": {
+    "path": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\mods\\SuQingFreshnessFridge\\42\\icon.png",
+    "size": [
+      128,
+      128
+    ],
+    "sha256": "0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b"
+  },
+  "original_art_preserved": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\cover-original.png",
+  "processing": "Exact B poster copy. Icon independently generated for small-size recognition; icon exports come from the dedicated icon artwork, never the cover.",
+  "icon_source": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexRepos\\suqing-freshness-fridge\\art\\icon-source.png",
+  "icon_source_sha256": "5c105318d69572d561a1f1b3bd949274b54d020e82f6b65cbddd98dca4e8f3e5"
+}

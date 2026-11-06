@@ -1,0 +1,13 @@
+module Base
+{
+    xuiSkin default
+    {
+        entity ES_SuQingFreshnessFridge
+        {
+            LuaWindowClass = ISEntityWindow,
+            DisplayName = IGUI_SuQingFreshnessFridge_Name,
+            BuildDescription = IGUI_SuQingFreshnessFridge_BuildDescription,
+            Icon = Item_SuQingFreshnessFridge,
+        }
+    }
+}

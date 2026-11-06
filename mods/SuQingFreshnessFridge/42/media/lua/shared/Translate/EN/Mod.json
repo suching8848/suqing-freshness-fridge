@@ -1,0 +1,4 @@
+{
+  "name": "SuQing's Freshness Fridge",
+  "description": "A separately buildable and movable freshness-restoring fridge for B42.21 single-player testing. When powered and enabled, gradually restores directly stored perishable food. Capacity defaults to 200, configurable from 50 to 1000. Requires 4 small metal sheets, 2 electric wires, and one each of an alarm clock, digital watch, pocket watch and classic analog wristwatch. Screwdriver and welding mask are retained; the blowtorch spends one native fuel use and is retained. Includes four-facing sprites and an optional independent Viewpoint 3D model. Unloaded, offline and unverified power intervals do not earn restoration credit. Offline checks do not replace gameplay acceptance."
+}
