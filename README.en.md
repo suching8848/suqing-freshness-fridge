@@ -2,7 +2,7 @@
 
 Current item identity, visibility and upload status: [workshop-item.json](publishing/workshop-item.json). Frozen manifests under release/ retain their preparation-time state; an old uploaded=false value there does not describe the current Steam item.
 
-Workshop item: [the existing public item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Live Steam SDK confirmed public visibility on2026-11-07. This source is authorized for Git synchronization and a public Workshop update; publishing/workshop-item.json and the current release receipt distinguish prepared content from verified upload. Old frozen snapshots retain their historical meaning.
+Workshop item: [the existing public item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Live Steam SDK confirmed public visibility on2026-11-07. The authorized source update is pushed to Git, and native Steam SDK readback verified the public Workshop update. See publishing/publication-20261107.json for the verified publication scope. Old frozen snapshots retain their historical meaning.
 
 **0.1.0-rc.2-perf.1 — Project Zomboid 42.21, single-player candidate.**
 

@@ -19,14 +19,14 @@
   "upload_authorized": true,
   "publish_authorized": true,
   "copy_revision": "2026-11-07 public update; scoped user acceptance and 06:26 save/exit log evidence recorded",
-  "status": "public_update_prepared",
+  "status": "uploaded_verified_public",
   "mod_id": "SuQingFreshnessFridge",
   "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
   "public": true,
   "native_readback_verified": true,
   "canonical_identity": "publishing/workshop-item.json",
   "uploaded": true,
-  "uploaded_verified_private": true,
+  "uploaded_verified_private": false,
   "visibility_value": 0,
   "prepared_at_bjt": "2026-11-07T06:41:17.100372+08:00",
   "previous_preparation": {
@@ -36,5 +36,9 @@
     "runtime_archive": "release/0.1.0-rc.2_20261106_214929_publication-repair/SuQingFreshnessFridge-0.1.0-rc.2-manual.zip",
     "prepared_at_bjt": "2026-11-06T21:49:29.875712+08:00"
   },
-  "runtime_manifest": "publishing/runtime-manifest.json"
+  "runtime_manifest": "publishing/runtime-manifest.json",
+  "uploaded_verified_public": true,
+  "current_update_uploaded": true,
+  "verified_at_bjt": "2026-11-07T06:53:32.427385+08:00",
+  "publication_record": "publishing/publication-20261107.json"
 }

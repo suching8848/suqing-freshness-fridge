@@ -17,3 +17,9 @@ Offline components: new native refresh16/30630, existing runtime64/407, native p
 2026-11-07的06:26会话冻结核验：`D:\steam\steamapps\common\ProjectZomboid\CodexAssets\UnifiedCoolingRelease_20261107_0634\game-audit\native-fridge\audit.md`及同目录`audit.json`。完整DebugLog SHA-256：`3b4988430908ebec68afe42d53f2f1d1c90e09b3acfa921e47fd5e4c38eea690`。物理LF行号：22103新版载入；21999、22102启动警告；22466保存边界警告；22465、22472保存；22478正常GameThread退出。首次非零帧至保存前容量警告为0。用户随后反馈无异常并授权同步发布。
 
 Frozen audit of the user-run 06:26 session: the paths above identify the local evidence without distributing the full user log. Physical-LF lines confirm the loaded Fridge version (22103), two startup warnings (21999/22102), one save-boundary warning (22466), saving (22465/22472) and normal GameThread exit (22478). There were no capacity warnings between the first nonzero gameplay frame and saving. This does not certify a subsequent reload, special automation, long-term behavior or a controlled FPS gain.
+
+## 公开工坊发布核验 / Public Workshop verification
+
+版本`0.1.0-rc.2-perf.1`已于`2026-11-07T06:53:32.427385+08:00`经原生Steam SDK核验为公开（visibility 0），沿用条目`3834692923`。标题、描述、元数据中的内容树摘要、内容总字节数、标签、预览及依赖检查通过。公开摘要见[publication-20261107.json](../publishing/publication-20261107.json)。这不是远端逐文件下载SHA校验，也不增加游戏内验收范围。
+
+Native Steam SDK verified version `0.1.0-rc.2-perf.1` on public item `3834692923` at `2026-11-07T06:53:32.427385+08:00`. Exact text, metadata tree hash, content-byte total, tags, preview policy and dependencies passed. This is not a remote per-file SHA download and does not extend gameplay acceptance.

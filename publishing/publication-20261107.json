@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "verified_public",
+  "app_id": 108600,
+  "mod_id": "SuQingFreshnessFridge",
+  "publishedfileid": "3834692923",
+  "version": "0.1.0-rc.2-perf.1",
+  "visibility": "public",
+  "visibility_value": 0,
+  "verified_at_bjt": "2026-11-07T06:53:32.427385+08:00",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
+  "native_receipt": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexAssets\\UnifiedCoolingRelease_20261107_0634\\publication-receipts\\freshness-fridge\\verify-public-20261107-065331-a4c281bd.json",
+  "native_receipt_sha256": "352d63dc880c77a7eb660d14b39f7c8999ee914d436e29673fde270df1d3a2eb",
+  "verified_checks": {
+    "title": true,
+    "description": true,
+    "metadata": true,
+    "content_bytes": true,
+    "preview_policy": true,
+    "tags": true,
+    "dependencies": true
+  },
+  "content_tree_sha256": "86f7525299d46badcc8ab7dc2cdee90e803cde2b6cbb7d0103441118d6dd23f7",
+  "local_runtime_files": 50,
+  "content_bytes": 3835491,
+  "local_preview_sha256": "b236581aa138ccea716ec970d9c3432f7c0da419b2caabec97d8453012549914",
+  "title_sha256": "77289ef6d680efc2e030c540a92b8e3b8554091e3f45611480a8f1c3bfc79074",
+  "description_sha256": "660f4771e92f37a38584442bb0ef2b920a62975f3a62a3677be5b0a3358ad9ac",
+  "change_note_sha256": "b18aa0d9b7fb0436706171cac42af49eb67a293688e42dabb665cb15394c9a8b",
+  "verification_boundary": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download.",
+  "gameplay_acceptance_changed_by_publication": false,
+  "privacy": "Only public item/release data and a receipt fingerprint are recorded; account identifiers and full user logs are excluded."
+}

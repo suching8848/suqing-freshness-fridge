@@ -2,7 +2,7 @@
 
 当前工坊ID、可见性与上传状态见[workshop-item.json](publishing/workshop-item.json)。release/中的冻结manifest保留准备时状态；其中历史uploaded=false不代表当前工坊状态。
 
-工坊条目：[沿用的公开条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。2026-11-07实时Steam SDK确认可见性为public；本轮新内容已按用户授权准备Git与公开工坊更新，实际上传读回以publishing/workshop-item.json及本轮发布回执为准，旧冻结包状态保持历史含义。
+工坊条目：[沿用的公开条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。2026-11-07实时Steam SDK确认可见性为public；本轮源码已按用户授权推送Git，公开工坊更新已由原生Steam SDK读回核验；发布摘要见publishing/publication-20261107.json，旧冻结包状态保持历史含义。
 
 Version: **0.1.0-rc.2-perf.1**, Project Zomboid **42.21 single-player**.
 
