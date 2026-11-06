@@ -36,3 +36,14 @@ SuQingFreshnessFridge={
         SuQingFreshnessFridge.lastObject=object
     end,
 }
+-- Building-only model dependency. Actual Core memo/native clamping is tested
+-- separately with the complete Core/Building and real ItemContainer host.
+SuQingFreshnessFridge.RefreshCapacity=function(object)
+    local container=object.getContainerByIndex and object:getContainerByIndex(0)
+        or object.getContainer and object:getContainer()
+    if not container then return false end
+    local value=tonumber(SuQingFreshnessFridge.Config().capacity)
+    if not value or value~=value or value<=-math.huge or value>=math.huge then value=200 end
+    container:setCapacity(math.floor(math.max(50,math.min(1000,value))))
+    return true
+end

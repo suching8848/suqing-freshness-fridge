@@ -24,3 +24,8 @@ Credit requires continuously observed loaded, powered and enabled time in the cu
 [*]For 42.21 single-player; multiplayer is not claimed. Empty and dismantle custom fridges before disabling, then save and exit normally.
 [/list]
 [b]Mod ID: SuQingFreshnessFridge[/b]
+
+[h2]0.1.0-rc.2-perf.1 update[/h2]
+Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
+
+The new real-native suite passes16 cases/30630 assertions:10000 refreshes and10000 Building/Refresh pairs each call the setter once. Existing freshness/native Food/capacity UI/building regressions pass. The capacity repair, complete save/reload and special automation still require user acceptance; feedback about the separate native refrigeration backend does not quantify this Lua repair’s FPS effect.

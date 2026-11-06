@@ -2,15 +2,27 @@
 
 当前工坊ID、可见性与上传状态见[workshop-item.json](publishing/workshop-item.json)。release/中的冻结manifest保留准备时状态；其中历史uploaded=false不代表当前工坊状态。
 
-工坊条目：[已上传并核验的私有条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。源码仓库：[suching8848/suqing-freshness-fridge](https://github.com/suching8848/suqing-freshness-fridge)。2026-11-06已完成私有上传与原生内容读回；未公开，游戏内验收状态不变。
+工坊条目：[沿用的公开条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。2026-11-07实时Steam SDK确认可见性为public；本轮新内容已按用户授权准备Git与公开工坊更新，实际上传读回以publishing/workshop-item.json及本轮发布回执为准，旧冻结包状态保持历史含义。
 
-Version: **0.1.0-rc.2**, Project Zomboid **42.21 single-player**.
+Version: **0.1.0-rc.2-perf.1**, Project Zomboid **42.21 single-player**.
+
+2026-11-07 容量同步优化（0.1.0-rc.2-perf.1）：稳定Tick中，同一容器、同一配置容量和同一setter完成一次成功同步后，不再重复调用`setCapacity`。首次同步、容量目标变化、新容器、缓存重置或setter变化时重新写入；加载、放置及保存边界仍强制同步底层物理容量，保存继续保留当前配置容量。其他模组绕过本桥接改写底层容量后，会在这些边界恢复当前设定，稳定Tick不再逐次覆盖。
+
+容量超过100时，首次或边界同步仍可能产生少量原生警告；本轮消除的是稳定状态的重复写入和刷屏，没有改动原生容量限制，也没有量化FPS收益。容量仍为默认200、可设50–1000，返鲜速度、保存schema、物品及美术不变。这是Lua修复，未修改配套冷藏Java补丁。本轮已获准同步Git并公开更新工坊；离线结果以本轮交付报告为准，容量修复的游戏内复测仍由用户完成。
 
 2026-11-06 修复本档食物「变质／陈腐」反复闪烁：当前存档的原版腐坏食物自动删除已关闭，返鲜时不再临时降低真实年龄；仅对本来有腐坏替换规则的食品做可逆替换保护，离开处理、转移或保存时恢复原规则。保持返鲜速度、容量、食物原状态和PZO设置。当前修复记录：`D:\steam\steamapps\common\ProjectZomboid\CodexAssets\FreshnessFlickerFix_20261106_001748`。游戏内显示仍由用户复测。
 
 独立、可建造和搬运的返鲜冰箱。以原版迷你冰箱的矮柜体积为参考，自制四向贴图和独立Viewpoint低模。原版物品、Workshop内容及既有冷藏升级不覆盖。当前为离线验证后的候选版，尚未完成游戏内验收。2026-11-05 已按用户后续授权部署至 `C:\Users\15792\Zomboid\mods\SuQingFreshnessFridge`，仅在单人档 `Sandbox\2026-10-09_18-19-22` 的原名单末尾追加启用；默认名单和沙盒文件未改。
 
 原隔离测试环境和旧桌面入口已按用户要求移入回收站；当前交付目录内「启动单人档测试.cmd」使用正常游戏环境并带 `-debug`，由用户启动。当前部署、原名单备份及验收说明见 `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`。旧「未安装测试包」及旧 release 保留为历史快照。
+
+## 本轮发布与验证范围（2026-11-07）
+
+对成功的容量同步按容器、配置目标和setter去重，稳定Tick不再重复写入或连续刷警告。首次、目标变化、新容器、重置或setter变化重新同步；创建、放置、加载和保存仍强制同步物理容量。保留默认200、范围50–1000、返鲜规则、物品、保存schema和既有美术。首次或强制边界仍可能有一次原生超100提示，不承诺零警告或FPS涨幅。
+
+新真实原生测试16场景／30630断言通过；10000刷新与10000对Building/Refresh均仅1次setter。旧返鲜、原生Food、容量UI及建造组件回归通过。用户尚需实际复测本容量修复、完整保存重进和特殊自动化兼容；冷藏Native组合的性能反馈不是本Lua修复的FPS量化。
+
+[本轮验证摘要](docs/release-validation-20261107.md)。旧docs中的分阶段数字和“未发布”描述属于当时记录，不作为当前FPS或上传状态声明。
 
 ## 使用
 

@@ -2,9 +2,13 @@
 
 Current item identity, visibility and upload status: [workshop-item.json](publishing/workshop-item.json). Frozen manifests under release/ retain their preparation-time state; an old uploaded=false value there does not describe the current Steam item.
 
-Workshop item: [uploaded and verified private item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Source repository: [suching8848/suqing-freshness-fridge](https://github.com/suching8848/suqing-freshness-fridge). Private upload and native content readback completed on2026-11-06. The item is not public; gameplay acceptance is unchanged.
+Workshop item: [the existing public item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Live Steam SDK confirmed public visibility on2026-11-07. This source is authorized for Git synchronization and a public Workshop update; publishing/workshop-item.json and the current release receipt distinguish prepared content from verified upload. Old frozen snapshots retain their historical meaning.
 
-**0.1.0-rc.2 — Project Zomboid 42.21, single-player candidate.**
+**0.1.0-rc.2-perf.1 — Project Zomboid 42.21, single-player candidate.**
+
+2026-11-07 capacity synchronization update (0.1.0-rc.2-perf.1): after a successful write, stable ticks no longer call `setCapacity` again for the same container, configured target and setter. A first use, changed target, new container, cache reset or changed setter triggers another write. Loading, placement and save boundaries still force physical synchronization; saved capacity remains the configured value. Unknown external edits to the physical capacity are restored at those boundaries, rather than overwritten on every stable tick.
+
+Targets above 100 can still produce a small number of native warnings on first or boundary synchronization. This removes repetitive steady-state writes and log flooding without changing the native capacity restriction; no FPS gain is quantified. Capacity remains 200 by default, configurable from 50 to 1000. Restoration speed, save schema, items and art remain unchanged. This is a Lua repair; the companion refrigeration Java patch is unchanged. This repair is now authorized for Git synchronization and a public Workshop update. Consult the current delivery report for offline results; the user performs the in-game retest.
 
 2026-11-06: fixes repeated rotten/stale flicker for the current save, whose native rotten-food removal option is disabled. Active restoration no longer applies a temporary age clamp under that policy. Only existing per-item rotten replacement rules are temporarily suspended and then restored. Capacity, restoration speed, food state and PZO settings are unchanged. Current fix records: `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\FreshnessFlickerFix_20261106_001748`. In-game display acceptance remains with the user.
 
@@ -13,6 +17,14 @@ A separately buildable, movable freshness-restoring appliance, based on the prop
 Offline validation has passed. Gameplay, placement, streaming, power transitions and Viewpoint visuals still require user acceptance. On 2026-11-05, the user authorized installation into `C:\Users\15792\Zomboid\mods\SuQingFreshnessFridge` and appending this Mod ID to the existing `Sandbox\2026-10-09_18-19-22` save. The original 222 Mod IDs retain their order; the global default list and sandbox file are unchanged.
 
 The cancelled isolated test profile and its shortcut were removed to the Windows Recycle Bin. The delivery-folder launcher 「启动单人档测试.cmd」 uses the normal game executable with `-debug`; only the user starts it. Deployment records, the exact original mod-list backup and acceptance instructions are under `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`. The original non-installed archive and release folder remain historical snapshots.
+
+## Current release and validation scope (2026-11-07)
+
+Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
+
+The new real-native suite passes16 cases/30630 assertions:10000 refreshes and10000 Building/Refresh pairs each call the setter once. Existing freshness/native Food/capacity UI/building regressions pass. The capacity repair, complete save/reload and special automation still require user acceptance; feedback about the separate native refrigeration backend does not quantify this Lua repair’s FPS effect.
+
+See the [current validation summary](docs/release-validation-20261107.md). Earlier per-stage figures and “not published” notes describe historical checkpoints, not current FPS or upload-status claims.
 
 ## Construction and operation
 

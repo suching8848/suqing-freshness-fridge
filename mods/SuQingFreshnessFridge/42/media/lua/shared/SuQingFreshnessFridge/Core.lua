@@ -3,7 +3,7 @@ SuQingFreshnessFridge = SuQingFreshnessFridge or {}
 local C = SuQingFreshnessFridge
 if C.coreLoaded then return C end
 C.coreLoaded = true
-C.version = "0.1.0-rc.2"
+C.version = "0.1.0-rc.2-perf.1"
 C.objectKey = "SuQingFreshnessFridge"
 C.foodKey = "SuQingFreshnessFridgeFood"
 C.maxObservedGapHours = 0.25 -- larger clock jumps have unprovable power history
@@ -66,14 +66,29 @@ function C.State(object)
     return state
 end
 
-function C.RefreshCapacity(object)
+-- Native furniture getters clamp to 100; the Lua overlay returns the configured
+-- value. Neither is a raw-field oracle. Memoize only successful writes, without
+-- retaining a container through an unknown per-instance setter closure.
+local capacityApplied = setmetatable({}, {__mode="k"})
+local capacitySetters = setmetatable({}, {__mode="kv"})
+function C.ResetCapacityCache()
+    capacityApplied = setmetatable({}, {__mode="k"})
+    capacitySetters = setmetatable({}, {__mode="kv"})
+end
+
+function C.RefreshCapacity(object,force)
     local container=C.Container(object)
     if not container then return false end
     local capacity=C.Config().capacity
+    local setter=container.setCapacity
+    if not force and setter~=nil and capacityApplied[container]==capacity and capacitySetters[container]==setter then
+        return true
+    end
     -- setIsContainer(true) would replace the native ItemContainer and lose items.
-    -- Our Lua capacity bridge may already return the new sandbox value. Write
-    -- the physical field as well so serialization is never left at an old value.
-    container:setCapacity(capacity)
+    -- Clear first: even a forced same-target failure must retry on the next call.
+    capacityApplied[container],capacitySetters[container]=nil,nil
+    setter(container,capacity)
+    capacityApplied[container],capacitySetters[container]=capacity,setter
     return true
 end
 

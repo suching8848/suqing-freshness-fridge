@@ -71,13 +71,13 @@ function R.SettleOne(food,object,time,forceAnchor,protect)
     return result
 end
 
-function R.SettleObject(object,time,protect,forceAnchor)
+function R.SettleObject(object,time,protect,forceAnchor,forceCapacity)
     if not R.IsLoaded(object) then
         for food,owner in pairs(R.foods) do if owner==object then R.Release(food) end end
         R.objects[object]=nil
         return
     end
-    if not C.RefreshCapacity(object) then return end
+    if not C.RefreshCapacity(object,forceCapacity) then return end
     local container=C.Container(object)
     local list=container:getItems()
     for i=0,list:size()-1 do
@@ -199,6 +199,7 @@ function R.Start()
         return
     end
     R.ready=true
+    C.ResetCapacityCache()
     R.pass=0;R.completedPass=nil
     for square in pairs(R.squares) do R.ScanSquare(square);R.squares[square]=nil end
     for object in pairs(C.pending) do R.Register(object) end
@@ -210,10 +211,13 @@ end
 function R.Save()
     if not R.ready then return end
     R.RestoreAll()
-    for object in pairs(R.objects) do R.SettleObject(object,now(),false,false) end
+    -- ItemContainer.save writes the physical field. Unknown Java writes above
+    -- 100 cannot be observed through Lua getters, so reassert at this boundary.
+    for object in pairs(R.objects) do R.SettleObject(object,now(),false,false,true) end
 end
 
 function R.Stop()
+    C.ResetCapacityCache()
     R.RestoreAll()
     R.ready=false;R.phase=nil;R.completedPass=nil;R.cursor=nil
     R.objects=setmetatable({}, {__mode="k"})

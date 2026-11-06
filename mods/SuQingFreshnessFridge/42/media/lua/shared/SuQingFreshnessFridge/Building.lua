@@ -19,7 +19,7 @@ end
 
 -- This function is deliberately idempotent. It never clears containers or
 -- rewrites object ModData: native furniture pickup retains the full state.
-function B.EnsureObject(object)
+function B.EnsureObject(object,forceCapacity)
     if not B.IsObject(object) then return false, "not_our_sprite" end
     if object:getContainerCount() == 0 then
         object:createContainersFromSpriteProperties()
@@ -33,15 +33,7 @@ function B.EnsureObject(object)
     if not container or container:getType() ~= "fridge" then
         return false, "expected_fridge_container"
     end
-    local capacity = 200
-    if C.Config then
-        local config = C.Config()
-        local configured = config and tonumber(config.capacity)
-        if configured and configured == configured and configured > -math.huge and configured < math.huge then
-            capacity = math.floor(math.max(50, math.min(1000, configured)))
-        end
-    end
-    container:setCapacity(capacity)
+    if not C.RefreshCapacity(object,forceCapacity) then return false,"capacity_refresh_failed" end
     container:setExplored(true)
     container:setParent(object)
     if object.setExplored then object:setExplored(true) end
@@ -50,8 +42,8 @@ function B.EnsureObject(object)
     return true, container
 end
 
-function B.RegisterObject(object)
-    local valid, result = B.EnsureObject(object)
+function B.RegisterObject(object,forceCapacity)
+    local valid, result = B.EnsureObject(object,forceCapacity)
     if not valid then return false, result end
     if C.RegisterObject then
         local registered, reason = C.RegisterObject(object)
@@ -62,7 +54,7 @@ end
 
 function B.OnCreate(params)
     local object = params and params.thumpable
-    local valid, reason = B.RegisterObject(object)
+    local valid, reason = B.RegisterObject(object,true)
     if not valid then
         print("[SuQingFreshnessFridge] built object registration failed: " .. tostring(reason))
     end
@@ -72,7 +64,7 @@ end
 
 function B.OnObjectAdded(object)
     if B.IsObject(object) then
-        local valid, reason = B.RegisterObject(object)
+        local valid, reason = B.RegisterObject(object,true)
         if not valid then
             print("[SuQingFreshnessFridge] placed object registration failed: " .. tostring(reason))
         end

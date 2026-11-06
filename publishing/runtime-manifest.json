@@ -1,0 +1,209 @@
+{
+  "mod_id": "SuQingFreshnessFridge",
+  "version": "0.1.0-rc.2-perf.1",
+  "files": {
+    "42/icon.png": {
+      "bytes": 27799,
+      "sha256": "0c2c20a8c02f09899ef45fb89566ed65c5b87e1a1aadfb40c5f348e96f91ba2b"
+    },
+    "42/media/lua/client/SuQingFreshnessFridge_Building.lua": {
+      "bytes": 238,
+      "sha256": "f440ae9aff263fceaa87f32e24a3d97e6d7e84cf8d2c03fff7a7e068db5983e6"
+    },
+    "42/media/lua/client/SuQingFreshnessFridge_Runtime.lua": {
+      "bytes": 9156,
+      "sha256": "aa378dc5fae914ad399ca6b6d2ee67be8a9b5a1be56877a30646c706ea2eb02f"
+    },
+    "42/media/lua/client/SuQingFreshnessFridge_UI.lua": {
+      "bytes": 1844,
+      "sha256": "eb436e4aae536173b8b30457431449872d0c86ade5abf97c9945260f0cf6f850"
+    },
+    "42/media/lua/client/SuQingFreshnessFridge_Viewpoint.lua": {
+      "bytes": 700,
+      "sha256": "de83b0bb4735c379da0845115fb58752c6366d19de68666b8a31eb90762a0b65"
+    },
+    "42/media/lua/shared/SuQingFreshnessFridge/Building.lua": {
+      "bytes": 2997,
+      "sha256": "34f0b26b5adaf70281ed8ec447e061098f91022595f946b38cc888c3f87ebac9"
+    },
+    "42/media/lua/shared/SuQingFreshnessFridge/Capacity.lua": {
+      "bytes": 10210,
+      "sha256": "0693422a5a4435438ccd327776278a63d41f4a9d4b25aadcfe0abcb1240506c3"
+    },
+    "42/media/lua/shared/SuQingFreshnessFridge/Core.lua": {
+      "bytes": 12182,
+      "sha256": "5807d1f0b051317f21393dd5c053798d1fc078fa9cc3765d5c6152da2e36a902"
+    },
+    "42/media/lua/shared/Translate/CH/IG_UI.json": {
+      "bytes": 1174,
+      "sha256": "bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f"
+    },
+    "42/media/lua/shared/Translate/CH/ItemName.json": {
+      "bytes": 75,
+      "sha256": "92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1"
+    },
+    "42/media/lua/shared/Translate/CH/Mod.json": {
+      "bytes": 524,
+      "sha256": "fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff"
+    },
+    "42/media/lua/shared/Translate/CH/Moveables.json": {
+      "bytes": 56,
+      "sha256": "cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6"
+    },
+    "42/media/lua/shared/Translate/CH/Recipes.json": {
+      "bytes": 117,
+      "sha256": "69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d"
+    },
+    "42/media/lua/shared/Translate/CH/Sandbox.json": {
+      "bytes": 1161,
+      "sha256": "3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc"
+    },
+    "42/media/lua/shared/Translate/CH/Tooltip.json": {
+      "bytes": 193,
+      "sha256": "6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70"
+    },
+    "42/media/lua/shared/Translate/CN/IG_UI.json": {
+      "bytes": 1174,
+      "sha256": "bc78257a0fdc6b82a0cdb8b05928a1a7f723e71ce1f0b13363f1caa4d97d850f"
+    },
+    "42/media/lua/shared/Translate/CN/ItemName.json": {
+      "bytes": 75,
+      "sha256": "92f5aae8540afe81b7a5922c254d69db69cc32b8b4d32c7e23022b652c0f6bf1"
+    },
+    "42/media/lua/shared/Translate/CN/Mod.json": {
+      "bytes": 524,
+      "sha256": "fcedf4e6d64c82e73bcbbe5580f4d72f7a1a3c1161a2e2b6e00320c3339568ff"
+    },
+    "42/media/lua/shared/Translate/CN/Moveables.json": {
+      "bytes": 56,
+      "sha256": "cc1bf76f0c5657385b0b28f395ead82cb7139d102fff3cc191b684d4c476acd6"
+    },
+    "42/media/lua/shared/Translate/CN/Recipes.json": {
+      "bytes": 117,
+      "sha256": "69097e352bd403ffd1d2f27aac7e239b023ca0da61262b4d34ac3b050271aa5d"
+    },
+    "42/media/lua/shared/Translate/CN/Sandbox.json": {
+      "bytes": 1161,
+      "sha256": "3ca16652961b1ed0bd456e9a5003350f8bfdc4bda0d08795e804a183b9f643cc"
+    },
+    "42/media/lua/shared/Translate/CN/Tooltip.json": {
+      "bytes": 193,
+      "sha256": "6c6bd82c4adb95aefa9f8f2566ad4a7816b5db5358e67a41b69a404b208b3f70"
+    },
+    "42/media/lua/shared/Translate/EN/IG_UI.json": {
+      "bytes": 1267,
+      "sha256": "384ff1f2755de411a75ea81b2765508fd377bc345db4d8348485d289995e140f"
+    },
+    "42/media/lua/shared/Translate/EN/ItemName.json": {
+      "bytes": 79,
+      "sha256": "68abef4db620541f8f19b7a1a9314885c9ff096f1e7ae28aff7f59abe835e5c3"
+    },
+    "42/media/lua/shared/Translate/EN/Mod.json": {
+      "bytes": 742,
+      "sha256": "d9a7de2c487c83675ed8c5f717ea1a76edafc7cc12bda4f2816f9fca9c880b1f"
+    },
+    "42/media/lua/shared/Translate/EN/Moveables.json": {
+      "bytes": 60,
+      "sha256": "3d1f4fa18fde9a0991c124a49a91ddf788e316d9e4688556d1745c9f9a1b1565"
+    },
+    "42/media/lua/shared/Translate/EN/Recipes.json": {
+      "bytes": 125,
+      "sha256": "eb0aed17c6defd61c04cb98606235f0960ccacc3e54dcc3ae0920525aed7083e"
+    },
+    "42/media/lua/shared/Translate/EN/Sandbox.json": {
+      "bytes": 1246,
+      "sha256": "168305958d26afd18b6e320a5be481a582258b5bb47cacc5d50719b212be5b39"
+    },
+    "42/media/lua/shared/Translate/EN/Tooltip.json": {
+      "bytes": 243,
+      "sha256": "6f5a4b6b1a1b033f1c6b03ece14daf6f762dad23f9e167a89bec917c4c6e8c7e"
+    },
+    "42/media/models/SuQingFreshnessFridge/fridge.mtl": {
+      "bytes": 106,
+      "sha256": "f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae"
+    },
+    "42/media/models/SuQingFreshnessFridge/fridge.obj": {
+      "bytes": 109602,
+      "sha256": "b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468"
+    },
+    "42/media/models/SuQingFreshnessFridge/fridge_atlas.png": {
+      "bytes": 110757,
+      "sha256": "374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2"
+    },
+    "42/media/sandbox-options.txt": {
+      "bytes": 751,
+      "sha256": "40e827675232722e54e3b5e3d544478cd51f06d4b66a22a709a30ccf0da55be3"
+    },
+    "42/media/scripts/SuQingFreshnessFridge_Building.txt": {
+      "bytes": 2735,
+      "sha256": "d0b5c5c828e9ad9b9e139324e8cadc641e140bd604b45e1757edc2c70b6bde33"
+    },
+    "42/media/scripts/SuQingFreshnessFridge_Items.txt": {
+      "bytes": 420,
+      "sha256": "285aa5eba94b5bdf0776c2344afc93a2167c1cd684d8fb4602f35d12c32cc4c4"
+    },
+    "42/media/scripts/SuQingFreshnessFridge_Xui.txt": {
+      "bytes": 335,
+      "sha256": "608db9b746b8c27037dfb71d28662b0233e5839eae4ee207122eae5b8a08092a"
+    },
+    "42/media/suqing_freshness_fridge_01.tiles": {
+      "bytes": 1966,
+      "sha256": "7159fe7835664b3f658f4e552c138cb41ae6aa522ca0a53f0b134c73a806955c"
+    },
+    "42/media/texturepacks/SuQingFreshnessFridge_tiles.pack": {
+      "bytes": 43096,
+      "sha256": "dce61fbaf4720858031c3448c91bd0feedba47dead88c54ba56c40584e23ef2f"
+    },
+    "42/media/textures/Item_SuQingFreshnessFridge.png": {
+      "bytes": 17650,
+      "sha256": "7a0f4e59573374d998d41a63a59e4a9f85dc40ace61e1532862cfd866c0c499f"
+    },
+    "42/media/textures/SuQingFreshnessFridge/suqing_freshness_fridge_01_0.png": {
+      "bytes": 11239,
+      "sha256": "23339a3afdb27e110652b2fa927867315ccbcc81101c1b4663e656d19a9497da"
+    },
+    "42/media/textures/SuQingFreshnessFridge/suqing_freshness_fridge_01_1.png": {
+      "bytes": 11348,
+      "sha256": "38598e7e98a3b2561498e216c1f89bea9d6df95324a62f1f0f2b7fef22a1398f"
+    },
+    "42/media/textures/SuQingFreshnessFridge/suqing_freshness_fridge_01_2.png": {
+      "bytes": 11335,
+      "sha256": "d8c5269fddc558aab2c41dfa593a1b0572cc46430cc5be192d1be1c65bdc7e63"
+    },
+    "42/media/textures/SuQingFreshnessFridge/suqing_freshness_fridge_01_3.png": {
+      "bytes": 11656,
+      "sha256": "0a234b14637e544ae99356042566be58e8f54fca8a53a85f68372a45ba89fde7"
+    },
+    "42/media/viewpoint/fridge.mtl": {
+      "bytes": 106,
+      "sha256": "f50663930ece7ad7178da1acc4593502654dae03c35e9c3aa4db883f13c0f6ae"
+    },
+    "42/media/viewpoint/fridge.obj": {
+      "bytes": 109602,
+      "sha256": "b1a95d02170126254f9903bb608f62ea10f936d8950c961570abb16b20b37468"
+    },
+    "42/media/viewpoint/fridge_atlas.png": {
+      "bytes": 110757,
+      "sha256": "374fc7eff6dd925f68ce2f80170d3998b3c1307b4c59e50b21f1a65a3b8516d2"
+    },
+    "42/media/viewpoint/package.properties": {
+      "bytes": 409,
+      "sha256": "5d7b856cd5216184f16a59207b0232593589318bef929dd97f3588d55d89e46d"
+    },
+    "42/mod.info": {
+      "bytes": 1101,
+      "sha256": "06b60467de5773e0c598786cb5bd876e3580ffe8d321addd5ba88407eb341477"
+    },
+    "42/poster.png": {
+      "bytes": 3203526,
+      "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
+    },
+    "common/README.txt": {
+      "bytes": 1506,
+      "sha256": "e626ac50447a300678739aa5896e1e0a5bb621c013936bf92b4d821e41a611ed"
+    }
+  },
+  "byte_scope": "Windows prepared runtime bytes; Git checkout line-ending settings may differ.",
+  "source_formal_matching": true,
+  "prepared_at_bjt": "2026-11-07T06:41:17.100372+08:00"
+}
