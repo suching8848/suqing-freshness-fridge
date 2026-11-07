@@ -19,7 +19,7 @@ local function fill(playerIndex,context,worldObjects,test)
                     local tip=ISToolTip:new()
                     tip:initialise()
                     tip:setVisible(false)
-                    local powered=container:isPowered()
+                    local powered=C.Powered(object,container)
                     local cfg=C.Config()
                     local status=not cfg.enabled and "IGUI_SuQingFreshnessFridge_GlobalOff" or
                         (not powered and "IGUI_SuQingFreshnessFridge_Unpowered" or

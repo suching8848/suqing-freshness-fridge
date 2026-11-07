@@ -2,9 +2,17 @@
 
 当前工坊ID、可见性与上传状态见[workshop-item.json](publishing/workshop-item.json)。release/中的冻结manifest保留准备时状态；其中历史uploaded=false不代表当前工坊状态。
 
-工坊条目：[沿用的公开条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。2026-11-07实时Steam SDK确认可见性为public；本轮源码已按用户授权推送Git，公开工坊更新已由原生Steam SDK读回核验；发布摘要见publishing/publication-20261107.json，旧冻结包状态保持历史含义。
+工坊更新沿用[现有条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923)。本版发布及验证记录见 [发布状态](publishing/workshop-item.json)。
 
-Version: **0.1.0-rc.2-perf.1**, Project Zomboid **42.21 single-player**.
+**0.1.0-rc.3** 适用 Project Zomboid **B42.21.0 单人模式**。
+
+### Live Wire 1.7.2 可选适配（2026-11-08）
+
+沿用同一个返鲜冰箱 Mod ID。Live Wire 将设备分路切断后，返鲜冰箱仍可存取、搬放和显示配置容量，右键会显示断电。设备重新供电后，从新的连续观察起点恢复返鲜。区块加载时，Live Wire 先完成原有的自然老化和冻融补算，返鲜冰箱再建立观察。
+
+适配限定为 Live Wire 1.7.2 的已识别设备记录和 Lua 接口。原生冷藏后端和 Lua 回退使用各自的制冷规则。离线已复现一项独立限制：离开区块期间，Live Wire 可能按外层实体冰箱的供电历史结算已开启的便携制冷包内食物。该历史缺少包内食物的逐段供电和归属信息。ISA 与 Live Wire 同时覆盖同一台冰箱的历史结算也需实测。用户完成单人联测并确认可在正式档使用。验证范围见 [0.1.0-rc.3 验证记录](docs/release-validation-20261108.md)。
+
+可选冷藏性能后端 SuQingRefrigerationNative_4221 0.1.0-rc.1 依赖蘇清的冷藏升级 1.0.0-rc.2-perf.8 与 ZombieBuddy 2.3.4。冰箱核心返鲜可独立使用，Live Wire 和原生后端均为可选。调整原生后端后请完整退出并重启游戏。
 
 2026-11-07 容量同步优化（0.1.0-rc.2-perf.1）：稳定Tick中，同一容器、同一配置容量和同一setter完成一次成功同步后，不再重复调用`setCapacity`。首次同步、容量目标变化、新容器、缓存重置或setter变化时重新写入；加载、放置及保存边界仍强制同步底层物理容量，保存继续保留当前配置容量。其他模组绕过本桥接改写底层容量后，会在这些边界恢复当前设定，稳定Tick不再逐次覆盖。
 
@@ -16,7 +24,7 @@ Version: **0.1.0-rc.2-perf.1**, Project Zomboid **42.21 single-player**.
 
 原隔离测试环境和旧桌面入口已按用户要求移入回收站；当前交付目录内「启动单人档测试.cmd」使用正常游戏环境并带 `-debug`，由用户启动。当前部署、原名单备份及验收说明见 `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`。旧「未安装测试包」及旧 release 保留为历史快照。
 
-## 本轮发布与验证范围（2026-11-07）
+## 容量优化发布与验证范围（2026-11-07）
 
 对成功的容量同步按容器、配置目标和setter去重，稳定Tick不再重复写入或连续刷警告。首次、目标变化、新容器、重置或setter变化重新同步；创建、放置、加载和保存仍强制同步物理容量。保留默认200、范围50–1000、返鲜规则、物品、保存schema和既有美术。首次或强制边界仍可能有一次原生超100提示，不承诺零警告或FPS涨幅。
 

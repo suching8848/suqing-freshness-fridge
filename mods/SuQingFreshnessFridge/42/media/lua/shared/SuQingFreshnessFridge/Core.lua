@@ -3,7 +3,7 @@ SuQingFreshnessFridge = SuQingFreshnessFridge or {}
 local C = SuQingFreshnessFridge
 if C.coreLoaded then return C end
 C.coreLoaded = true
-C.version = "0.1.0-rc.2-perf.1"
+C.version = "0.1.0-rc.3"
 C.objectKey = "SuQingFreshnessFridge"
 C.foodKey = "SuQingFreshnessFridgeFood"
 C.maxObservedGapHours = 0.25 -- larger clock jumps have unprovable power history
@@ -42,13 +42,36 @@ function C.IsFridge(object)
     return sprite and sprite.getName and C.sprites[sprite:getName()]==true or false
 end
 
+function C.LiveWireAppliances()
+    return LiveWire and LiveWire.VERSION=="1.7.2" and LiveWire.Appliances or nil
+end
+
+function C.IsLiveWireFridgeRecord(record)
+    return type(record)=="table" and record.v==1 and record.kind=="fridge"
+        and type(record.types)=="table" and record.types["0"]=="fridge"
+end
+
+local function liveWireCut(object)
+    local appliances=C.LiveWireAppliances()
+    local record=appliances and type(appliances.saved)=="function" and appliances.saved(object)
+    return C.IsLiveWireFridgeRecord(record) and record.cut==true
+end
+
 function C.Container(object)
     if not C.IsFridge(object) then return nil end
     if object.getContainerCount and object:getContainerCount()~=1 then return nil end
     local container=object.getContainer and object:getContainer() or nil
     if not container and object.getContainerByIndex then container=object:getContainerByIndex(0) end
-    if not container or not container.getType or container:getType()~="fridge" then return nil end
-    return container
+    if not container or not container.getType then return nil end
+    local kind=container:getType()
+    if kind=="fridge" or (kind=="none" and liveWireCut(object)) then return container end
+    return nil
+end
+
+function C.Powered(object,container)
+    -- A live tile can still contain an appliance isolated by the equipment breaker.
+    return container~=nil and container:getType()=="fridge" and not liveWireCut(object)
+        and container.isPowered~=nil and container:isPowered()==true
 end
 
 function C.State(object)

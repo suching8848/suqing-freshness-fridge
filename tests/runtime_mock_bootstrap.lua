@@ -74,19 +74,22 @@ function Mock.fridge(name)
     Mock.sequence=Mock.sequence+1
     local result={md={},spriteName=name or "suqing_freshness_fridge_01_0",containerCount=1}
     local square={x=Mock.sequence,y=5,z=0,objects=mockList({result})}
+    local chunk={}
     function square:getX() return self.x end
     function square:getY() return self.y end
     function square:getZ() return self.z end
     function square:getObjects() return self.objects end
-    function square:getChunk() return {} end
+    function square:getChunk() return chunk end
     result.square=square
     result.container=Mock.container(result)
     function result:getSprite() return {getName=function() return self.spriteName end} end
     function result:getModData() return self.md end
+    function result:hasModData() return next(self.md)~=nil end
     function result:getContainerCount() return self.containerCount end
     function result:getContainer() return self.container end
     function result:getContainerByIndex(index) if index==0 then return self.container end end
     function result:getSquare() return self.square end
+    function result:getChunk() return self.square:getChunk() end
     function result:transmitModData() self.transmitted=(self.transmitted or 0)+1 end
     function result:getObjectIndex() return self.removed and -1 or 0 end
     Mock.grid[squareKey(square.x,square.y,square.z)]=square
@@ -154,6 +157,7 @@ function Mock.reset()
         SuQingFreshnessFridge.pending=setmetatable({}, {__mode="k"})
     end
     Mock.clock=100;Mock.paused=false;Mock.grid={};Mock.allFoods={};Mock.process=mockList()
+    LiveWire=nil
     SandboxVars={SuQingFreshnessFridge={Enabled=true,Capacity=200,RestoreHours=10,AllowRotten=true}}
 end
 

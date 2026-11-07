@@ -1,6 +1,6 @@
 {
   "mod_id": "SuQingFreshnessFridge",
-  "version": "0.1.0-rc.2-perf.1",
+  "version": "0.1.0-rc.3",
   "files": {
     "42/icon.png": {
       "bytes": 27799,
@@ -11,28 +11,28 @@
       "sha256": "f440ae9aff263fceaa87f32e24a3d97e6d7e84cf8d2c03fff7a7e068db5983e6"
     },
     "42/media/lua/client/SuQingFreshnessFridge_Runtime.lua": {
-      "bytes": 9156,
-      "sha256": "aa378dc5fae914ad399ca6b6d2ee67be8a9b5a1be56877a30646c706ea2eb02f"
+      "bytes": 14170,
+      "sha256": "8cd76c378cff734ce560d64a201e7aab517388a1ff6abaad5ac87b4e662c034e"
     },
     "42/media/lua/client/SuQingFreshnessFridge_UI.lua": {
-      "bytes": 1844,
-      "sha256": "eb436e4aae536173b8b30457431449872d0c86ade5abf97c9945260f0cf6f850"
+      "bytes": 1850,
+      "sha256": "a17e0a845661a809915cb1ffe095c8ebf7178ec1ffe8355a470801b72c86e0a2"
     },
     "42/media/lua/client/SuQingFreshnessFridge_Viewpoint.lua": {
       "bytes": 700,
       "sha256": "de83b0bb4735c379da0845115fb58752c6366d19de68666b8a31eb90762a0b65"
     },
     "42/media/lua/shared/SuQingFreshnessFridge/Building.lua": {
-      "bytes": 2997,
-      "sha256": "34f0b26b5adaf70281ed8ec447e061098f91022595f946b38cc888c3f87ebac9"
+      "bytes": 2952,
+      "sha256": "ca5a05b26fea53493c73b42d3239a1e7a59477f69b51decb6b4a24a599d29f3e"
     },
     "42/media/lua/shared/SuQingFreshnessFridge/Capacity.lua": {
       "bytes": 10210,
       "sha256": "0693422a5a4435438ccd327776278a63d41f4a9d4b25aadcfe0abcb1240506c3"
     },
     "42/media/lua/shared/SuQingFreshnessFridge/Core.lua": {
-      "bytes": 12182,
-      "sha256": "5807d1f0b051317f21393dd5c053798d1fc078fa9cc3765d5c6152da2e36a902"
+      "bytes": 13102,
+      "sha256": "d14b7d49446d9f239a210e6c666e08de72f5ab4d0b63f02c52b2b0b6cf922840"
     },
     "42/media/lua/shared/Translate/CH/IG_UI.json": {
       "bytes": 1174,
@@ -191,19 +191,19 @@
       "sha256": "5d7b856cd5216184f16a59207b0232593589318bef929dd97f3588d55d89e46d"
     },
     "42/mod.info": {
-      "bytes": 1101,
-      "sha256": "06b60467de5773e0c598786cb5bd876e3580ffe8d321addd5ba88407eb341477"
+      "bytes": 1094,
+      "sha256": "02e8ba8b421927d6672c28939f6b2bbde84598a894667271697ce04c01b849bf"
     },
     "42/poster.png": {
       "bytes": 3203526,
       "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
     },
     "common/README.txt": {
-      "bytes": 1506,
-      "sha256": "e626ac50447a300678739aa5896e1e0a5bb621c013936bf92b4d821e41a611ed"
+      "bytes": 801,
+      "sha256": "a0b3e7cd1ac2775c9fa81193c0c1ca27aa13dfa716267f83693c1aa1607e9c08"
     }
   },
   "byte_scope": "Windows prepared runtime bytes; Git checkout line-ending settings may differ.",
   "source_formal_matching": true,
-  "prepared_at_bjt": "2026-11-07T06:41:17.100372+08:00"
+  "prepared_at_bjt": "2026-11-08T07:43:02.081056+08:00"
 }

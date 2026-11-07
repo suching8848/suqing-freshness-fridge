@@ -38,9 +38,13 @@ SuQingFreshnessFridge={
 }
 -- Building-only model dependency. Actual Core memo/native clamping is tested
 -- separately with the complete Core/Building and real ItemContainer host.
+SuQingFreshnessFridge.Container=function(object)
+    if object:getContainerCount() ~= 1 then return nil end
+    local container=object:getContainerByIndex(0)
+    if container and container:getType()=="fridge" then return container end
+end
 SuQingFreshnessFridge.RefreshCapacity=function(object)
-    local container=object.getContainerByIndex and object:getContainerByIndex(0)
-        or object.getContainer and object:getContainer()
+    local container=SuQingFreshnessFridge.Container(object)
     if not container then return false end
     local value=tonumber(SuQingFreshnessFridge.Config().capacity)
     if not value or value~=value or value<=-math.huge or value>=math.huge then value=200 end

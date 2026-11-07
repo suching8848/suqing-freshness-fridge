@@ -1,14 +1,17 @@
 # SuQing's Freshness Fridge
 Bites the Dust—bring back the freshness! An independently buildable, movable fridge that gradually restores directly stored perishable food while powered and enabled. Eligible items restore together.
 
-## Build and use
+## 0.1.0-rc.3 · Optional Live Wire 1.7.2 support
+- When the Live Wire equipment circuit is cut, the fridge can still be accessed and moved at its configured capacity. Freshness restoration pauses and starts a new observation once power returns.
+- On chunk load, Live Wire completes ordinary aging and freeze/thaw catch-up before the fridge starts tracking powered restoration time.
+- If the outer fridge loses power while its chunk is unloaded, Live Wire may age food in an active portable cooler using the outer fridge's power history. Combined testing covers B42.21.0 single-player.
 
+## Build and use
 - Select “SuQing's Freshness Fridge” in the native build menu. No extra skill threshold is imposed.
 - Consumes 4 small metal sheets, 2 electric wires, and one each of an alarm clock, digital watch, pocket watch and classic analog wristwatch.
 - Requires a screwdriver, welding mask and blowtorch. The first two are kept; the torch spends one native fuel use and is retained. Listed vanilla watch variants are accepted.
-- Supply grid or generator power and place food directly inside. Restoration starts enabled; right-click to toggle it. Ordinary refrigeration rules apply when restoration is off.
+- Use utility power, a generator or a connected Live Wire grid and place food directly inside. Restoration starts enabled; right-click to toggle it. Ordinary refrigeration rules apply when restoration is off.
 - Empty the appliance before native furniture pickup. Its individual switch is retained; a carried fridge does not restore food.
-
 
 ## Separate sandbox settings
 Restoration is enabled by default. Capacity defaults to 200 (50–1000). Restoring one full fresh-life interval takes 10 game hours by default (0.25–1000). Rotten-food support is on. Lower is faster; different ages do not finish at one fixed time.
@@ -16,17 +19,10 @@ Restoration is enabled by default. Capacity defaults to 200 (50–1000). Restori
 Credit requires continuously observed loaded, powered and enabled time in the current session. Unloaded, offline, unverified-power intervals and abnormal clock jumps earn no catch-up. Lowering capacity does not delete contents; normal over-capacity insertion limits apply.
 
 ## Scope and compatibility
-
 - Only directly stored Food with standard shelf-life thresholds is processed, not food in nested bags. Burnt food, fertilized eggs and unsupported shelf lives are excluded. Poison, contamination, cooking state, ingredients and remaining portions are unchanged. Deleted/replaced food is not recreated.
 - Core functions need no external mod. Four-facing sprites are included; Viewpoint is optional 3D support whose visuals/collision require gameplay confirmation.
+- The optional native refrigeration backend SuQingRefrigerationNative_4221 0.1.0-rc.1 requires SuQing's Refrigeration Upgrades 1.0.0-rc.2-perf.8 and ZombieBuddy 2.3.4. The fridge can restore food on its own. Live Wire and the native backend are optional. Fully quit and restart after changing the native backend.
 - Capacity support covers normal storage/transfers for this fridge. Automation querying capacity directly through Java may still encounter the native 100 cap. Organized/Disorganized keep native effective-capacity rules.
-- This candidate includes the relevant display correction when native automatic rotten-food removal is disabled. Enabled/unknown removal policies with PZO still need display validation. World settings are never changed automatically.
+- The fridge includes the relevant display correction when native automatic rotten-food removal is disabled. Enabled/unknown removal policies with PZO still need display validation. World settings are never changed automatically.
 - For 42.21 single-player; multiplayer is not claimed. Empty and dismantle custom fridges before disabling, then save and exit normally.
-
 **Mod ID: SuQingFreshnessFridge**
-
-## 0.1.0-rc.2-perf.1 (2026-11-07)
-
-Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
-
-The new real-native suite passes16 cases/30630 assertions:10000 refreshes and10000 Building/Refresh pairs each call the setter once. Existing freshness/native Food/capacity UI/building regressions pass. The user tested this capacity repair in single-player; logs confirm the new version loaded, saved and exited normally. The 2026-11-07 06:26 session recorded no capacity warnings during steady running, with two at startup and one at saving. The user reported no remaining problem and authorized publication. Reloading that save and special automation remain unverified; no precise FPS gain is claimed.

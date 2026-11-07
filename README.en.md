@@ -2,9 +2,17 @@
 
 Current item identity, visibility and upload status: [workshop-item.json](publishing/workshop-item.json). Frozen manifests under release/ retain their preparation-time state; an old uploaded=false value there does not describe the current Steam item.
 
-Workshop item: [the existing public item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). Live Steam SDK confirmed public visibility on2026-11-07. The authorized source update is pushed to Git, and native Steam SDK readback verified the public Workshop update. See publishing/publication-20261107.json for the verified publication scope. Old frozen snapshots retain their historical meaning.
+Workshop updates use the [existing item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). See [publication status](publishing/workshop-item.json) for the current release record.
 
-**0.1.0-rc.2-perf.1 — Project Zomboid 42.21, single-player candidate.**
+**0.1.0-rc.3** supports Project Zomboid **B42.21.0 single-player**.
+
+### Optional Live Wire 1.7.2 integration (2026-11-08)
+
+The existing Freshness Fridge Mod ID carries the integration. With the Live Wire equipment circuit open, the fridge stays accessible and movable at its configured capacity, and its context menu shows that it has no power. Freshness restoration resumes from a new continuous observation once power returns. On chunk load, Live Wire finishes its ordinary aging and freeze/thaw replay before the fridge begins observing again.
+
+The integration recognizes the appliance records and Lua interfaces of Live Wire 1.7.2. The native refrigeration backend and its Lua fallback retain their respective cooling rules. An offline reproduction confirms a separate limitation. When a chunk is unloaded, Live Wire can age food inside an active portable cooler using the outer appliance's power history. That history lacks per-interval power and ownership for the food inside the bag. Historical power settlement with overlapping ISA and Live Wire coverage also awaits gameplay testing. The user completed combined single-player testing and approved the update for the personal save. See the [0.1.0-rc.3 validation record](docs/release-validation-20261108.md) for scope.
+
+The optional native refrigeration backend SuQingRefrigerationNative_4221 0.1.0-rc.1 requires SuQing's Refrigeration Upgrades 1.0.0-rc.2-perf.8 and ZombieBuddy 2.3.4. The fridge can restore food on its own. Live Wire and the native backend are optional. Fully quit and restart after changing the native backend.
 
 2026-11-07 capacity synchronization update (0.1.0-rc.2-perf.1): after a successful write, stable ticks no longer call `setCapacity` again for the same container, configured target and setter. A first use, changed target, new container, cache reset or changed setter triggers another write. Loading, placement and save boundaries still force physical synchronization; saved capacity remains the configured value. Unknown external edits to the physical capacity are restored at those boundaries, rather than overwritten on every stable tick.
 
@@ -18,7 +26,7 @@ Offline validation has passed, and the user completed the scoped single-player c
 
 The cancelled isolated test profile and its shortcut were removed to the Windows Recycle Bin. The delivery-folder launcher 「启动单人档测试.cmd」 uses the normal game executable with `-debug`; only the user starts it. Deployment records, the exact original mod-list backup and acceptance instructions are under `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`. The original non-installed archive and release folder remain historical snapshots.
 
-## Current release and validation scope (2026-11-07)
+## Capacity update release and validation scope (2026-11-07)
 
 Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
 
@@ -40,7 +48,7 @@ Open the native build menu and select **SuQing's Freshness Fridge**. No addition
 
 Six digital-watch variants and eight classic analog-watch variants are accepted. Payment, cancellation and completion remain under native BuildLogic; no separate refund loop is added.
 
-The fridge uses native grid or generator power and starts with restoration enabled. Right-click to toggle restoration. With restoration off it behaves as an ordinary refrigerator. It restores only directly stored standard perishable Food. Food inside a bag placed in the fridge is excluded.
+The fridge uses utility, generator or connected Live Wire grid power and starts with restoration enabled. Right-click to toggle restoration. With restoration off it behaves as an ordinary refrigerator. It restores only directly stored standard perishable Food. Food inside a bag placed in the fridge is excluded.
 
 ## Sandbox settings
 

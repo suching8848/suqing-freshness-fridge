@@ -1,12 +1,19 @@
 [h1]蘇清的返鲜冰箱[/h1]
 败者食尘，恢复新鲜度吧。独立建造、可搬运的返鲜冰箱。接通电源并开启返鲜后，直接放入的合格食物会逐渐恢复新鲜，多份食品同时处理。
 
+[h2]0.1.0-rc.3 · Live Wire 1.7.2 可选适配[/h2]
+[list]
+[*]Live Wire 的设备分路断电时，冰箱可继续存取、搬放并显示原容量，返鲜暂停。恢复供电后重新计时。
+[*]区块加载时，先由 Live Wire 完成自然老化与冻融补算，再开始观察可返鲜的通电时间。
+[*]外层冰箱在离区期间掉电时，Live Wire 仍可能按外层设备的供电历史补算已开启制冷包内食物的年龄。联测范围为 B42.21.0 单人。
+[/list]
+
 [h2]建造与使用[/h2]
 [list]
 [*]在原生建造菜单选择“蘇清的返鲜冰箱”，无额外技能门槛。
 [*]消耗小金属板×4、电线×2，以及闹钟、电子表、怀表、经典指针腕表各1。
 [*]需要螺丝刀、焊接面罩与焊枪；前两件保留，焊枪消耗1原生用量并保留本体。配方兼容列出的原版腕表款式。
-[*]连接市电或发电机供电，食品直接放进冰箱。建成后默认开启，右键可开关返鲜；关闭后遵循普通冷藏规则。
+[*]使用市电、发电机或已连接的 Live Wire 电网供电，食品直接放进冰箱。建成后默认开启，右键可开关返鲜；关闭后遵循普通冷藏规则。
 [*]搬运前清空，用原生家具搬运；各台开关状态保留。被携带的冰箱不返鲜。
 [/list]
 
@@ -19,28 +26,31 @@
 [list]
 [*]只处理直接存放、具有标准保鲜期的Food，不处理内层包中的食物。烧焦、受精蛋、无标准保鲜期食物排除；不去毒素或污染，不改变生熟、配方及剩余份量。已删除或替换的食品不能重建。
 [*]核心功能无外部模组前置，包含四向精灵；Viewpoint为可选3D显示支持，相关视觉和碰撞仍需实际确认。
+[*]可选冷藏性能后端 SuQingRefrigerationNative_4221 0.1.0-rc.1 依赖蘇清的冷藏升级 1.0.0-rc.2-perf.8 与 ZombieBuddy 2.3.4。冰箱核心返鲜可独立使用，Live Wire 和原生后端均为可选。调整原生后端后请完整退出并重启游戏。
 [*]容量支持本冰箱的正常收纳和转移；部分直接通过Java存取的自动化模组可能仍受原生100上限影响。整理有方／杂乱无章沿用原版有效容量规则。
-[*]本候选对关闭原版腐坏食品自动删除的环境提供相关显示修正；启用自动删除或策略未知时，PZO组合的显示仍待验证。模组不代改世界设置。
+[*]关闭原版腐坏食品自动删除时，返鲜冰箱包含相关显示修正；启用自动删除或策略未知时，PZO组合的显示仍待验证。模组不代改世界设置。
 [*]适用42.21单人，不承诺联机支持。停用前请清空并拆除自定义冰箱，正常保存退出。
 [/list]
 [b]Mod ID：SuQingFreshnessFridge[/b]
-
-[h2]0.1.0-rc.2-perf.1 更新[/h2]
-对成功的容量同步按容器、配置目标和setter去重，稳定Tick不再重复写入或连续刷警告。首次、目标变化、新容器、重置或setter变化重新同步；创建、放置、加载和保存仍强制同步物理容量。保留默认200、范围50–1000、返鲜规则、物品、保存schema和既有美术。首次或强制边界仍可能有一次原生超100提示，不承诺零警告或FPS涨幅。
-
-新真实原生测试16场景／30630断言通过；10000刷新与10000对Building/Refresh均仅1次setter。旧返鲜、原生Food、容量UI及建造组件回归通过。本次单人容量修复已有用户实测及保存、正常退出日志证据。2026-11-07的06:26会话确认新版载入，稳定运行阶段容量警告为0，启动2条、保存1条；用户反馈无异常并授权发布。保存后重进和特殊自动化兼容仍未验证，不据此声称精确FPS收益。
 
 [hr]
 
 [h1]SuQing's Freshness Fridge[/h1]
 Bites the Dust—bring back the freshness! An independently buildable, movable fridge that gradually restores directly stored perishable food while powered and enabled. Eligible items restore together.
 
+[h2]0.1.0-rc.3 · Optional Live Wire 1.7.2 support[/h2]
+[list]
+[*]When the Live Wire equipment circuit is cut, the fridge can still be accessed and moved at its configured capacity. Freshness restoration pauses and starts a new observation once power returns.
+[*]On chunk load, Live Wire completes ordinary aging and freeze/thaw catch-up before the fridge starts tracking powered restoration time.
+[*]If the outer fridge loses power while its chunk is unloaded, Live Wire may age food in an active portable cooler using the outer fridge's power history. Combined testing covers B42.21.0 single-player.
+[/list]
+
 [h2]Build and use[/h2]
 [list]
 [*]Select “SuQing's Freshness Fridge” in the native build menu. No extra skill threshold is imposed.
 [*]Consumes 4 small metal sheets, 2 electric wires, and one each of an alarm clock, digital watch, pocket watch and classic analog wristwatch.
 [*]Requires a screwdriver, welding mask and blowtorch. The first two are kept; the torch spends one native fuel use and is retained. Listed vanilla watch variants are accepted.
-[*]Supply grid or generator power and place food directly inside. Restoration starts enabled; right-click to toggle it. Ordinary refrigeration rules apply when restoration is off.
+[*]Use utility power, a generator or a connected Live Wire grid and place food directly inside. Restoration starts enabled; right-click to toggle it. Ordinary refrigeration rules apply when restoration is off.
 [*]Empty the appliance before native furniture pickup. Its individual switch is retained; a carried fridge does not restore food.
 [/list]
 
@@ -53,13 +63,9 @@ Credit requires continuously observed loaded, powered and enabled time in the cu
 [list]
 [*]Only directly stored Food with standard shelf-life thresholds is processed, not food in nested bags. Burnt food, fertilized eggs and unsupported shelf lives are excluded. Poison, contamination, cooking state, ingredients and remaining portions are unchanged. Deleted/replaced food is not recreated.
 [*]Core functions need no external mod. Four-facing sprites are included; Viewpoint is optional 3D support whose visuals/collision require gameplay confirmation.
+[*]The optional native refrigeration backend SuQingRefrigerationNative_4221 0.1.0-rc.1 requires SuQing's Refrigeration Upgrades 1.0.0-rc.2-perf.8 and ZombieBuddy 2.3.4. The fridge can restore food on its own. Live Wire and the native backend are optional. Fully quit and restart after changing the native backend.
 [*]Capacity support covers normal storage/transfers for this fridge. Automation querying capacity directly through Java may still encounter the native 100 cap. Organized/Disorganized keep native effective-capacity rules.
-[*]This candidate includes the relevant display correction when native automatic rotten-food removal is disabled. Enabled/unknown removal policies with PZO still need display validation. World settings are never changed automatically.
+[*]The fridge includes the relevant display correction when native automatic rotten-food removal is disabled. Enabled/unknown removal policies with PZO still need display validation. World settings are never changed automatically.
 [*]For 42.21 single-player; multiplayer is not claimed. Empty and dismantle custom fridges before disabling, then save and exit normally.
 [/list]
 [b]Mod ID: SuQingFreshnessFridge[/b]
-
-[h2]0.1.0-rc.2-perf.1 update[/h2]
-Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
-
-The new real-native suite passes16 cases/30630 assertions:10000 refreshes and10000 Building/Refresh pairs each call the setter once. Existing freshness/native Food/capacity UI/building regressions pass. The user tested this capacity repair in single-player; logs confirm the new version loaded, saved and exited normally. The 2026-11-07 06:26 session recorded no capacity warnings during steady running, with two at startup and one at saving. The user reported no remaining problem and authorized publication. Reloading that save and special automation remain unverified; no precise FPS gain is claimed.

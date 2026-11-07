@@ -29,8 +29,8 @@ function B.EnsureObject(object,forceCapacity)
         -- its contents. The runtime can refuse processing and log the fault.
         return false, "expected_one_container"
     end
-    local container = object:getContainerByIndex(0)
-    if not container or container:getType() ~= "fridge" then
+    local container = C.Container(object)
+    if not container then
         return false, "expected_fridge_container"
     end
     if not C.RefreshCapacity(object,forceCapacity) then return false,"capacity_refresh_failed" end

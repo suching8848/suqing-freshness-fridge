@@ -34,6 +34,31 @@ test("mixed EnsureObject and Refresh share exactly one successful memo",function
     eq(object:getContainer(),container);eq(container:getParent(),object)
     eq(container:getCapacity(),200)
 end)
+test("a Live Wire equipment cut retains building identity and real capacity",function()
+    local data=object:getModData()
+    local circuit={v=1,kind="fridge",cut=true,types={["0"]="fridge"}}
+    LiveWire={VERSION="1.7.2",Appliances={
+        saved=function(target) return target:getModData().LiveWireCircuit end,
+        blocked=function(target) return target:getModData().LiveWireCircuit==circuit end,
+    }}
+    data.LiveWireCircuit=circuit
+    container:setType("none")
+    check(not container:isFridge(),"physical fridge remains disabled")
+    eq(C.Container(object),container,"validated original type keeps the same ItemContainer")
+    eq(container:getCapacity(),200,"capacity overlay stays active while refrigeration is cut")
+    eq(A.originals.getCapacity(container),100,"native furniture clamp remains active")
+    check(not C.Powered(object,container),"freshness cannot run in the cut state")
+    T.clearCounts();T.nativeSetter(container,80)
+    local ok,result=B.EnsureObject(object,true)
+    check(ok and result==container,"Building accepts a loaded, cut fridge without rebuilding")
+    eq(T.calls,1);eq(ProbeRawCapacity(container),200,"forced load rewrites the actual configured capacity")
+    eq(container:getType(),"none");eq(object:getContainer(),container)
+    eq(data.LiveWireCircuit,circuit,"the Live Wire receipt is not overwritten")
+    eq(items:size(),#saved)
+    for n=0,items:size()-1 do eq(items:get(n),saved[n+1],"item identity preserved through cut load") end
+    container:setType("fridge");data.LiveWireCircuit=nil;LiveWire=nil
+    eq(object:getContainer(),container);eq(container:getCapacity(),200)
+end)
 test("targets50 100 200 1000 each rewrite once and retain effective capacity",function()
     C.ResetCapacityCache();T.clearCounts()
     for _,target in ipairs({50,100,200,1000}) do

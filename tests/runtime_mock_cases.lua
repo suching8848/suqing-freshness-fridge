@@ -31,6 +31,30 @@ end
 local function prime(food,object)
     return settle(food,object,Mock.clock,false,true)
 end
+local function mockLiveWire()
+    local appliances={
+        saved=function(target) return target:getModData().LiveWireCircuit end,
+        apply=function(target,circuit,off)
+            local container=target.container
+            local wanted=off and "none" or circuit.types["0"]
+            if container.type~=wanted then
+                for n=0,container.items:size()-1 do Mock.nativeAge(container.items:get(n)) end
+                container.type=wanted
+            end
+            circuit.cut=off
+            return true
+        end,
+    }
+    LiveWire={VERSION="1.7.2",Appliances=appliances}
+    return appliances
+end
+local function cutEquipmentCircuit(object)
+    if not LiveWire then mockLiveWire() end
+    local circuit={v=1,kind="fridge",cut=true,types={["0"]="fridge"}}
+    object.md.LiveWireCircuit=circuit
+    object.container.type="none"
+    return circuit
+end
 
 case("sandbox defaults and limits",function()
     local cfg=C.Config()
@@ -64,6 +88,40 @@ case("wrong container type and dual compartment are rejected",function()
     equal(C.Container(object),nil)
     object.container.type="fridge";object.containerCount=2
     equal(C.Container(object),nil)
+end)
+
+case("Live Wire cut preserves only the exact fridge identity",function()
+    local object=Mock.fridge()
+    local container=object.container
+    local circuit=cutEquipmentCircuit(object)
+    equal(C.Container(object),container,"the same cut container is recognized")
+    check(container:isPowered(),"the native square still reports electricity")
+    check(not C.Powered(object,container),"the cut container cannot restore freshness")
+    equal(container:getType(),"none","fridge lookup leaves physical refrigeration cut")
+    equal(object.md.LiveWireCircuit,circuit,"the Live Wire receipt remains untouched")
+    object.containerCount=2
+    equal(C.Container(object),nil,"a second compartment is not accepted")
+    object.containerCount=1
+    object.spriteName="appliances_refrigeration_01_25"
+    equal(C.Container(object),nil,"an ordinary fridge is not accepted")
+    object.spriteName=C.spritePrefix.."0"
+    circuit.types={["1"]="fridge"}
+    equal(C.Container(object),nil,"the receipt must identify the actual slot")
+    circuit.types={["0"]="freezer"}
+    equal(C.Container(object),nil,"a freezer receipt is not accepted")
+    circuit.types={["0"]="fridge"}
+    circuit.cut=false
+    equal(C.Container(object),nil,"an inactive receipt cannot vouch for none")
+    circuit.cut=true
+    circuit.v=2
+    equal(C.Container(object),nil,"an unknown receipt version is not accepted")
+    circuit.v=1
+    LiveWire.VERSION="future"
+    equal(C.Container(object),nil,"an unknown Live Wire API version is not accepted")
+    LiveWire=nil
+    equal(C.Container(object),nil,"a stale receipt without Live Wire is not accepted")
+    container.type="fridge"
+    check(C.Powered(object,container),"vanilla power still works without Live Wire")
 end)
 
 case("future object schema is retained without migration",function()
@@ -424,6 +482,154 @@ case("power interruption earns no credit until reanchored",function()
     check(food.age>=before-0.05)
     local restoredStart=food.age;Mock.step(0.1)
     near(food.age,restoredStart-0.05)
+end)
+
+case("Live Wire physical cut and restore keep ordinary aging and freshness separate",function()
+    local object,food=setup(6)
+    local container=object.container
+    Mock.start(object);Mock.step(0.1)
+    local before,last=food.age,food.lastAged
+    cutEquipmentCircuit(object)
+    Mock.step(0.3,{native=false})
+    check(R.objects[object],"the isolated fridge remains registered")
+    equal(food:getContainer(),container,"the food remains in its original container")
+    check(not C.FoodRecord(food).active,"grid power does not defeat a physical circuit cut")
+    near(food.age,before);near(food.lastAged,last,"freshness does not consume the cut interval")
+    R.Stop()
+    Mock.start(object)
+    check(R.objects[object],"a fridge loaded with its circuit cut registers normally")
+    near(food.age,before);near(food.lastAged,last)
+    food.nativeRate=1
+    Mock.nativeAge(food)
+    local warmed=food.age
+    near(warmed,before+0.3/24,"the old warm service settles the interval once")
+    container.type="fridge"
+    object.md.LiveWireCircuit=nil
+    emit("OnTick")
+    check(C.FoodRecord(food).active,"restored service anchors freshness again")
+    near(food.age,warmed,"restoring service cannot credit the earlier warm interval")
+    Mock.step(0.1)
+    near(food.age,warmed-0.05,"a new observed powered interval restores freshness")
+end)
+
+case("Live Wire settlement sees the real rotten state and discards continuity across both transitions",function()
+    local object,food=setup(15)
+    local appliances=mockLiveWire()
+    local circuit={v=1,kind="fridge",cut=false,types={["0"]="fridge"}}
+    object.md.LiveWireCircuit=circuit
+    SandboxVars.DaysForRottenFoodRemoval=-1
+    food.replaceOnRotten="Base.CompostBag"
+    local apply=appliances.apply
+    appliances.apply=function(target,record,off)
+        if target.container.type~=(off and "none" or record.types["0"]) then
+            equal(food.replaceOnRotten,"Base.CompostBag","old-service aging sees the original replacement")
+            equal(C.FoodRecord(food).shield,nil,"temporary guard is gone before old-service aging")
+        end
+        return apply(target,record,off)
+    end
+    Mock.start(object)
+    emit("OnTickEvenPaused")
+    check(C.FoodRecord(food).shield,"test starts with a protective receipt")
+    local observed=R.observed[food]
+    check(appliances.apply(object,circuit,false),"unchanged service delegates to Live Wire")
+    equal(R.observed[food],observed,"a no-op must not discard continuity")
+    check(C.FoodRecord(food).shield,"a no-op leaves the valid guard alone")
+    local calls=food.nativeCalls
+    check(appliances.apply(object,circuit,true),"the original cut succeeds")
+    equal(food.nativeCalls,calls+1,"cut delegates natural aging exactly once")
+    food.nativeRate=1
+    Mock.clock=Mock.clock+0.3
+    check(appliances.apply(object,circuit,false),"the original restore succeeds")
+    equal(food.nativeCalls,calls+2,"restore delegates natural aging exactly once")
+    emit("OnTick")
+    near(food.age,15+0.3/24,"a cut and restore between observations cannot grant freshness")
+    check(not C.FoodRecord(food).active,"the transition pass cannot restart freshness")
+    emit("OnTickEvenPaused")
+    check(C.FoodRecord(food).active,"food reanchors on the next observation")
+    near(food.age,15+0.3/24,"reanchoring does not credit the cut interval")
+end)
+
+case("Live Wire anchor and chunk callbacks restore guards only in their scope",function()
+    local object,food=setup(15)
+    local other,otherFood=setup(15)
+    mockLiveWire()
+    LiveWire.Config={tileRange=function() return 0 end,verticalRange=function() return 0 end}
+    local anchor={x=object.square.x,y=object.square.y,z=object.square.z}
+    local appliedState={inverter=true}
+    LiveWire.Anchor={appliedState=appliedState,set=function(id,a,on)
+        if appliedState[id]~=on then
+            check(not C.FoodRecord(food).shield,"anchor settlement sees the real food state")
+            check(C.FoodRecord(otherFood).shield,"out-of-range fridge is not touched")
+        end
+        appliedState[id]=on
+        object.container.powered=on
+        return "anchor result"
+    end}
+    LiveWire.FridgeCatchup={onLoadChunk=function(chunk)
+        equal(chunk,object:getChunk(),"original catch-up receives the same chunk")
+        check(not C.FoodRecord(food).shield,"history replay sees the real food state")
+        check(C.FoodRecord(otherFood).shield,"an unrelated chunk is not touched")
+        return 1
+    end}
+    Mock.start(object);C.RegisterObject(other)
+    emit("OnTickEvenPaused")
+    check(C.FoodRecord(food).shield and C.FoodRecord(otherFood).shield)
+    equal(LiveWire.Anchor.set("inverter",anchor,true),"anchor result")
+    check(C.FoodRecord(food).shield,"an unchanged anchor leaves the guard intact")
+    equal(LiveWire.Anchor.set("inverter",anchor,false),"anchor result")
+    LiveWire.Anchor.set("inverter",anchor,true)
+    emit("OnTick");emit("OnTickEvenPaused")
+    check(C.FoodRecord(food).shield and C.FoodRecord(otherFood).shield)
+    equal(LiveWire.FridgeCatchup.onLoadChunk(object:getChunk()),1,"catch-up return is preserved")
+end)
+
+case("a split chunk load leaves original age and time for Live Wire history",function()
+    mockLiveWire()
+    LiveWire.Registry={ready=true,readOnly=false}
+    local object,food,failCatchup
+    local function replayChunk(chunk)
+        equal(chunk,object:getChunk())
+        near(food.age,6,"history sees the original pre-load age")
+        near(food.lastAged,98,"freshness cannot consume history between chunk callbacks")
+        if failCatchup then error("injected catch-up failure",0) end
+        food.age=6.25
+        food.lastAged=Mock.clock
+        return 1
+    end
+    LiveWire.FridgeCatchup={onLoadChunk=replayChunk}
+    Mock.start()
+    object,food=setup(6)
+    food.lastAged=98
+    emit("LoadGridsquare",object.square)
+    Mock.step(0.1,{native=false})
+    near(food.lastAged,98)
+    equal(C.FoodRecord(food),nil,"a pending chunk load has no freshness accounting")
+    equal(LiveWire.FridgeCatchup.onLoadChunk(object:getChunk()),1)
+    emit("OnTick")
+    near(food.age,6.25,"original history results survive the transition pass")
+    Mock.step(0.1,{native=false})
+    check(C.FoodRecord(food).active,"freshness resumes after catch-up")
+    near(food.age,6.20,"only newly observed time gets restoration credit")
+
+    object,food=setup(6)
+    food.lastAged=98
+    failCatchup=true
+    emit("LoadGridsquare",object.square)
+    Mock.step(0.1,{native=false})
+    near(food.lastAged,98)
+    local ok,reason=pcall(LiveWire.FridgeCatchup.onLoadChunk,object:getChunk())
+    equal(ok,false);equal(reason,"injected catch-up failure","upstream callback error is preserved")
+    Mock.step(0.1,{native=false})
+    check(C.FoodRecord(food).active,"a failed callback releases the pending chunk")
+    check(food.lastAged>98,"vanilla anchoring can settle if Live Wire fails")
+
+    local abandoned=setup(6)
+    emit("LoadGridsquare",abandoned.square)
+    equal(R.pendingLoads[abandoned],abandoned:getChunk(),"the streamed object is pending")
+    Mock.unload(abandoned)
+    Mock.step(0.1,{native=false})
+    equal(R.pendingLoads[abandoned],nil,"an abandoned load clears the pending chunk without a callback")
+    equal(R.objects[abandoned],nil,"the unloaded object is no longer registered")
 end)
 
 case("guarded exception restores all shields and fails closed",function()
