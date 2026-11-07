@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "mod_id": "SuQingFreshnessFridge",
+  "version": "0.1.0-rc.3",
+  "app_id": 108600,
+  "workshop_item_id": "3834692923",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
+  "state": "uploaded_verified_public",
+  "visibility": "public",
+  "visibility_value": 0,
+  "uploaded": true,
+  "upload_acknowledged": true,
+  "native_readback_verified": true,
+  "verified_at_bjt": "2026-11-08T07:44:13.601644+08:00",
+  "recorded_at_bjt": "2026-11-08T07:45:02.019684+08:00",
+  "source_commit": "ba4874386b4751e013c8c04e4b74fff26dbe6fe1",
+  "runtime_bytes_match_accepted_candidate": true,
+  "content_tree_sha256": "ef25c53c1c0f7ab666c57d0d4b99556bb4d9ed7c48ab4ec789179310385ec950",
+  "content_bytes": 3840674,
+  "content_files": 50,
+  "native_receipt": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexAssets\\FreshnessFridgeLiveWireRelease_20261108\\publication-receipts\\verify-public-20261108-074412-f3b1745c.json",
+  "native_receipt_sha256": "1dffa7f56cf46178b81224d8c99e7ad49c1ff0db1793a43f35c772174b995ff7",
+  "native_upload_receipt": "D:\\steam\\steamapps\\common\\ProjectZomboid\\CodexAssets\\FreshnessFridgeLiveWireRelease_20261108\\publication-receipts\\upload-20261108-074353-82128f4b.json",
+  "native_upload_receipt_sha256": "66bbcc0c6be3aa54fc02ec6aa0640ede2f9cfd9634c83b6b5a924e82f386acc8",
+  "verification_boundary": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download.",
+  "regression": {
+    "runtime_model_cases": 69,
+    "runtime_model_assertions": 482
+  },
+  "standalone_dependencies": [],
+  "game_started": false,
+  "gameplay_acceptance_changed_by_publication": false
+}

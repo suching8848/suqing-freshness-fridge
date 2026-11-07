@@ -19,7 +19,7 @@
   "upload_authorized": true,
   "publish_authorized": true,
   "copy_revision": "2026-11-08 Live Wire compatibility release",
-  "status": "prepared_for_public_update",
+  "status": "uploaded_verified_public",
   "mod_id": "SuQingFreshnessFridge",
   "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
   "public": true,
@@ -37,8 +37,8 @@
     "prepared_at_bjt": "2026-11-06T21:49:29.875712+08:00"
   },
   "runtime_manifest": "publishing/runtime-manifest.json",
-  "uploaded_verified_public": false,
-  "current_update_uploaded": false,
-  "verified_at_bjt": "2026-11-07T06:53:32.427385+08:00",
-  "publication_record": "publishing/publication-20261107.json"
+  "uploaded_verified_public": true,
+  "current_update_uploaded": true,
+  "verified_at_bjt": "2026-11-08T07:44:13.601644+08:00",
+  "publication_record": "publishing/publication-20261108.json"
 }
