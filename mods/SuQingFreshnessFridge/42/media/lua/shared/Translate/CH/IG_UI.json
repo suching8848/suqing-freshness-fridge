@@ -1,7 +1,7 @@
 {
   "IGUI_CraftingCategories_SuQingFreshnessFridge": "蘇清的返鲜冰箱",
   "IGUI_SuQingFreshnessFridge_Name": "蘇清的返鲜冰箱",
-  "IGUI_SuQingFreshnessFridge_BuildDescription": "通电并开启后，逐渐恢复直接放入的可腐坏食物。容量可在沙盒中设为50–1000，默认200。仅结算已加载且持续观察到供电的时间；离区和离线不补返鲜。",
+  "IGUI_SuQingFreshnessFridge_BuildDescription": "右鍵密封後開始返鮮，累計通電達到設定時長後開封。僅支援直接存放的食品。容量可在沙盒中設為 50–1000，預設 200。",
   "IGUI_Moveables_SuQing_FreshnessFridge": "蘇清的返鲜冰箱",
   "IGUI_SuQingFreshnessFridge_TurnOn": "开启返鲜",
   "IGUI_SuQingFreshnessFridge_TurnOff": "关闭返鲜",
@@ -11,5 +11,20 @@
   "IGUI_SuQingFreshnessFridge_Off": "返鲜已关闭：按普通冰箱冷藏",
   "IGUI_SuQingFreshnessFridge_Capacity": "基础容量：%1",
   "IGUI_SuQingFreshnessFridge_Hours": "恢复一个完整新鲜期所需时间：%1游戏小时",
-  "IGUI_SuQingFreshnessFridge_ObservedOnly": "只处理直接放入的食物；离区、离线和未知供电区间不补返鲜。"
+  "IGUI_SuQingFreshnessFridge_ObservedOnly": "只处理直接放入的食物；离区、离线和未知供电区间不补返鲜。",
+  "IGUI_SuQingFreshnessFridge_SealBatch": "密封冰箱並開始返鮮",
+  "IGUI_SuQingFreshnessFridge_BatchSealed": "冰箱已密封",
+  "IGUI_SuQingFreshnessFridge_BatchRemaining": "密封返鮮中 · 剩餘 %1 遊戲分鐘",
+  "IGUI_SuQingFreshnessFridge_BatchReady": "返鮮已完成，等待開封",
+  "IGUI_SuQingFreshnessFridge_BatchPaused": "斷電暫停 · 還需通電 %1 遊戲分鐘",
+  "IGUI_SuQingFreshnessFridge_BatchLocked": "密封期間無法打開冰箱或存取食物。",
+  "IGUI_SuQingFreshnessFridge_BatchInfo": "密封後累計通電 %1 遊戲小時。離區或供電不明時暫停。",
+  "IGUI_SuQingFreshnessFridge_BatchRejected": "無法開始冰箱密封返鮮。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_empty": "請先放入要返鮮的食物。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_unpowered": "冰箱尚未通電。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_unsafe_food": "冰箱內有不支援密封的物品，例如容器、受污染食品或受精蛋。請取出後重試。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_guard_present": "冰箱內仍有待恢復的食品保護記錄。請重新載入存檔。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_lock_unavailable": "冰箱鎖定介面不可用。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_seal_failed": "冰箱密封失敗，請檢查箱內物品。",
+  "IGUI_SuQingFreshnessFridge_BatchReason_recovery_required": "本批次需要恢復。請保留存檔並查看記錄。"
 }

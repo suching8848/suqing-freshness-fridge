@@ -1,5 +1,2 @@
-0.1.0-rc.3
-
-内置 Live Wire 1.7.2 可选适配。设备分路断电时暂停返鲜，容量、存取和搬放仍可使用。恢复供电后重新计时。区块加载时先结算 Live Wire 自然老化和冻融，再开始观察返鲜时间。便携制冷包的离区掉电限制见工坊介绍。已完成 B42.21.0 单人联测。
-
-Adds optional Live Wire 1.7.2 support. Restoration pauses during an equipment circuit outage. Capacity, item access and pickup remain available. Restoration starts a new observation when power returns. Chunk loading settles Live Wire aging and freeze/thaw before restoration timing begins. See the Workshop description for the unloaded portable-cooler limitation. Tested in a combined B42.21.0 single-player setup.
+0.2.0-rc.3 · 手动密封批次返鲜，独立沙盒时长。通电累计进度，断电或离区暂停。兼容 Loot Tracker 1.8.5。
+0.2.0-rc.3 · Manually sealed batches with a separate sandbox duration. Progress accrues while powered and pauses during outages or unloading. Supports Loot Tracker 1.8.5.

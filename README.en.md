@@ -1,93 +1,80 @@
 # SuQing's Freshness Fridge
 
-Current item identity, visibility and upload status: [workshop-item.json](publishing/workshop-item.json). Frozen manifests under release/ retain their preparation-time state; an old uploaded=false value there does not describe the current Steam item.
+**0.2.0-rc.3** is a **B42.22.2 single-player sealed-batch candidate** for Project Zomboid. The mod metadata covers B42.21 and B42.22. This release adds batch records and retains the fridge's Mod ID, building and movable item IDs, four-facing sprites, and capacity settings.
 
-Workshop updates use the [existing item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923). See [publication status](publishing/workshop-item.json) for the current release record.
+Preserves Loot Tracker 1.8.5 search tracking and sealed-container restrictions when they share inventory selection.
 
-**0.1.0-rc.3** supports Project Zomboid **B42.21.0 single-player**.
+Workshop updates use the existing item. See the publication record for the current public version, visibility, and upload status. Frozen manifests under `release/` preserve their preparation-time state. [Workshop item](https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923) · [Publication status](publishing/workshop-item.json)
 
-### Optional Live Wire 1.7.2 integration (2026-11-08)
+## Construction
 
-The existing Freshness Fridge Mod ID carries the integration. With the Live Wire equipment circuit open, the fridge stays accessible and movable at its configured capacity, and its context menu shows that it has no power. Freshness restoration resumes from a new continuous observation once power returns. On chunk load, Live Wire finishes its ordinary aging and freeze/thaw replay before the fridge begins observing again.
-
-The integration recognizes the appliance records and Lua interfaces of Live Wire 1.7.2. The native refrigeration backend and its Lua fallback retain their respective cooling rules. An offline reproduction confirms a separate limitation. When a chunk is unloaded, Live Wire can age food inside an active portable cooler using the outer appliance's power history. That history lacks per-interval power and ownership for the food inside the bag. Historical power settlement with overlapping ISA and Live Wire coverage also awaits gameplay testing. The user completed combined single-player testing and approved the update for the personal save. See the [0.1.0-rc.3 validation record](docs/release-validation-20261108.md) for scope.
-
-The optional native refrigeration backend SuQingRefrigerationNative_4221 0.1.0-rc.1 requires SuQing's Refrigeration Upgrades 1.0.0-rc.2-perf.8 and ZombieBuddy 2.3.4. The fridge can restore food on its own. Live Wire and the native backend are optional. Fully quit and restart after changing the native backend.
-
-2026-11-07 capacity synchronization update (0.1.0-rc.2-perf.1): after a successful write, stable ticks no longer call `setCapacity` again for the same container, configured target and setter. A first use, changed target, new container, cache reset or changed setter triggers another write. Loading, placement and save boundaries still force physical synchronization; saved capacity remains the configured value. Unknown external edits to the physical capacity are restored at those boundaries, rather than overwritten on every stable tick.
-
-Targets above 100 can still produce a small number of native warnings on first or boundary synchronization. This removes repetitive steady-state writes and log flooding without changing the native capacity restriction; no FPS gain is quantified. Capacity remains 200 by default, configurable from 50 to 1000. Restoration speed, save schema, items and art remain unchanged. This is a Lua repair; the companion refrigeration Java patch is unchanged. This repair is now authorized for Git synchronization and a public Workshop update. The user completed this single-player capacity-repair test and saved and exited normally. A subsequent reload and special automation remain unverified; see the current validation summary below.
-
-2026-11-06: fixes repeated rotten/stale flicker for the current save, whose native rotten-food removal option is disabled. Active restoration no longer applies a temporary age clamp under that policy. Only existing per-item rotten replacement rules are temporarily suspended and then restored. Capacity, restoration speed, food state and PZO settings are unchanged. Current fix records: `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\FreshnessFlickerFix_20261106_001748`. In-game display acceptance remains with the user.
-
-A separately buildable, movable freshness-restoring appliance, based on the proportions of the vanilla mini fridge. It includes original four-facing sprites and an optional independent Viewpoint model. It does not replace vanilla refrigerators, Workshop originals, or SuQing's wearable refrigeration upgrades.
-
-Offline validation has passed, and the user completed the scoped single-player capacity-repair test. Other gameplay, placement, streaming, power transitions and Viewpoint visuals retain their separate acceptance limits. On 2026-11-05, the user authorized installation into `C:\Users\15792\Zomboid\mods\SuQingFreshnessFridge` and appending this Mod ID to the existing `Sandbox\2026-10-09_18-19-22` save. The original 222 Mod IDs retain their order; the global default list and sandbox file are unchanged.
-
-The cancelled isolated test profile and its shortcut were removed to the Windows Recycle Bin. The delivery-folder launcher 「启动单人档测试.cmd」 uses the normal game executable with `-debug`; only the user starts it. Deployment records, the exact original mod-list backup and acceptance instructions are under `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`. The original non-installed archive and release folder remain historical snapshots.
-
-## Capacity update release and validation scope (2026-11-07)
-
-Deduplicates successful capacity synchronization by container, configured target and setter, stopping repeated stable-Tick writes and log flooding. First use, target/container/reset/setter changes resynchronize; creation, placement, loading and saving retain forced physical synchronization. Default200, range50–1000, restoration rules, items, save schema and existing art remain. Initial/forced writes can still emit a native above100 warning; zero warnings or an FPS gain are not promised.
-
-The new real-native suite passes16 cases/30630 assertions:10000 refreshes and10000 Building/Refresh pairs each call the setter once. Existing freshness/native Food/capacity UI/building regressions pass. The user tested this capacity repair in single-player; logs confirm the new version loaded, saved and exited normally. The 2026-11-07 06:26 session recorded no capacity warnings during steady running, with two at startup and one at saving. The user reported no remaining problem and authorized publication. Reloading that save and special automation remain unverified; no precise FPS gain is claimed.
-
-See the [current validation summary](docs/release-validation-20261107.md). Earlier per-stage figures and “not published” notes describe historical checkpoints, not current FPS or upload-status claims.
-
-## Construction and operation
-
-Open the native build menu and select **SuQing's Freshness Fridge**. No additional skill requirement is imposed.
+Select **SuQing's Freshness Fridge** in the native build menu. There is no additional skill requirement.
 
 | Input | Amount and handling |
 | --- | --- |
 | Small metal sheets | 4 objects, consumed |
 | Electric wire | 2 objects, consumed |
-| Alarm clock, digital watch, pocket watch, classic analog wristwatch | One of each; four separate objects consumed |
+| Alarm clock, digital watch, pocket watch, classic analog wristwatch | One of each, four separate objects consumed |
 | Screwdriver and welding mask | Retained tools |
-| Blowtorch | One native fuel use; tool retained |
+| Blowtorch | One native fuel use, tool retained |
 
-Six digital-watch variants and eight classic analog-watch variants are accepted. Payment, cancellation and completion remain under native BuildLogic; no separate refund loop is added.
+The recipe accepts six digital-watch variants and eight classic analog-watch variants. Payment, cancellation, and completion use native BuildLogic.
 
-The fridge uses utility, generator or connected Live Wire grid power and starts with restoration enabled. Right-click to toggle restoration. With restoration off it behaves as an ordinary refrigerator. It restores only directly stored standard perishable Food. Food inside a bag placed in the fridge is excluded.
+## Sealed restoration
+
+1. Connect the fridge to utility power, a generator, or a supported Live Wire grid. Put the food directly inside.
+2. Right-click the fridge and select **Seal fridge and start restoration**. The fridge records the batch contents when it seals. The ordinary inventory interface cannot open the sealed fridge or transfer food into or out of it. The context menu shows the remaining time.
+3. Once the loaded fridge has accumulated the configured powered game time, the batch sets the original foods' age to zero, restores their native properties, and unseals automatically.
+
+A batch accepts directly stored standard perishable `Food`. Bags containing food, other objects, tainted food, burnt food, fertilized eggs, and food without valid shelf-life thresholds prevent sealing. With `AllowRotten` enabled, a batch can restore rotten food that still exists.
+
+Progress pauses during outages, unverified power, area unloading, offline time, and gameplay pauses. Restoring power or reloading the area starts a new observation without losing already confirmed progress. A single clock jump of more than 15 game minutes earns no credit. Waiting checks the fridge's power and batch progress. Food processing takes place when the batch starts, completes, or needs recovery.
+
+During sealing, the batch temporarily applies the native nonperishable threshold and disables cookability to protect the food from native rotten-food replacement or removal. Unsealing restores the original values and ordinary aging resumes. The batch keeps the original items and their portions, nutrition, ingredients, and poison. If the manifest changes, a recoverable batch aborts without restoration and unseals. Missing items are never recreated.
 
 ## Sandbox settings
 
-- `Enabled`: restoration master switch, default **true**.
-- `Capacity`: base capacity **200**, integer range **50–1000**. Applies to new and loaded appliances. Reducing capacity never deletes contents; normal insertion limits apply while over capacity.
-- `RestoreHours`: game hours to restore one complete native fresh-life interval, default **10**, range **0.25–1000**. Lower is faster. Each observed game hour subtracts `native fresh-life interval / RestoreHours` from food age, to a minimum of zero.
-- `AllowRotten`: default **true**, allowing gradual recovery of rotten Food that still exists.
+| Setting | Default and range | Effect |
+| --- | --- | --- |
+| `Enabled` | On | Allows new batches. Already sealed batches can still finish with power. |
+| `Capacity` | 200, integer range 50–1000 | Base capacity for new and loaded fridges. Reducing capacity retains existing contents and applies normal limits to further insertion. |
+| `BatchHours` | 12, range 0.25–24 game hours | Observed powered time required per batch. 0.25 hours is 15 game minutes. The batch records the duration when it starts. |
+| `AllowRotten` | On | Allows rotten food that still exists to enter a new batch. |
 
-Restoration preserves portions, recipe ingredients, nutrition fields, cooking state, poison and contamination. Burnt food, fertilized eggs and items without standard shelf-life thresholds are excluded. Deleted or replaced items are not reconstructed. With native rotten-food removal disabled, protection does not change age: it temporarily suspends only a nonempty per-item rotten replacement rule and restores that rule independently of age. Explicit age or replacement-rule edits by other mods are respected.
+The scoped Lua capacity bridge covers ordinary single-player storage in this mod's fridge. Native storage rules and the Organized and Disorganized traits still apply. External mods that query Java capacity directly may encounter the ordinary furniture limit of 100. Targets above 100 can still produce native warnings at first or forced synchronization.
 
-Enabled or unknown native removal policies retain the previous age-guard path. This change does not claim to resolve that branch's display and scheduling behavior under PZO callback staggering. The verified personal save uses `DaysForRottenFoodRemoval=-1` and does not enter that branch. No sandbox or global optimizer setting needs to change for this fix.
+## Compatibility, maintenance, and rollback
 
-**Time accounting:** only continuously observed, loaded and powered intervals in the current single-player session earn restoration credit. Unloaded, offline, mod-absent and unverified power intervals do not. Single clock jumps exceeding 15 game minutes are re-anchored without restoration credit. Ordinary native aging is settled before a newly discovered item is anchored.
+- Standard isometric use is independent. The mod registers its included 3D model when it detects Viewpoint.
+- Live Wire 1.7.2 is an optional integration. An open equipment circuit pauses timing. On chunk load, the fridge waits for Live Wire to replay ordinary aging and freeze/thaw before observing power again. Third-party automation that bypasses the Lua transfer paths needs separate verification.
+- SuQing's Refrigeration Performance Patch `SuQingRefrigerationNative_4221` is an optional ordinary refrigeration backend. Version `0.1.0-rc.2` in the B42.22.2 environment requires SuQing's Refrigeration Upgrades `1.0.0-rc.2-perf.8` and ZombieBuddy. This mod's Lua handles sealed batches. Fully quit and restart after changing the refrigeration backend.
+- **Finish every sealed batch before rolling back or disabling the mod.** The temporary protection is saved with the native food. Unsealing restores the original values. If the interface reports that a batch needs recovery, retain the save and check the log.
+- Unseal and empty the fridge before native pickup or dismantling. Re-placement applies the current sandbox capacity. Dismantling uses the native furniture refund rules. To remove the mod entirely, finish batches, empty and dismantle the custom fridges, then save and exit normally.
 
-**Capacity compatibility:** the installed engine clamps ordinary world containers to 100 internally. This mod supplies a scoped Lua capacity bridge for its own fridge, covering normal single-player drag-and-drop, transfer-all, timed-action validation and the vanilla Lua queue helper. Native storage rules remain in place; Organized/Disorganized affect effective capacity using native float32 rules. External mods that directly call Java capacity methods can still encounter the original cap and need separate compatibility work. No JAR, global cap, DLL or injector is changed.
+## Validation
 
-## Moving and disabling
+B42.22.2 offline validation covers the independent batch model, native Food save and load, and the combined Lua setup with the Freshness Lunchbox. The model checks powered timing, outages, unloading, saving and reloading, and waiting without per-food processing. The native probe checks that the protection survives save and load and that the original values can be restored. Inventory UI, transfer actions, power transitions, streaming, saving and reloading, and FPS still await in-game acceptance. B42.21 gameplay records below apply to earlier versions.
 
-Empty the appliance before native pickup. Its per-fridge identifier and restoration switch are preserved during moving and re-placement. A carried fridge does not restore food. Re-placement uses the current sandbox capacity. Native furniture dismantling applies; no additional clock refunds are issued.
+The source retains the runtime, native method, building, and capacity bridge tools. Release packages contain runtime resources and instructions. If installed locally, use the corresponding deployment records for verification. The pre-release checks in `tools/release.py` are for an uninstalled candidate.
 
-Before removing this custom-building mod, empty and dismantle its appliances, then save and exit normally. Do not assume that missing sprites after disabling provide an automatic rollback. This deployment backs up only the exact save mod-list configuration, not the complete world or its progress.
+- `tools/runtime_run_tests.py` runs runtime and native Food method checks.
+- `tools/building_validate.ps1` and `tools/capacity_validate.py` check construction, moving, native Lua transfer, and capacity boundaries.
+- `tools/assets_validate.py` reads back the texture pack, model, and four-facing bindings.
+- `tools/release.py validate` and `tools/release.py package` check and freeze a candidate package.
+
+## Historical releases and validation
+
+- **2026-11-10 · 0.1.0-rc.4-perf.1** Shared container, settings, and power checks within an update phase and reduced same-clock writes in the old continuous restoration mode.
+- **2026-11-09 · 0.1.0-rc.4** Prepared B42.22.2 single-player compatibility and retained B42.21 loading and the existing item and building IDs.
+- **2026-11-08 · 0.1.0-rc.3** The Live Wire 1.7.2 integration passed the then-current combined B42.21.0 single-player test. A separate offline reproduction found that Live Wire could apply the outer appliance's power history to food in an active portable cooler when the chunk was unloaded. Overlapping ISA and Live Wire replay for the same appliance still needed gameplay testing. [Historical validation](docs/release-validation-20261108.md)
+- **2026-11-07 · 0.1.0-rc.2-perf.1** Deduplicated capacity writes by container, target, and setter. The native suite passed 16 cases and 30,630 assertions. The user tested that capacity repair in single-player and saved and exited normally. That session had no repeated capacity warnings during steady operation. [Historical validation](docs/release-validation-20261107.md)
+- **2026-11-06 · 0.1.0-rc.2** Fixed the freshness-state flicker in the then-current single-player save with native rotten-food removal disabled. The repair records are at `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\FreshnessFlickerFix_20261106_001748`.
+- **2026-11-05 · Personal installation** The historical installation appended this Mod ID to the user's single-player save. Deployment receipts and the original enabled-list backup are under `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`. The backup from that operation covers the enabled-list configuration.
 
 ## Art and localization
 
-Four original sprites use `suqing_freshness_fridge_01_0..3` in S/E/N/W order. A real PZPK texture pack and tdef tile definition use tiledef ID 7825. The original 562-triangle model includes UVs, a PNG material atlas and explicit four-facing Viewpoint bindings, exported for the installed Viewpoint Z-up parser. Standard isometric rendering remains independent of Viewpoint.
+The original four-facing sprites `suqing_freshness_fridge_01_0..3` use south, east, north, and west order. The PZPK pack and tile definition use tiledef ID 7825. The 562-triangle Viewpoint model includes UVs, a PNG material atlas, and four-facing bindings. The OBJ export uses Z-up. Standard isometric rendering uses the independent 2D sprites.
 
-The selected B “Night Workshop” cover was created with built-in imagegen using the user's original character sheet and approved SuQing covers. The mod icon was generated independently as a simplified fridge, rewind clock and apple composition with no title. It is not a resized cover. The icon master, exact prompt and 64/128/256px exports are retained in `art/icon-source.png`, `art/icon-generation.json` and `art/icon-exports`. Original covers and character references are preserved. `tools/export_selected_cover.py` exports the poster and dedicated icon from their separate source images.
+The selected B “Night Workshop” cover master and prompt are in `art/cover-candidates_20261105`. The dedicated icon master, prompt, and 64/128/256px exports are in `art/icon-source.png`, `art/icon-generation.json`, and `art/icon-exports`. The original covers and character references are preserved. `tools/assets_build.py` builds the appliance assets, and `tools/export_selected_cover.py` exports the cover and independent icon.
 
-Game text is provided in CN and EN with the existing CH files retained. The logic, Mod ID, object/item IDs, settings and save data are shared between languages. Localized selector metadata now uses the native `media/lua/shared/Translate/<language>/Mod.json` mechanism with bare `name` and `description` keys, verified through the installed native parser. The unsupported `namezh` field was removed; English is the base metadata fallback. The original frozen package is preserved, and the exact current runtime candidate is frozen separately with the deployment records.
-
-## Offline reproduction and delivery boundaries
-
-- `tools/runtime_run_tests.py`: Core/Runtime model scenarios, real Food precision/guard probes, native container bridge and control-flow audit.
-- `tools/building_validate.ps1`: native entity/recipe/Xui/translation parsing and original Lua building/moving control-flow tests.
-- `tools/capacity_validate.py`: original Lua UI transfer paths, capacity boundaries and all trait capacities from 50 to 1000.
-- `tools/assets_validate.py`: geometry, UVs, textures, PZPK/tdef readback and four-facing bindings.
-- `tools/release.py validate`: aggregate checks, compilation of all shipped Lua, protected-profile hashes and a stable runtime manifest.
-- `tools/release.py package`: a frozen, non-installing archive with per-member readback and SHA-256.
-
-`release.py` retains its pre-installation safety checks. After personal deployment, use the current delivery's recorded `validation` results, `deployment.json` and `icon-final-validation.json`; the pre-installation entry point is not a validator for an already installed profile.
-
-These checks use standalone methods, parsers and mocks; they do not start the game, create a game world or measure gameplay FPS. The user performed the scoped in-game capacity-repair test. Source changes were committed and pushed with authorization on 2026-11-07; publishing/workshop-item.json and the current release receipt record the separate Workshop upload result. This publication preparation did not modify the personal runtime, enabled lists, sandbox or launch configuration.
+Simplified Chinese and English share the logic, IDs, and save format. Existing CH resources remain available. The mod selector uses native `Translate/<language>/Mod.json` metadata.

@@ -1,25 +1,31 @@
-require "SuQingFreshnessFridge/Core"
+require "SuQingFreshnessFridge/Batch"
 require "SuQingFreshnessFridge/Capacity"
 require "TimedActions/ISTransferAction"
 local C=SuQingFreshnessFridge
+local B=C.Batch
 C.Runtime=C.Runtime or {}
 local R=C.Runtime
 if R.loaded then return R end
 R.loaded=true
-R.objects=setmetatable({}, {__mode="k"})
-R.foods=setmetatable({}, {__mode="k"})
-R.observed=setmetatable({}, {__mode="k"})
-R.powerEdges=setmetatable({}, {__mode="k"})
-R.pendingLoads=setmetatable({}, {__mode="k"})
-R.squares=setmetatable({}, {__mode="k"})
-R.stats={settled=0,protected=0,errors=0,unknownIntervals=0}
-R.pass=0
+R.objects={}
+R.batches={}
+R.observed={}
+R.pendingLoads={}
+R.squares={}
+R.retry={}
+R.stats={completed=0,errors=0}
 
 local function now() return getGameTime():getWorldAgeHours() end
 local function paused() return type(isGamePaused)=="function" and isGamePaused() end
 local function report(errorText)
     R.stats.errors=R.stats.errors+1
     if R.stats.errors<=10 then print("[SuQingFreshnessFridge] "..tostring(errorText)) end
+end
+
+local function refreshAccess()
+    if not C.Lock or not C.Lock.Refresh then return end
+    local ok,message=pcall(C.Lock.Refresh)
+    if not ok then report(message) end
 end
 
 function R.IsLoaded(object)
@@ -30,24 +36,6 @@ function R.IsLoaded(object)
     local objects=square:getObjects()
     for i=0,objects:size()-1 do if objects:get(i)==object then return true end end
     return false
-end
-
-function R.Register(object)
-    if not C.IsFridge(object) or not C.Container(object) or not C.State(object) then return false end
-    C.RefreshCapacity(object)
-    R.objects[object]=true
-    C.pending[object]=nil
-    return true
-end
-
-function R.RestoreAll()
-    for food in pairs(R.foods) do C.RestoreFood(food) end
-end
-
-function R.Release(food)
-    C.ClearFood(food)
-    R.foods[food]=nil
-    R.observed[food]=nil
 end
 
 local function liveWireReplayReady()
@@ -63,44 +51,157 @@ local function waitingForReplay(object)
     return false
 end
 
-function R.SettleOne(food,object,time,forceAnchor,protect,powered)
-    if waitingForReplay(object) then return end
-    if not C.IsDirectFood(food,object) then R.Release(food);return end
-    C.RestoreFood(food)
-    local observation=R.observed[food]
-    local continuous=not forceAnchor and observation and observation.object==object and
-        (observation.pass==R.pass or
-        (observation.pass==R.pass-1 and R.completedPass==R.pass-1)) or false
-    if not continuous then R.stats.unknownIntervals=R.stats.unknownIntervals+1 end
-    if powered==nil then powered=C.Powered(object,C.Container(object)) end
-    local result=C.SettleFood(food,object,time,{continuous=continuous,
-        powered=powered and R.powerEdges[object]~=R.pass})
-    R.foods[food]=object
-    R.observed[food]={object=object,pass=R.pass}
-    R.stats.settled=R.stats.settled+1
-    if protect and result.active and C.ProtectFood(food,object,time) then
-        R.stats.protected=R.stats.protected+1
-    end
-    return result
+
+function R.IsFoodLoaded(food)
+    local lunch=SuQingFreshnessLunchbox and SuQingFreshnessLunchbox.Runtime
+    if lunch and lunch.Location and lunch.Location(food) then return true end
+    local container=food and food:getContainer()
+    local parent=container and container:getParent()
+    if not parent or not parent.getSquare then return false end
+    local square,cell=parent:getSquare(),getCell()
+    if not square or not cell or cell:getGridSquare(square:getX(),square:getY(),square:getZ())~=square then return false end
+    if not container:getItems():contains(food) then return false end
+    if instanceof(parent,"IsoGameCharacter") then return true end
+    return square:getObjects():contains(parent)
 end
 
-function R.SettleObject(object,time,protect,forceAnchor,forceCapacity)
-    if not R.IsLoaded(object) then
-        for food,owner in pairs(R.foods) do if owner==object then R.Release(food) end end
-        R.objects[object]=nil
-        R.pendingLoads[object]=nil
-        R.powerEdges[object]=nil
-        return
-    end
-    if waitingForReplay(object) then return end
-    if not C.RefreshCapacity(object,forceCapacity) then return end
+function R.Register(object)
+    if not C.IsFridge(object) then return false end
+    if not R.ready then C.pending[object]=true;return true end
     local container=C.Container(object)
-    local powered=C.Powered(object,container)
-    local list=container:getItems()
-    for i=0,list:size()-1 do
-        local food=list:get(i)
-        if C.IsFood(food) then R.SettleOne(food,object,time,forceAnchor,protect,powered) end
+    if not container or not C.State(object) or not R.IsLoaded(object) then return false end
+    C.pending[object]=nil
+    if R.objects[object] then return true end
+    R.objects[object]=true
+    C.RefreshCapacity(object)
+    if B.IsSealed(object) then
+        R.batches[object]=true
+    else
+        -- Recover saved legacy shields once on discovery. A sealed batch's
+        -- contents remain untouched until its completion or recovery.
+        local items=container:getItems()
+        for i=0,items:size()-1 do B.RecoverFood(items:get(i),true) end
     end
+    return true
+end
+
+local function remove(object)
+    R.objects[object]=nil;R.batches[object]=nil;R.observed[object]=nil
+    R.pendingLoads[object]=nil;R.retry[object]=nil
+end
+
+local function attemptComplete(object,time)
+    if R.retry[object] and time<R.retry[object] then return end
+    local ok,reason=B.Complete(object,time)
+    if ok or not B.IsSealed(object) then
+        R.batches[object]=nil;R.observed[object]=nil;R.retry[object]=nil
+        if ok then R.stats.completed=R.stats.completed+1 end
+        refreshAccess()
+    elseif reason~="not_due" and reason~="unpowered" then
+        R.retry[object]=time+0.05
+        report("batch completion deferred: "..tostring(reason))
+    end
+end
+
+local function observeBatches(time,allowCredit)
+    if not R.operational then return end
+    for object in pairs(R.batches) do
+        if not R.IsLoaded(object) then
+            remove(object)
+        elseif waitingForReplay(object) then
+            R.observed[object]=nil
+        else
+            local batch=B.Get(object)
+            if type(batch)~="table" then
+                R.batches[object]=nil;R.observed[object]=nil
+            else
+                local powered=C.Powered(object,C.Container(object))
+                local previous=R.observed[object]
+                R.observed[object]=powered and time or nil
+                if allowCredit and powered and previous and time>previous and time-previous<=C.maxObservedGapHours then
+                    B.Advance(object,time-previous)
+                end
+                if batch.phase=="sealing" or batch.phase=="recovering" or batch.phase=="finishing"
+                    or (powered and C.Finite(batch.poweredHours) and C.Finite(batch.hours) and batch.poweredHours>=batch.hours) then
+                    attemptComplete(object,time)
+                end
+            end
+        end
+    end
+end
+
+function R.PreTick()
+    if not R.ready then return end
+    for square in pairs(R.squares) do R.ScanSquare(square);R.squares[square]=nil end
+    for object in pairs(C.pending) do R.Register(object) end
+    for object in pairs(R.objects) do
+        if R.IsLoaded(object) then C.RefreshCapacity(object) else remove(object) end
+    end
+    observeBatches(now(),not paused())
+end
+R.Tick=R.PreTick
+
+local function pack(...) return {n=select("#",...),...} end
+function R.InstallTransferHook(captureStartup)
+    if C.Lock and C.Lock.SharedTransfer and C.Lock.SharedTransfer() then
+        return C.Lock.SharedTransferReady()
+    end
+    if not ISTransferAction or type(ISTransferAction.transferItem)~="function" then return false end
+    if R.transferWrapper and ISTransferAction.transferItem==R.transferWrapper then return true end
+    local legacy=SuQingFreshnessLunchbox
+    local transfer=legacy and legacy.version=="0.1.0-rc.8-perf.9.1" and legacy.Runtime and legacy.Runtime.transfer
+    if R.transferWrapper and transfer and transfer.prior==R.transferWrapper
+        and transfer.wrapper==ISTransferAction.transferItem then return true end
+    if R.transferWrapper and not captureStartup then return false end
+    local prior=ISTransferAction.transferItem
+    local wrapper
+    wrapper=function(self,character,item,source,destination,...)
+        if R.transferWrapper~=wrapper or not C.SP() then return prior(self,character,item,source,destination,...) end
+        if B.IsLockedContainer(source) or B.IsLockedContainer(destination) then return item end
+        if R.ready and C.IsFood(item) then B.RecoverFood(item,R.IsFoodLoaded(item)) end
+        if B.IsSealedFood(item) then return item end
+        local result=pack(prior(self,character,item,source,destination,...))
+        return unpack(result,1,result.n)
+    end
+    R.transferWrapper=wrapper
+    ISTransferAction.transferItem=wrapper
+    return true
+end
+
+function R.CanStartBatch()
+    if not R.ready or not C.Lock or not C.Lock.Ready then return false end
+    local shared=C.Lock.SharedTransfer and C.Lock.SharedTransfer()
+    if shared and shared.CanStartBatch and not shared.CanStartBatch() then return false end
+    if not R.operational or not C.Lock.Ready() then return false end
+    return R.InstallTransferHook()
+end
+
+function R.StartBatch(object)
+    if not R.CanStartBatch() then return false,"lock_unavailable" end
+    if not R.Register(object) then return false,"invalid_box" end
+    if waitingForReplay(object) then return false,"unpowered" end
+    local time=now()
+    local ok,reason=B.Start(object,time)
+    if B.IsSealed(object) then
+        R.batches[object]=true
+        if ok then R.observed[object]=time end
+        refreshAccess()
+    end
+    return ok,reason
+end
+
+function R.PostTick()
+    if not R.ready then return end
+    if not R.operational then
+        R.startupTicks=R.startupTicks+1
+        if R.startupTicks<2 or not R.InstallTransferHook(true) then return end
+        R.operational=true
+    end
+    observeBatches(now(),true)
+end
+
+local function preparePowerBoundary(object)
+    R.observed[object]=nil
 end
 
 function R.ScanSquare(square,streaming)
@@ -114,112 +215,11 @@ function R.ScanSquare(square,streaming)
         if C.IsFridge(object) then
             -- PZO can dispatch LoadChunk across frames after LoadGridsquare.
             -- Do not advance lastAged before Live Wire has replayed this absence.
-            if chunk then R.pendingLoads[object]=chunk end
+            if chunk then R.pendingLoads[object]=chunk;R.observed[object]=nil end
             if R.ready then
                 if C.Building and C.Building.EnsureObject then C.Building.EnsureObject(object) end
                 R.Register(object)
             end
-        end
-    end
-end
-
--- A bounded fallback catches native/foreign AddItem paths without world scans.
-function R.Discover()
-    local cell=getCell()
-    local list=cell and cell:getProcessItems() or nil
-    local size=list and list:size() or 0
-    if size==0 then return end
-    for _=1,math.min(size,32) do
-        R.cursor=((R.cursor or -1)+1)%size
-        local item=list:get(R.cursor)
-        if C.IsFood(item) then
-            C.RestoreFood(item)
-            local container=item:getContainer()
-            local object=container and container:getParent() or nil
-            if C.IsFridge(object) and C.IsDirectFood(item,object) then R.Register(object) end
-        end
-    end
-end
-
-function R.PreTick()
-    if not R.ready then return end
-    R.RestoreAll()
-    R.pass=R.pass+1
-    R.phase="pre"
-    for object in pairs(C.pending) do R.Register(object) end
-    for square in pairs(R.squares) do R.ScanSquare(square);R.squares[square]=nil end
-    R.Discover()
-    for food,object in pairs(R.foods) do
-        if not C.IsDirectFood(food,object) then R.Release(food) end
-    end
-    local time=now()
-    local prepare=not paused()
-    for object in pairs(R.objects) do R.SettleObject(object,time,prepare,not prepare) end
-end
-
-function R.PostTick()
-    if not R.ready then return end
-    R.RestoreAll()
-    R.phase="post"
-    local time=now()
-    for object in pairs(R.objects) do R.SettleObject(object,time,false,false) end
-    R.completedPass=R.pass
-end
-
-function R.Toggle(object)
-    if not R.ready or not R.IsLoaded(object) then return end
-    R.RestoreAll()
-    R.SettleObject(object,now(),false,false)
-    local state=C.State(object)
-    if not state then return end
-    state.on=not state.on
-    for food,owner in pairs(R.foods) do if owner==object then R.observed[food]=nil end end
-    R.SettleObject(object,now(),false,true)
-    if object.transmitModData then object:transmitModData() end
-end
-
-local function ownerOf(food)
-    if not C.IsFood(food) then return nil end
-    local container=food:getContainer()
-    local object=container and container:getParent() or nil
-    return C.IsDirectFood(food,object) and object or nil
-end
-
-function R.InstallTransferHook()
-    if R.transferInstalled then return true end
-    if not ISTransferAction or type(ISTransferAction.transferItem)~="function" then return false end
-    R.nativeTransfer=ISTransferAction.transferItem
-    R.transferWrapper=function(self,character,item,source,destination,...)
-        if not R.ready then return R.nativeTransfer(self,character,item,source,destination,...) end
-        if C.IsFood(item) then
-            C.RestoreFood(item)
-            local old=ownerOf(item)
-            if old then R.SettleOne(item,old,now(),false,false) end
-        end
-        local result=R.nativeTransfer(self,character,item,source,destination,...)
-        if C.IsFood(item) then
-            local owner=ownerOf(item)
-            if owner then R.Register(owner);R.SettleOne(item,owner,now(),true,false) else R.Release(item) end
-        end
-        if result and result~=item and C.IsFood(result) then
-            local owner=ownerOf(result)
-            if owner then R.Register(owner);R.SettleOne(result,owner,now(),true,false) end
-        end
-        return result
-    end
-    ISTransferAction.transferItem=R.transferWrapper
-    R.transferInstalled=true
-    return true
-end
-
-local function preparePowerBoundary(object,container)
-    R.powerEdges[object]=R.pass
-    local items=container:getItems()
-    for i=0,items:size()-1 do
-        local food=items:get(i)
-        if C.IsFood(food) then
-            C.RestoreFood(food)
-            R.observed[food]=nil
         end
     end
 end
@@ -307,53 +307,42 @@ function R.InstallLiveWire()
     R.liveWireInstalled=appliances
 end
 
+
 function R.Start()
     if R.ready or not C.SP() then return end
     if not C.Capacity or not C.Capacity.Install() or not C.Capacity.IsReady() then
         print("[SuQingFreshnessFridge] scoped capacity bridge unavailable; freshness disabled")
         return
     end
-    if not R.InstallTransferHook() then
-        print("[SuQingFreshnessFridge] native transfer hook unavailable; freshness disabled")
-        return
-    end
     R.InstallLiveWire()
-    R.ready=true
+    R.ready=true;R.operational=false;R.startupTicks=0
     C.ResetCapacityCache()
-    R.pass=0;R.completedPass=nil
     for square in pairs(R.squares) do R.ScanSquare(square);R.squares[square]=nil end
     for object in pairs(C.pending) do R.Register(object) end
-    R.Discover()
-    for object in pairs(R.objects) do R.SettleObject(object,now(),false,true) end
-    print("[SuQingFreshnessFridge] "..C.version.." single-player ready; loaded, observed intervals only")
+    print("[SuQingFreshnessFridge] "..C.version.." single-player ready; sealed powered batches")
 end
 
 function R.Save()
     if not R.ready then return end
-    R.RestoreAll()
-    -- ItemContainer.save writes the physical field. Unknown Java writes above
-    -- 100 cannot be observed through Lua getters, so reassert at this boundary.
-    for object in pairs(R.objects) do R.SettleObject(object,now(),false,false,true) end
+    observeBatches(now(),false)
+    -- Preserve the physical capacity field for ItemContainer.save.
+    for object in pairs(R.objects) do
+        if R.IsLoaded(object) then C.RefreshCapacity(object,true) end
+    end
 end
 
 function R.Stop()
     C.ResetCapacityCache()
-    R.RestoreAll()
-    R.ready=false;R.phase=nil;R.completedPass=nil;R.cursor=nil
-    R.objects=setmetatable({}, {__mode="k"})
-    R.foods=setmetatable({}, {__mode="k"})
-    R.observed=setmetatable({}, {__mode="k"})
-    R.powerEdges=setmetatable({}, {__mode="k"})
-    R.pendingLoads=setmetatable({}, {__mode="k"})
-    R.squares=setmetatable({}, {__mode="k"})
+    R.ready=false;R.operational=false;R.startupTicks=0
+    R.objects={};R.batches={};R.observed={};R.pendingLoads={};R.squares={};R.retry={}
 end
 
 local function guarded(callback)
     return function(...)
-        local ok,errorText=pcall(callback,...)
+        local ok,message=pcall(callback,...)
         if not ok then
-            -- Restore before failing closed, so no physical guard can survive.
-            R.RestoreAll();R.ready=false;report(errorText)
+            R.ready=false;R.operational=false
+            report(message)
         end
     end
 end
@@ -362,12 +351,13 @@ Events.OnGameStart.Add(guarded(R.Start))
 if Events.OnInitGlobalModData then Events.OnInitGlobalModData.Add(guarded(R.InstallLiveWire)) end
 Events.OnTickEvenPaused.Add(guarded(R.PreTick))
 Events.OnTick.Add(guarded(R.PostTick))
-Events.OnPlayerUpdate.Add(guarded(R.RestoreAll))
 Events.LoadGridsquare.Add(guarded(function(square) R.ScanSquare(square,true) end))
 Events.OnSave.Add(guarded(R.Save))
 Events.OnMainMenuEnter.Add(guarded(R.Stop))
-if Events.OnObjectAdded then Events.OnObjectAdded.Add(guarded(function(object)
-    if C.IsFridge(object) then C.RegisterObject(object) end
-end)) end
+if Events.OnObjectAdded then
+    Events.OnObjectAdded.Add(guarded(function(object)
+        if C.IsFridge(object) then C.RegisterObject(object) end
+    end))
+end
 
 return R

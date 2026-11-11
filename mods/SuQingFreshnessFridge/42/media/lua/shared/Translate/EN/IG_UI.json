@@ -1,7 +1,7 @@
 {
   "IGUI_CraftingCategories_SuQingFreshnessFridge": "SuQing's Freshness Fridge",
   "IGUI_SuQingFreshnessFridge_Name": "SuQing's Freshness Fridge",
-  "IGUI_SuQingFreshnessFridge_BuildDescription": "Gradually restores directly stored perishable food while powered and enabled. Sandbox capacity: 50–1000, default 200. Restoration is credited only during continuously observed, loaded and powered intervals; no unloaded/offline catch-up.",
+  "IGUI_SuQingFreshnessFridge_BuildDescription": "Right-click to seal the fridge and start restoration. It opens after the configured powered time. Directly stored food only. Sandbox capacity: 50–1000, default 200.",
   "IGUI_Moveables_SuQing_FreshnessFridge": "SuQing's Freshness Fridge",
   "IGUI_SuQingFreshnessFridge_TurnOn": "Enable freshness restoration",
   "IGUI_SuQingFreshnessFridge_TurnOff": "Disable freshness restoration",
@@ -11,5 +11,20 @@
   "IGUI_SuQingFreshnessFridge_Off": "Restoration off: ordinary refrigeration",
   "IGUI_SuQingFreshnessFridge_Capacity": "Base capacity: %1",
   "IGUI_SuQingFreshnessFridge_Hours": "Game hours to restore one full fresh-life interval: %1",
-  "IGUI_SuQingFreshnessFridge_ObservedOnly": "Directly stored food only. No credit for unloaded, offline or unverified-power intervals."
+  "IGUI_SuQingFreshnessFridge_ObservedOnly": "Directly stored food only. No credit for unloaded, offline or unverified-power intervals.",
+  "IGUI_SuQingFreshnessFridge_SealBatch": "Seal fridge and start restoration",
+  "IGUI_SuQingFreshnessFridge_BatchSealed": "Fridge sealed",
+  "IGUI_SuQingFreshnessFridge_BatchRemaining": "Restoring · %1 game minutes left",
+  "IGUI_SuQingFreshnessFridge_BatchReady": "Restoration complete, waiting to unseal",
+  "IGUI_SuQingFreshnessFridge_BatchPaused": "Power paused · %1 powered game minutes left",
+  "IGUI_SuQingFreshnessFridge_BatchLocked": "The fridge cannot be opened or accessed while sealed.",
+  "IGUI_SuQingFreshnessFridge_BatchInfo": "Requires %1 powered game hours. Progress pauses while unloaded or power is unverified.",
+  "IGUI_SuQingFreshnessFridge_BatchRejected": "Could not start a sealed fridge batch.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_empty": "Add food to restore first.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_unpowered": "The fridge has no power.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_unsafe_food": "Some contents cannot be sealed, such as containers, tainted food or fertilized eggs. Remove them and try again.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_guard_present": "Food protection from an earlier session is pending. Reload the save.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_lock_unavailable": "The fridge access lock is unavailable.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_seal_failed": "Sealing failed. Check the fridge contents.",
+  "IGUI_SuQingFreshnessFridge_BatchReason_recovery_required": "This batch needs recovery. Keep the save and check the log."
 }

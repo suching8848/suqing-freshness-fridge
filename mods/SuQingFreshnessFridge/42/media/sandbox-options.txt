@@ -15,14 +15,14 @@ option SuQingFreshnessFridge.Capacity
     page = SuQingFreshnessFridge,
     translation = SuQingFreshnessFridge_Capacity,
 }
-option SuQingFreshnessFridge.RestoreHours
+option SuQingFreshnessFridge.BatchHours
 {
     type = double,
     min = 0.25,
-    max = 1000.0,
-    default = 10.0,
+    max = 24.0,
+    default = 12.0,
     page = SuQingFreshnessFridge,
-    translation = SuQingFreshnessFridge_RestoreHours,
+    translation = SuQingFreshnessFridge_BatchHours,
 }
 option SuQingFreshnessFridge.AllowRotten
 {

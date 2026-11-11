@@ -1,11 +1,11 @@
 {
   "Sandbox_SuQingFreshnessFridge": "蘇清的返鲜冰箱",
   "Sandbox_SuQingFreshnessFridge_Enabled": "启用返鲜",
-  "Sandbox_SuQingFreshnessFridge_Enabled_tooltip": "关闭后保留建筑、内容物及各台开关状态，冰箱遵循原版冷藏和腐坏规则。",
+  "Sandbox_SuQingFreshnessFridge_Enabled_tooltip": "关闭后不能开启新批次，现有批次继续累计供电。",
   "Sandbox_SuQingFreshnessFridge_Capacity": "冰箱容量",
   "Sandbox_SuQingFreshnessFridge_Capacity_tooltip": "范围50–1000，默认200。对新建及已加载的返鲜冰箱生效；调小容量不会删除现有物品，超容时按原版限制继续放入。",
-  "Sandbox_SuQingFreshnessFridge_RestoreHours": "恢复一个完整新鲜期所需时间（游戏小时）",
-  "Sandbox_SuQingFreshnessFridge_RestoreHours_tooltip": "默认10，范围0.25–1000。数值越小返鲜越快。按各食物本身的新鲜期计算；只结算已加载且持续观察到供电的时间。",
   "Sandbox_SuQingFreshnessFridge_AllowRotten": "允许恢复腐坏食物",
-  "Sandbox_SuQingFreshnessFridge_AllowRotten_tooltip": "允许渐进恢复仍然存在的腐坏食物。不会修复烧焦、毒素、污染、生熟或吃剩份量；受精蛋及无标准保鲜期的食品不处理。"
+  "Sandbox_SuQingFreshnessFridge_AllowRotten_tooltip": "允许渐进恢复仍然存在的腐坏食物。不会修复烧焦、毒素、污染、生熟或吃剩份量；受精蛋及无标准保鲜期的食品不处理。",
+  "Sandbox_SuQingFreshnessFridge_BatchHours": "批次返鲜时长（游戏小时）",
+  "Sandbox_SuQingFreshnessFridge_BatchHours_tooltip": "默认12，范围0.25–24。只累计冰箱加载且观察到供电的时间。"
 }

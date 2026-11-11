@@ -84,7 +84,10 @@ function Mock.fridge(name)
     result.container=Mock.container(result)
     function result:getSprite() return {getName=function() return self.spriteName end} end
     function result:getModData() return self.md end
-    function result:hasModData() return next(self.md)~=nil end
+    function result:hasModData()
+        for _ in pairs(self.md) do return true end
+        return false
+    end
     function result:getContainerCount() return self.containerCount end
     function result:getContainer() return self.container end
     function result:getContainerByIndex(index) if index==0 then return self.container end end

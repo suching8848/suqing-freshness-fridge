@@ -1,5 +1,6 @@
 """Read-only installed-JAR audit. It does not start the game or load a world."""
 from pathlib import Path
+import argparse
 import hashlib
 import json
 import re
@@ -23,6 +24,10 @@ def method(code, signature):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=OUT)
+    output = parser.parse_args().output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
     food = bytecode("zombie.inventory.types.Food")
     container = bytecode("zombie.inventory.ItemContainer")
     schedule = bytecode("zombie.gameStates.IngameState")
@@ -32,7 +37,7 @@ def main():
     character = bytecode("zombie.characters.IsoGameCharacter")
     save = bytecode("zombie.GameWindow")
     for label, text in [("food", food), ("container", container), ("schedule", schedule), ("generator", generator), ("cell", cell), ("player", player), ("character", character), ("save", save)]:
-        (OUT / ("runtime_" + label + "_bytecode.txt")).write_text(text, encoding="utf-8")
+        (output / ("runtime_" + label + "_bytecode.txt")).write_text(text, encoding="utf-8")
     findings = []
 
     def verify(condition, label):
@@ -70,7 +75,7 @@ def main():
         "source": "javap -p -c against the current installed game JAR",
         "limits": "Static control-flow audit. It does not validate world streaming, UI rendering, or native hook interoperation in a game session.",
     }
-    (OUT / "runtime_native_audit.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (output / "runtime_native_audit.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"result": result["result"], "checks": len(findings), "game_started": False}))
 
 

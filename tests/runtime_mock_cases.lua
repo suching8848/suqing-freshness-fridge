@@ -790,6 +790,186 @@ case("known enabled native removal retains existing protective path",function()
     check(C.RestoreFood(food));near(food.age,15)
 end)
 
+local function measureSteadyTick(count)
+    Mock.reset()
+    SandboxVars.DaysForRottenFoodRemoval = -1
+    local object = Mock.fridge()
+    local foods = {}
+    for i = 1, count do
+        foods[i] = Mock.food(object.container, i % 2 == 0 and 6 or 15)
+    end
+    Mock.start(object)
+    Mock.step(0.1)
+
+    local configReads, containerReads, restoreCalls = 0, 0, 0
+    local ageWrites, lastAgedWrites, preReplaced = 0, 0, 0
+    local records = {}
+    for i, food in ipairs(foods) do
+        records[i] = C.FoodRecord(food)
+        local setAge, setLastAged = food.setAge, food.setLastAged
+        food.setAge = function(self, value)
+            ageWrites = ageWrites + 1
+            return setAge(self, value)
+        end
+        food.setLastAged = function(self, value)
+            lastAgedWrites = lastAgedWrites + 1
+            return setLastAged(self, value)
+        end
+    end
+    local config, restore, getContainer = C.Config, C.RestoreFood, object.getContainer
+    C.Config = function(...)
+        configReads = configReads + 1
+        return config(...)
+    end
+    C.RestoreFood = function(...)
+        restoreCalls = restoreCalls + 1
+        return restore(...)
+    end
+    object.getContainer = function(self)
+        containerReads = containerReads + 1
+        return getContainer(self)
+    end
+
+    emit("OnTickEvenPaused")
+    local preAgeWrites, preLastAgedWrites = ageWrites, lastAgedWrites
+    for i, food in ipairs(foods) do
+        if records[i] ~= C.FoodRecord(food) then preReplaced = preReplaced + 1 end
+        Mock.nativeAge(food)
+    end
+    Mock.clock = Mock.clock + 0.1
+    emit("OnPlayerUpdate", {})
+    emit("OnTick")
+    C.Config, C.RestoreFood, object.getContainer = config, restore, getContainer
+
+    print("FRIDGE_TICK_OPS foods="..count.." config="..configReads.." container="..containerReads
+        .." restore="..restoreCalls.." preAge="..preAgeWrites.." preLastAged="..preLastAgedWrites
+        .." preReplaced="..preReplaced.." age="..ageWrites.." lastAged="..lastAgedWrites)
+    check(R.ready, "loaded fridge remains running")
+    for i, food in ipairs(foods) do
+        near(food.age, i % 2 == 0 and 5.9 or 14.9)
+        equal(C.FoodRecord(food).time, Mock.clock, "advancing clock is recorded")
+    end
+    return {config=configReads, container=containerReads, preWrites=preAgeWrites+preLastAgedWrites,
+        preReplaced=preReplaced, age=ageWrites, lastAged=lastAgedWrites, count=count}
+end
+
+case("steady fridge validates shared state once per phase without no-op writes",function()
+    local low, medium, high = measureSteadyTick(32), measureSteadyTick(64), measureSteadyTick(128)
+    for _, sample in ipairs({low, medium, high}) do
+        equal(sample.preWrites, 0, "unchanged pre phase must not write native fields")
+        equal(sample.preReplaced, 0, "unchanged pre phase must retain the same receipt")
+        equal(sample.age, sample.count, "the advancing phase still writes each changed age once")
+        equal(sample.lastAged, sample.count, "the advancing phase still stamps each changed time once")
+        check(sample.config <= 8, "configuration validation is per fridge and phase")
+        check(sample.container <= 8, "native container lookup is per fridge and phase")
+    end
+end)
+
+case("fully restored food advances its clock without rewriting zero age",function()
+    SandboxVars.DaysForRottenFoodRemoval = -1
+    local object, food = setup(0)
+    Mock.start(object)
+    Mock.step(0.1)
+    local ageWrites, setAge = 0, food.setAge
+    food.setAge = function(self, value)
+        ageWrites = ageWrites + 1
+        return setAge(self, value)
+    end
+    Mock.step(0.1)
+    near(food.age, 0)
+    equal(ageWrites, 0, "fully restored food needs no native Age write")
+    equal(food.lastAged, Mock.clock, "native timestamp still advances")
+    equal(C.FoodRecord(food).time, Mock.clock, "receipt timestamp still advances")
+end)
+
+case("same-clock pre phase still protects and restores actual food across callbacks",function()
+    SandboxVars.DaysForRottenFoodRemoval = 0
+    local object, food = setup(15)
+    Mock.start(object)
+    for _ = 1, 4 do
+        emit("OnTickEvenPaused")
+        check(C.FoodRecord(food).shield, "normal pre phase arms the native guard")
+        check(food.age < food.rotten, "native processing sees protected age")
+        emit("OnPlayerUpdate", {})
+        near(food.age, 15, "player callback sees true age")
+        equal(C.FoodRecord(food).shield, nil, "guard is restored even without clock advancement")
+        emit("OnTick")
+        near(food.age, 15, "same-clock post phase does not credit restoration")
+    end
+end)
+
+case("native anchoring can synchronously move foods without skipping the remaining item",function()
+    SandboxVars.DaysForRottenFoodRemoval = -1
+    local object, first = setup(6)
+    local moved = Mock.food(object.container, 6)
+    local remains = Mock.food(object.container, 6)
+    local list = object.container.items
+    local get = list.get
+    list.get = function(self, index)
+        if index < 0 or index >= self:size() then error("container index out of bounds") end
+        return get(self, index)
+    end
+    Mock.start(object)
+    Mock.step(0.1)
+
+    local outside = Mock.container(nil, "inventory")
+    local movedStamp, movedAge = moved.lastAged, moved.age
+    local updateAge = first.updateAge
+    local moves = 0
+    first.updateAge = function(self)
+        updateAge(self)
+        object.container:Remove(self)
+        outside:AddItem(self)
+        object.container:Remove(moved)
+        outside:AddItem(moved)
+        moves = moves + 1
+        emit("OnContainerUpdate", self)
+    end
+    first.cooked = true
+    Mock.clock = Mock.clock + 0.1
+    emit("OnTickEvenPaused")
+
+    equal(moves, 1, "native anchoring dispatched a synchronous move")
+    check(R.ready, "the shrinking native list must not fail the whole runtime")
+    equal(first.container, outside)
+    equal(C.FoodRecord(first), nil, "moved current item must not get a fridge receipt")
+    equal(moved.container, outside)
+    near(moved.age, movedAge)
+    equal(moved.lastAged, movedStamp, "moved later item must not be stamped")
+    near(remains.age, 5.9, "shifted remaining item must be settled")
+    equal(R.foods[remains], object, "shifted remaining item keeps its owner")
+    emit("OnTick")
+    emit("OnTickEvenPaused")
+    equal(C.FoodRecord(moved), nil, "moved later item releases any stale receipt")
+end)
+
+case("native anchoring observes a same-phase Live Wire cut and restore",function()
+    local object, first=setup(6)
+    local other=Mock.food(object.container,6)
+    local appliances=mockLiveWire()
+    local circuit={v=1,kind="fridge",cut=false,types={["0"]="fridge"}}
+    object.md.LiveWireCircuit=circuit
+    Mock.start(object)
+    Mock.step(0.1)
+
+    local updateAge=first.updateAge
+    local edges=0
+    first.updateAge=function(self)
+        updateAge(self)
+        appliances.apply(object,circuit,true)
+        appliances.apply(object,circuit,false)
+        edges=edges+2
+    end
+    first.cooked=true
+    Mock.clock=Mock.clock+0.1
+    emit("OnTickEvenPaused")
+    equal(edges,2,"native anchor reentered both power boundaries")
+    equal(object.container.type,"fridge","power was restored before the anchor returned")
+    check(not C.FoodRecord(first).active,"the current food cannot claim coverage across the cut")
+    check(not C.FoodRecord(other).active,"later food cannot reuse the cached power proof")
+    check(R.ready,"power changes do not disable the runtime")
+end)
+
 print("RUNTIME_MODEL cases="..cases.." assertions="..assertions.." failures="..failures)
 if failures>0 then error("runtime regression failures: "..failures) end
 return "RUNTIME_MODEL PASS"

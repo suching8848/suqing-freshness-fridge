@@ -3,7 +3,7 @@ SuQingFreshnessFridge = SuQingFreshnessFridge or {}
 local C = SuQingFreshnessFridge
 if C.coreLoaded then return C end
 C.coreLoaded = true
-C.version = "0.1.0-rc.3"
+C.version = "0.2.0-rc.3"
 C.objectKey = "SuQingFreshnessFridge"
 C.foodKey = "SuQingFreshnessFridgeFood"
 C.maxObservedGapHours = 0.25 -- larger clock jumps have unprovable power history
@@ -99,13 +99,10 @@ function C.ResetCapacityCache()
     capacitySetters = setmetatable({}, {__mode="kv"})
 end
 
-function C.RefreshCapacity(object,force)
-    local container=C.Container(object)
-    if not container then return false end
-    local capacity=C.Config().capacity
+local function refreshCapacity(container,capacity,force)
     local setter=container.setCapacity
     if not force and setter~=nil and capacityApplied[container]==capacity and capacitySetters[container]==setter then
-        return true
+        return false
     end
     -- setIsContainer(true) would replace the native ItemContainer and lose items.
     -- Clear first: even a forced same-target failure must retry on the next call.
@@ -113,6 +110,39 @@ function C.RefreshCapacity(object,force)
     setter(container,capacity)
     capacityApplied[container],capacitySetters[container]=capacity,setter
     return true
+end
+
+function C.RefreshCapacity(object,force)
+    local container=C.Container(object)
+    if not container then return false end
+    refreshCapacity(container,C.Config().capacity,force)
+    return true
+end
+
+local function configToken(cfg)
+    return tostring(cfg.enabled)..":"..tostring(cfg.restoreHours)..":"..tostring(cfg.allowRotten)
+end
+
+-- A pass belongs to one fridge in one synchronous sweep. Runtime invalidates
+-- it at transfer, streaming and power boundaries, never across tick phases.
+function C.BeginPass(object,forceCapacity)
+    local container=C.Container(object)
+    if not container then return nil end
+    local cfg=C.Config()
+    if refreshCapacity(container,cfg.capacity,forceCapacity) then
+        container=C.Container(object)
+        if not container then return nil end
+        cfg=C.Config()
+    end
+    local state=C.State(object)
+    return {object=object,container=container,cfg=cfg,token=configToken(cfg),powered=C.Powered(object,container),
+        state=state,stateId=state and state.id,stateOn=state and state.on}
+end
+
+local function validPass(object,pass)
+    if not pass or pass.invalidated or pass.powerInvalidated or pass.object~=object then return false end
+    local state=pass.state
+    return not state or (state.id==pass.stateId and state.on==pass.stateOn and state.schema==1)
 end
 
 function C.RegisterObject(object)
@@ -126,28 +156,41 @@ function C.IsFood(food)
     return food and type(instanceof)=="function" and instanceof(food,"Food") or false
 end
 
-function C.IsDirectFood(food,object)
+local function directIn(food,container,pass,strict)
+    if not container or food:getContainer()~=container then return false end
+    if not pass then return true end
+    local list=container:getItems()
+    local slot=not strict and pass.index
+    if slot and slot>=0 and slot<list:size() and list:get(slot)==food then return true end
+    return list:contains(food)
+end
+
+function C.IsDirectFood(food,object,pass)
     if not C.IsFood(food) then return false end
-    local container=C.Container(object)
-    return container~=nil and food:getContainer()==container
+    local container=validPass(object,pass) and pass.container or C.Container(object)
+    return directIn(food,container,pass)
 end
 
 local function identity(food)
     return food.getID and tostring(food:getID()) or "?", food:getFullType()
 end
 
-function C.Eligible(food,config)
-    if not C.IsFood(food) then return nil,"not_food" end
+local function eligibleFood(food,config,age,rotten)
     if food.isBurnt and food:isBurnt() then return nil,"burnt" end
     if food.isFertilized and food:isFertilized() then return nil,"fertilized" end
     local fresh=food:getOffAge()
-    local rotten=food:getOffAgeMax()
-    local age=food:getAge()
+    rotten=rotten or food:getOffAgeMax()
+    age=age or food:getAge()
     if not C.Finite(fresh) or fresh<=0 or fresh>=100000000
        or not C.Finite(rotten) or rotten<fresh or rotten>=100000000
        or not C.Finite(age) or age<0 then return nil,"unsupported_age" end
     if not config.allowRotten and age>=rotten then return nil,"rotten_disabled" end
     return fresh,rotten
+end
+
+function C.Eligible(food,config)
+    if not C.IsFood(food) then return nil,"not_food" end
+    return eligibleFood(food,config)
 end
 
 function C.FoodRecord(food)
@@ -199,41 +242,69 @@ function C.RestoreFood(food)
 end
 
 function C.ClearFood(food)
-    if not food or not food.getModData then return end
-    C.RestoreFood(food)
+    local record=C.FoodRecord(food)
+    if not record then return end
     local md=food:getModData()
-    if C.FoodRecord(food) then md[C.foodKey]=nil end
+    C.RestoreFood(food)
+    if md[C.foodKey]==record then md[C.foodKey]=nil end
 end
 
-local function signature(food,fresh,rotten)
+local function signature(food,fullType,fresh,rotten)
     local cooked=food.isCooked and food:isCooked() or false
-    return food:getFullType()..":"..tostring(fresh)..":"..tostring(rotten)..":"..tostring(cooked)
+    return fullType..":"..tostring(fresh)..":"..tostring(rotten)..":"..tostring(cooked)
 end
 
 -- context.continuous is a volatile proof from this running session, never from
 -- serialized timestamps. Unknown unloaded/offline/power intervals earn no credit.
-function C.SettleFood(food,object,time,context)
+local function stillOwned(food,object,pass,md,record,strict)
+    if md[C.foodKey]~=record then return false end
+    local container=not strict and validPass(object,pass) and pass.container or C.Container(object)
+    if directIn(food,container,pass,strict) then return container end
+    C.ClearFood(food)
+    return false
+end
+
+local function ownershipChanged()
+    return {active=false,elapsed=0,reason="ownership_changed"}
+end
+
+function C.SettleFood(food,object,time,context,pass)
     context=context or {}
-    C.RestoreFood(food)
-    if not C.Finite(time) or not C.IsDirectFood(food,object) then
-        C.ClearFood(food)
+    if not C.Finite(time) or not C.IsDirectFood(food,object,pass) then
+        local record=C.FoodRecord(food)
+        if not pass or (record and record.fridgeId==pass.stateId) then C.ClearFood(food) end
         return {active=false,elapsed=0,reason="outside_fridge"}
     end
-    local state=C.State(object)
-    local cfg=C.Config()
-    local fresh,rotten=C.Eligible(food,cfg)
-    local active=state~=nil and state.on and cfg.enabled and context.powered==true and fresh~=nil
     local md=food:getModData()
     local previous=md[C.foodKey]
     if previous~=nil and (type(previous)~="table" or previous.schema~=1) then
         return {active=false,elapsed=0,reason="unknown_schema"}
     end
+    if previous and type(previous.shield)=="table" then
+        local restored=C.RestoreFood(food)
+        if restored then
+            if pass then pass.invalidated=true end
+            if not stillOwned(food,object,pass,md,previous,true) then return ownershipChanged() end
+        end
+    end
+    local usePass=validPass(object,pass)
+    local state,cfg,token
+    if usePass then
+        state,cfg,token=pass.state,pass.cfg,pass.token
+    else
+        state,cfg=C.State(object),C.Config()
+        token=configToken(cfg)
+    end
+    local powered=context.powered==true and not (pass and pass.powerInvalidated)
+    if pass and not usePass and powered then powered=C.Powered(object,C.Container(object)) end
+    local age=food:getAge()
+    local fresh,rotten=eligibleFood(food,cfg,age)
+    local active=state~=nil and state.on and cfg.enabled and powered and fresh~=nil
     local id,fullType=identity(food)
-    local token=tostring(cfg.enabled)..":"..tostring(cfg.restoreHours)..":"..tostring(cfg.allowRotten)
-    local sig=fresh and signature(food,fresh,rotten) or "unsupported"
+    local sig=fresh and signature(food,fullType,fresh,rotten) or "unsupported"
     local elapsed=0
-    local logicalAge=food:getAge()
-    local canCredit=active and context.continuous==true and type(previous)=="table"
+    local logicalAge=age
+    local canCredit=active and context.continuous==true and previous
        and previous.active==true and previous.id==id and previous.fullType==fullType
        and previous.fridgeId==state.id and previous.token==token and previous.signature==sig
        and C.Finite(previous.time) and time>=previous.time
@@ -242,36 +313,79 @@ function C.SettleFood(food,object,time,context)
         -- Settle the ordinary native aging that occurred before we observed this
         -- item. Stamping lastAged first would accidentally grant free preservation.
         food:updateAge(false)
-        fresh,rotten=C.Eligible(food,cfg)
-        active=fresh~=nil
-        sig=fresh and signature(food,fresh,rotten) or "unsupported"
+        local container=stillOwned(food,object,pass,md,previous,true)
+        if not container then
+            if pass then pass.invalidated=true end
+            return ownershipChanged()
+        end
+        state,cfg=C.State(object),C.Config()
+        token=configToken(cfg)
+        if pass then
+            local currentPower=C.Powered(object,container)
+            usePass=validPass(object,pass) and pass.container==container and pass.state==state
+                and pass.powered==currentPower and pass.token==token and pass.cfg.capacity==cfg.capacity
+            if not usePass then pass.invalidated=true end
+            powered=powered and currentPower and not pass.powerInvalidated
+        end
+        age=food:getAge()
+        fresh,rotten=eligibleFood(food,cfg,age)
+        active=state~=nil and state.on and cfg.enabled and powered and fresh~=nil
+        id,fullType=identity(food)
+        sig=fresh and signature(food,fullType,fresh,rotten) or "unsupported"
     end
     if canCredit then
         elapsed=time-previous.time
-        if food:getAge()==previous.age and C.Finite(previous.logicalAge) then
+        if age==previous.age and C.Finite(previous.logicalAge) then
             logicalAge=previous.logicalAge
         end
         if elapsed>0 then
             logicalAge=math.max(0,logicalAge-fresh*elapsed/cfg.restoreHours)
-            food:setAge(logicalAge)
+            if not usePass or logicalAge~=age then
+                food:setAge(logicalAge)
+                local container=stillOwned(food,object,pass,md,previous,false)
+                if not container then return ownershipChanged() end
+                age=food:getAge()
+                if usePass and not validPass(object,pass) then
+                    usePass=false
+                    state,cfg=C.State(object),C.Config()
+                    token=configToken(cfg)
+                    powered=powered and not pass.powerInvalidated and C.Powered(object,container)
+                    fresh,rotten=eligibleFood(food,cfg,age)
+                    sig=fresh and signature(food,fullType,fresh,rotten) or "unsupported"
+                    active=state~=nil and state.on and cfg.enabled and powered and fresh~=nil
+                end
+            end
         end
     else
-        logicalAge=food:getAge()
+        logicalAge=age
     end
-    if active then food:setLastAged(time) end
-    md[C.foodKey]={schema=1,id=id,fullType=fullType,fridgeId=state and state.id or "invalid",
-        time=time,age=food:getAge(),logicalAge=logicalAge,active=active,token=token,signature=sig}
+    if active and not (usePass and previous and previous.time==time and food.getLastAged and food:getLastAged()==time) then
+        food:setLastAged(time)
+        if md[C.foodKey]~=previous then return ownershipChanged() end
+    end
+    local fridgeId=state and state.id or "invalid"
+    if not usePass or not previous or previous.shield~=nil or previous.time~=time
+        or previous.id~=id or previous.fullType~=fullType or previous.fridgeId~=fridgeId
+        or previous.age~=age or previous.logicalAge~=logicalAge or previous.active~=active
+        or previous.token~=token or previous.signature~=sig then
+        md[C.foodKey]={schema=1,id=id,fullType=fullType,fridgeId=fridgeId,
+            time=time,age=age,logicalAge=logicalAge,active=active,token=token,signature=sig}
+    end
     return {active=active,elapsed=elapsed,reason=active and "restoring" or
-        (not fresh and rotten or (context.powered~=true and "unpowered" or "disabled"))}
+        (not fresh and rotten or (not powered and "unpowered" or "disabled"))}
 end
 
-function C.ProtectFood(food,object,time)
-    if not C.IsDirectFood(food,object) then return false end
-    local cfg=C.Config()
-    local fresh,rotten=C.Eligible(food,cfg)
+function C.ProtectFood(food,object,time,pass)
+    if pass and pass.powerInvalidated then return false end
+    if not C.IsDirectFood(food,object,pass) then return false end
+    local usePass=validPass(object,pass)
+    local age=food:getAge()
+    local maxAge=usePass and food:getOffAgeMax()
+    if usePass and C.Finite(maxAge) and C.Finite(age) and age<maxAge then return false end
+    local cfg=usePass and pass.cfg or C.Config()
+    local fresh,rotten=eligibleFood(food,cfg,age,maxAge)
     local record=C.FoodRecord(food)
     if not fresh or not record or not record.active or record.time~=time then return false end
-    local age=food:getAge()
     if age<rotten then return false end
     local id,fullType=identity(food)
     local removal=SandboxVars and SandboxVars.DaysForRottenFoodRemoval
@@ -291,9 +405,12 @@ function C.ProtectFood(food,object,time)
     -- removal policies. This branch is not used by the current personal save.
     local physical=math.max(0,rotten-math.max(0.001,rotten*0.00001))
     local logicalAge=C.Finite(record.logicalAge) and record.age==age and record.logicalAge or age
-    record.shield={id=id,fullType=fullType,logicalAge=logicalAge,physicalAge=physical,time=time}
+    local shield={id=id,fullType=fullType,logicalAge=logicalAge,physicalAge=physical,time=time}
+    record.shield=shield
     food:setAge(physical)
-    record.shield.physicalAge=food:getAge() -- native float32 rounding is expected
+    if record.shield~=shield or C.FoodRecord(food)~=record then return false end
+    shield.physicalAge=food:getAge() -- native float32 rounding is expected
+    if pass and pass.powerInvalidated then C.RestoreFood(food);return false end
     food:setLastAged(time)
     return true
 end

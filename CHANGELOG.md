@@ -1,3 +1,37 @@
+# 0.2.0-rc.3 — 2026-11-11
+
+与 Loot Tracker 1.8.5 共用库存选择接口时，保留搜刮记录及密封限制。
+
+Preserves Loot Tracker 1.8.5 search tracking and sealed-container restrictions when they share inventory selection.
+
+# 0.2.0-rc.2 — 2026-11-11
+
+首次尝试封箱前核对库存锁定接口，接入启动阶段延迟安装的库存包装。
+
+Finalizes inventory locks before the first seal, including wrappers installed late during startup.
+
+# 0.2.0-rc.1 — 2026-11-10
+
+新增手动密封批次。直接存放符合条件的食品后，右键开始返鲜。密封期间无法打开、放入或取出。默认累计通电 12 游戏小时，沙盒范围 0.25–24 小时。只累计已加载且持续观察到的通电时间，断电、离区、离线或供电不明时暂停。等待期间按冰箱检查供电和进度，食物在封箱、开封或恢复时处理。到期后保留原食物对象，将年龄归零并恢复原生属性。停用或回退前先完成所有密封批次。
+
+Adds manually sealed restoration batches. Load eligible food directly, then start restoration from the fridge's context menu. Sealing blocks opening, insertion, and removal. The default is 12 powered game hours, configurable from 0.25 to 24. Only continuously observed powered time while the fridge is loaded earns credit. Progress pauses during outages, unloading, offline time, and unverified power. Waiting checks power and progress per fridge. Food processing occurs at sealing, unsealing, or recovery. Completion sets the original foods' age to zero and restores their native properties. Finish all sealed batches before disabling or rolling back.
+
+B42.22.2 离线验证覆盖批次模型、原生 Food 存读档及餐盒组合。游戏内存取、停复电、离区、保存重进和帧率待验收。
+
+B42.22.2 offline validation covers the batch model, native Food save/load, and the combined Freshness Lunchbox setup. In-game access, power transitions, streaming, saving and reloading, and FPS await acceptance.
+
+# 0.1.0-rc.4-perf.1 — 2026-11-10
+
+复用每台冰箱本轮的容器、配置和供电检查，跳过同一游戏时刻确认无变化的食物记录写入。原生回调中发生转移时，以当前归属为准。保留更新前后的腐坏保护、Live Wire 电力边界及原存档格式。B42.22.2 单人性能候选。
+
+Reuses each fridge's container, settings and power checks within an update phase. Skips writes when food state is verified unchanged at the same game time. Uses live ownership when native callbacks move food. Preserves the pre/post spoilage guards, Live Wire power boundaries and the existing save format. B42.22.2 single-player performance candidate.
+
+# 0.1.0-rc.4 — 2026-11-09
+
+B42.22.2 单人适配候选。保留 B42.21 分支的加载范围，沿用冰箱建筑、可搬运物品 ID、食物记录和返鲜规则。原版等距视角的冰箱返鲜可以独立运行。Live Wire 1.7.2 和便携冷藏配套属于可选兼容。当前 Viewpoint 与冷藏 Java 后端的新版加载和游戏内表现另行验收。
+
+Single-player compatibility candidate for B42.22.2. The mod still accepts B42.21 and uses the existing building and movable item IDs, food records and restoration rules. Fridge restoration works independently in the standard isometric view. Live Wire 1.7.2 and portable refrigeration are optional integrations. Viewpoint and the companion refrigeration Java backend require separate B42.22.2 loading and gameplay validation.
+
 # 0.1.0-rc.3 — 2026-11-08
 
 内置 Live Wire 1.7.2 可选适配。设备分路断电时暂停返鲜，容量、存取和搬放仍可使用。恢复供电后重新计时。区块加载时先结算 Live Wire 自然老化和冻融，再开始观察返鲜时间。便携制冷包的离区掉电限制见工坊介绍。已完成 B42.21.0 单人联测。
