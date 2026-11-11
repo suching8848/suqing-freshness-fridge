@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "app_id": 108600,
+  "mod_id": "SuQingFreshnessFridge",
+  "workshop_item_id": "3834692923",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
+  "version": "0.2.0-rc.3",
+  "mod_versions": {
+    "SuQingFreshnessFridge": "0.2.0-rc.3"
+  },
+  "visibility": "public",
+  "visibility_value": 0,
+  "state": "uploaded_verified_public",
+  "source_commit": "c5ecf954bcf62e17de5bdb00d2135ef2bf7b05a3",
+  "workshop_updated_at_bjt": "2026-11-11T09:46:08+08:00",
+  "verified_at_bjt": "2026-11-11T09:46:30.421421+08:00",
+  "content_tree_sha256": "e3ca8c5b83f230375cd41cb87b521715e66e2135ec27b82a1307833d01d51772",
+  "content_files": 52,
+  "content_bytes": 3879745,
+  "preview_sha256": "b236581aa138ccea716ec970d9c3432f7c0da419b2caabec97d8453012549914",
+  "required_workshop_ids": [],
+  "native_checks": {
+    "title": true,
+    "description": true,
+    "metadata": true,
+    "content_bytes": true,
+    "preview_policy": true,
+    "tags": true,
+    "dependencies": true
+  },
+  "native_upload_receipt_sha256": "54e1f2c844e995fbb3bfc2375d43edc851ccb797496ed27b9308a07ca5756d04",
+  "native_readback_receipt_sha256": "f8f97bf73bb6355c49eb806f431b942efd5cb109b726f036d782ebc3111925a8",
+  "target": "Project Zomboid B42.22.2 single-player",
+  "gameplay_acceptance_changed_by_publication": false
+}

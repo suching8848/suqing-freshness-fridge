@@ -13,12 +13,12 @@
   "upload_acknowledged": true,
   "native_readback_verified": true,
   "gameplay_acceptance_changed": false,
-  "recorded_at_bjt": "2026-11-08T07:45:02.019684+08:00",
+  "recorded_at_bjt": "2026-11-11T09:46:30.421421+08:00",
   "identity_policy": "Reuse this item for later updates; never create another item merely because a new local candidate is prepared.",
   "uploaded": true,
   "uploaded_verified_private": false,
-  "verified_at_bjt": "2026-11-08T07:44:13.601644+08:00",
-  "verification_scope": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download. Public visibility 0 verified. Publishing does not change gameplay acceptance.",
+  "verified_at_bjt": "2026-11-11T09:46:30.421421+08:00",
+  "verification_scope": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download.",
   "preparation_record_policy": "Current mutable item identity/status. Historical release snapshots remain unchanged. current_update_uploaded distinguishes the newly prepared update.",
   "previous_verified_upload": {
     "visibility": "private",
@@ -27,10 +27,13 @@
     "recorded_at_bjt": "2026-11-06T22:12:38.901484+08:00",
     "verification_scope": "Native uploaded title, description, metadata, content bytes, tags, preview, dependencies and visibility2 read back. Gameplay acceptance unchanged."
   },
-  "live_visibility_verified_at_bjt": "2026-11-08T07:44:13.601644+08:00",
-  "current_update_version": "0.1.0-rc.3",
+  "live_visibility_verified_at_bjt": "2026-11-11T09:46:30.421421+08:00",
+  "current_update_version": "0.2.0-rc.3",
   "current_update_uploaded": true,
   "uploaded_verified_public": true,
-  "current_publication": "publishing/publication-20261108.json",
-  "current_content_tree_sha256": "ef25c53c1c0f7ab666c57d0d4b99556bb4d9ed7c48ab4ec789179310385ec950"
+  "current_publication": "publishing/publication-20261111.json",
+  "current_content_tree_sha256": "e3ca8c5b83f230375cd41cb87b521715e66e2135ec27b82a1307833d01d51772",
+  "current_mod_versions": {
+    "SuQingFreshnessFridge": "0.2.0-rc.3"
+  }
 }
