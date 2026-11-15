@@ -169,9 +169,19 @@ local function addHook(owner,key,make)
     for _,hook in ipairs(hooks) do
         if hook.owner==owner and hook.key==key then return true end
     end
-    local hook={owner=owner,key=key,make=make,wrapper=make(owner[key])}
+    local prior=owner[key]
+    local hook={owner=owner,key=key,make=make,wrapper=make(prior),prior=prior}
     hooks[#hooks+1]=hook
     return true
+end
+
+-- A shared lock has no craft wrapper here; the lunchbox owns its continuation.
+function L.CraftGuardPrior(wrapper)
+    for _,hook in ipairs(hooks) do
+        if hook.owner==ISHandcraftAction and hook.key=="performRecipe" and hook.wrapper==wrapper then
+            return hook.prior
+        end
+    end
 end
 
 local function denyWhen(predicate)
@@ -326,6 +336,7 @@ local function captureStartupChain()
         local current=hook.owner[hook.key]
         if current~=hook.wrapper and type(current)=="function" then
             hook.wrapper=hook.make(current)
+            hook.prior=current
             hook.owner[hook.key]=hook.wrapper
         end
     end

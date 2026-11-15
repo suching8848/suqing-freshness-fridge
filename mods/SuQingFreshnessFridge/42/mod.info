@@ -1,12 +1,12 @@
 name=SuQing's Freshness Fridge
 id=SuQingFreshnessFridge
 author=SuQing
-modversion=0.2.0-rc.3
+modversion=0.2.0-rc.9
 versionMin=42.21
 versionMax=42.22
 icon=icon.png
 poster=poster.png
 pack=SuQingFreshnessFridge_tiles
 tiledef=suqing_freshness_fridge_01 7825
-loadModAfter=Viewpoint,SuQingRefrigerationUpgrade_4221,SuQingContainerUpgrade_4221,SuQingContainerUpgradeAuto_4221,ExSuQingBackpackSuperUpgrade_4221,CleanUI,Neat_Crafting
+loadModAfter=Viewpoint,SuQingRefrigerationUpgrade_4221,SuQingContainerUpgrade_4221,SuQingContainerUpgradeAuto_4221,ExSuQingBackpackSuperUpgrade_4221,CodexNekomataEXCompat_4221,Codex_SuQingWearableCompat_4221,CleanUI,Neat_Crafting
 description=A buildable and movable freshness fridge with manually sealed, powered batches. / 可建造和搬运的返鲜冰箱，手动封箱并通电后按批次返鲜。

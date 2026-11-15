@@ -20,9 +20,11 @@ def main():
                         help="Directory for reports, logs, helper classes and isolated profiles")
     parser.add_argument("--lunchbox-repo", type=Path,
                         help="Also run the shared-lock integration and native serializer probes")
+    parser.add_argument("--livewire-upstream", type=Path, action="append", default=[],
+                        help="Test an unmodified Live Wire release directory containing mod.info and media")
     args = parser.parse_args()
-    if args.native_only and args.lunchbox_repo:
-        parser.error("--lunchbox-repo requires the full suite")
+    if args.native_only and (args.lunchbox_repo or args.livewire_upstream):
+        parser.error("--lunchbox-repo and --livewire-upstream require the full suite")
     output = args.output.resolve()
     logs = output / "runtime_validation"
     classes = output / "runtime_classes"
@@ -119,6 +121,38 @@ def main():
         if not lock_checks:
             raise AssertionError("standalone lock summary is missing")
         result["lock_assertions"] = int(lock_checks.group(1))
+        if args.livewire_upstream:
+            result["livewire"] = {}
+        for upstream in args.livewire_upstream:
+            upstream = upstream.resolve()
+            info = (upstream / "mod.info").read_text(encoding="utf-8-sig")
+            version_match = re.search(r"(?m)^modversion=(1\.7\.2|2\.0\.[0123]|2\.1\.[012])\s*$", info)
+            if not version_match:
+                raise AssertionError(f"Unsupported Live Wire test input: {upstream}")
+            version = version_match.group(1)
+            shared = upstream / "media/lua/shared/LiveWire"
+            server = upstream / "media/lua/server/LiveWire"
+            modules = ["LW_Core", "LW_Compat", "LW_SquareScan", "LW_ServiceSync"]
+            if version != "1.7.2":
+                modules.extend(("LW_Extension", "LW_Coverage", "LW_EventBus", "LW_ApplianceFamilies"))
+            if version in ("2.1.0", "2.1.1", "2.1.2"):
+                modules.append("LW_Consumers")
+            modules.extend(("LW_Anchor", "LW_Appliances"))
+            wire_log = java(f"livewire_{version}", "runtime_KahluaAudit",
+                            bootstrap, TESTS / "runtime_livewire_fixture.lua",
+                            *(shared / f"{name}.lua" for name in modules),
+                            server / "LW_FridgeCatchup.lua", server / "LW_ChunkSync.lua",
+                            core, batch, runtime, TESTS / "runtime_livewire_cases.lua")
+            wire_checks = re.search(r"RUNTIME_FRIDGE_LIVEWIRE version=([0-9.]+) assertions=(\d+) PASS", wire_log)
+            if not wire_checks:
+                raise AssertionError(f"Live Wire {version} summary is missing")
+            expected_runtime = "2.0.0" if version == "2.0.1" else version
+            if wire_checks.group(1) != expected_runtime:
+                raise AssertionError(f"Unexpected Live Wire runtime for package {version}: {wire_checks.group(1)}")
+            result["livewire"][version] = {
+                "lua_version": wire_checks.group(1),
+                "assertions": int(wire_checks.group(2)),
+            }
         if args.lunchbox_repo:
             lunchbox = args.lunchbox_repo.resolve()
             other = lunchbox / "mods/SuQingFreshnessLunchbox/42/media/lua"

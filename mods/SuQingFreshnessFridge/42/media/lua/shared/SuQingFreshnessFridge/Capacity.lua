@@ -199,6 +199,11 @@ function A.IsReady()
     return ISTimedActionQueue ~= nil and ISInventoryTransferAction ~= nil
 end
 
+function A.IsWrapping(effective, room, transfer)
+    return A.IsReady() and A.originals.getEffectiveCapacity == effective
+        and A.originals.hasRoomFor == room and A.originalTransfer == transfer
+end
+
 function A.Install()
     if not C.SP() then return false end
     if A.installed then return A.IsReady() end
@@ -221,6 +226,8 @@ function A.Install()
     for _, name in ipairs(methodNames) do index[name] = A.wrappers[name] end
     javaTransferItems = A.transferWrapper
     A.installed = true
+    local neko = CodexNekomataEXCompat_4221
+    if neko and type(neko.RecordFridgeLayer) == "function" then neko.RecordFridgeLayer(A) end
     return A.IsReady()
 end
 

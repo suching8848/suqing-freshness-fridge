@@ -1,3 +1,39 @@
+# 0.2.0-rc.9 — 2026-11-15
+
+适配 Live Wire 2.1.2。
+
+Supports Live Wire 2.1.2.
+
+# 0.2.0-rc.8 — 2026-11-14
+
+适配 Live Wire 2.1.1 的现有分路和离区补算。
+
+Supports Live Wire 2.1.1 through the existing circuit and chunk replay integration.
+
+# 0.2.0-rc.7 — 2026-11-14
+
+适配 Live Wire 2.1.0。设备分路、区块老化补算沿用现有集成。
+
+Supports Live Wire 2.1.0 through the existing appliance circuit and chunk aging integration.
+
+# 0.2.0-rc.6 — 2026-11-13
+
+适配 Live Wire 2.0.3 的运行时版本，保留既有供电观察和离区补算。
+
+Accepts Live Wire 2.0.3 while retaining the existing power observation and chunk replay integration.
+
+# 0.2.0-rc.5 — 2026-11-13
+
+适配 Live Wire 2.0.2 的运行时版本。设备分路、覆盖变化和区块补算沿用现有集成。
+
+Accepts the Live Wire 2.0.2 runtime version. Circuit, coverage, and chunk replay integration uses the existing hooks.
+
+# 0.2.0-rc.4 — 2026-11-12
+
+适配 Live Wire 2.0.0 和 2.0.1，保留 1.7.2 适配。设备分路短时停复电和逆变器覆盖变化后重新观察供电。回区时先等待 Live Wire 补算，再恢复返鲜计时。
+
+Supports Live Wire 2.0.0 and 2.0.1 while retaining 1.7.2 support. Brief circuit outages and inverter coverage changes restart power observation. Restoration timing resumes after Live Wire replays the chunk's power history.
+
 # 0.2.0-rc.3 — 2026-11-11
 
 与 Loot Tracker 1.8.5 共用库存选择接口时，保留搜刮记录及密封限制。

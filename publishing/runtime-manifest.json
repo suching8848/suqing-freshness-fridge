@@ -1,6 +1,6 @@
 {
   "mod_id": "SuQingFreshnessFridge",
-  "version": "0.2.0-rc.3",
+  "version": "0.2.0-rc.9",
   "files": {
     "42/icon.png": {
       "bytes": 27799,
@@ -11,12 +11,12 @@
       "sha256": "f440ae9aff263fceaa87f32e24a3d97e6d7e84cf8d2c03fff7a7e068db5983e6"
     },
     "42/media/lua/client/SuQingFreshnessFridge_Lock.lua": {
-      "bytes": 13197,
-      "sha256": "977a875de3cac9d3b6d89a501e23234ef3894005144faae5bf3e38b0f1cd7fe7"
+      "bytes": 13224,
+      "sha256": "5cf0b79ad40d0a35e7e5962f7b9e5952d2347fdae51e978d92b7fc9be62dbbad"
     },
     "42/media/lua/client/SuQingFreshnessFridge_Runtime.lua": {
-      "bytes": 14185,
-      "sha256": "e8ec44c84d3574d77209aa363d0024885ffbe3cd5cd1f14c615a1a561319ff2e"
+      "bytes": 14947,
+      "sha256": "601cd94fe93361fb5f710091663c52f9c5ef256fe34b0de95d65a7f6fc0abecd"
     },
     "42/media/lua/client/SuQingFreshnessFridge_UI.lua": {
       "bytes": 2676,
@@ -35,12 +35,12 @@
       "sha256": "ca5a05b26fea53493c73b42d3239a1e7a59477f69b51decb6b4a24a599d29f3e"
     },
     "42/media/lua/shared/SuQingFreshnessFridge/Capacity.lua": {
-      "bytes": 10210,
-      "sha256": "0693422a5a4435438ccd327776278a63d41f4a9d4b25aadcfe0abcb1240506c3"
+      "bytes": 10553,
+      "sha256": "893cd767eb4cc8d074e8c6b5180cbd5b02c7363d95f411efa35917aed518fe4e"
     },
     "42/media/lua/shared/SuQingFreshnessFridge/Core.lua": {
-      "bytes": 18531,
-      "sha256": "6b9c6b8b63ac556ab2f968ae1071cb723b0114a82ec9e9fff0f14a836b63792a"
+      "bytes": 18759,
+      "sha256": "029217b832f0a46f0e08854895fb0e4bc0464a96ffee77dce3d734b2a3592d22"
     },
     "42/media/lua/shared/Translate/CH/IG_UI.json": {
       "bytes": 2644,
@@ -199,16 +199,16 @@
       "sha256": "5d7b856cd5216184f16a59207b0232593589318bef929dd97f3588d55d89e46d"
     },
     "42/mod.info": {
-      "bytes": 575,
-      "sha256": "6b30c6d089dee26c84c6ca54a4a8666629b96c6385bbe99ccd14aef6ce8b4f20"
+      "bytes": 634,
+      "sha256": "94dbdf4c55383f934b54317a437830d87b398c9db4349dae8f90e0b4e1443cd9"
     },
     "42/poster.png": {
       "bytes": 3203526,
       "sha256": "327e59822cd9ea86ed0a83762a94a8dad90d96f9d4956f171a3a48d8d57cdb19"
     },
     "common/README.txt": {
-      "bytes": 3227,
-      "sha256": "1073c7ca6987e894bf47453e0bfc686533fc015207e797df0b38102afb5f3004"
+      "bytes": 3553,
+      "sha256": "3331238482791ca03234f265ebea5493dca68fe94ba2c3ea128220932632edbe"
     }
   },
   "byte_scope": "Windows prepared runtime bytes; Git checkout line-ending settings may differ.",

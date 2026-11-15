@@ -1,6 +1,6 @@
 # SuQing's Freshness Fridge
 
-**0.2.0-rc.3** is a **B42.22.2 single-player sealed-batch candidate** for Project Zomboid. The mod metadata covers B42.21 and B42.22. This release adds batch records and retains the fridge's Mod ID, building and movable item IDs, four-facing sprites, and capacity settings.
+**0.2.0-rc.9** is a **B42.22.2 single-player sealed-batch candidate** for Project Zomboid. It supports Live Wire 2.1.2 and retains existing batch records, the fridge's Mod ID, building and movable item IDs, four-facing sprites, and capacity settings. The mod metadata covers B42.21 and B42.22.
 
 Preserves Loot Tracker 1.8.5 search tracking and sealed-container restrictions when they share inventory selection.
 
@@ -46,7 +46,7 @@ The scoped Lua capacity bridge covers ordinary single-player storage in this mod
 ## Compatibility, maintenance, and rollback
 
 - Standard isometric use is independent. The mod registers its included 3D model when it detects Viewpoint.
-- Live Wire 1.7.2 is an optional integration. An open equipment circuit pauses timing. On chunk load, the fridge waits for Live Wire to replay ordinary aging and freeze/thaw before observing power again. Third-party automation that bypasses the Lua transfer paths needs separate verification.
+- Live Wire 1.7.2, 2.0.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0, 2.1.1 and 2.1.2 are optional integrations. An open circuit pauses restoration while keeping the status menu available and sealed contents locked. Circuit interruptions and changes in inverter coverage reset the start of the observed interval. On chunk load, the fridge waits for Live Wire to replay ordinary aging and freeze/thaw before observing power again. Extended coverage and chunk loading in 2.x passed offline checks and await in-game verification. Live Wire can still apply an outer fridge's power history to food in an upgraded cooling bag inside it. Third-party automation that bypasses the Lua transfer paths needs separate verification.
 - SuQing's Refrigeration Performance Patch `SuQingRefrigerationNative_4221` is an optional ordinary refrigeration backend. Version `0.1.0-rc.2` in the B42.22.2 environment requires SuQing's Refrigeration Upgrades `1.0.0-rc.2-perf.8` and ZombieBuddy. This mod's Lua handles sealed batches. Fully quit and restart after changing the refrigeration backend.
 - **Finish every sealed batch before rolling back or disabling the mod.** The temporary protection is saved with the native food. Unsealing restores the original values. If the interface reports that a batch needs recovery, retain the save and check the log.
 - Unseal and empty the fridge before native pickup or dismantling. Re-placement applies the current sandbox capacity. Dismantling uses the native furniture refund rules. To remove the mod entirely, finish batches, empty and dismantle the custom fridges, then save and exit normally.
@@ -68,7 +68,7 @@ The source retains the runtime, native method, building, and capacity bridge too
 - **2026-11-09 · 0.1.0-rc.4** Prepared B42.22.2 single-player compatibility and retained B42.21 loading and the existing item and building IDs.
 - **2026-11-08 · 0.1.0-rc.3** The Live Wire 1.7.2 integration passed the then-current combined B42.21.0 single-player test. A separate offline reproduction found that Live Wire could apply the outer appliance's power history to food in an active portable cooler when the chunk was unloaded. Overlapping ISA and Live Wire replay for the same appliance still needed gameplay testing. [Historical validation](docs/release-validation-20261108.md)
 - **2026-11-07 · 0.1.0-rc.2-perf.1** Deduplicated capacity writes by container, target, and setter. The native suite passed 16 cases and 30,630 assertions. The user tested that capacity repair in single-player and saved and exited normally. That session had no repeated capacity warnings during steady operation. [Historical validation](docs/release-validation-20261107.md)
-- **2026-11-06 · 0.1.0-rc.2** Fixed the freshness-state flicker in the then-current single-player save with native rotten-food removal disabled. The repair records are at `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\FreshnessFlickerFix_20261106_001748`.
+- **2026-11-06 · 0.1.0-rc.2** Fixed the freshness-state flicker in the then-current single-player save with native rotten-food removal disabled.
 - **2026-11-05 · Personal installation** The historical installation appended this Mod ID to the user's single-player save. Deployment receipts and the original enabled-list backup are under `D:\steam\steamapps\common\ProjectZomboid\CodexAssets\SuQingFreshnessFridge_20261105\PersonalInstall_20261105_214941`. The backup from that operation covers the enabled-list configuration.
 
 ## Art and localization

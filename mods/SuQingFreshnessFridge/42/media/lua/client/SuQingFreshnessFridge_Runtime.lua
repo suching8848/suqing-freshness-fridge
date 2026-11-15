@@ -228,37 +228,36 @@ local function prepareCircuit(object,saved,off)
     if not C.IsLiveWireFridgeRecord(saved) then return end
     local container=C.Container(object)
     if container and container:getType()~=(off and "none" or "fridge") then
-        preparePowerBoundary(object,container)
+        preparePowerBoundary(object)
     end
 end
 
-local function prepareAnchor(config,anchor)
-    local radius,floors=config.tileRange(),config.verticalRange()
-    local radiusSquared=radius*radius
-    for object in pairs(R.objects) do
+local function prepareCoveredBatches(covers)
+    for object in pairs(R.observed) do
         local square=object:getSquare()
-        if square then
-            local dx,dy=square:getX()-anchor.x,square:getY()-anchor.y
-            if dx*dx+dy*dy<=radiusSquared and math.abs(square:getZ()-anchor.z)<=floors
-               and R.IsLoaded(object) then
-                local container=C.Container(object)
-                if container and container:getType()=="fridge" then preparePowerBoundary(object,container) end
-            end
+        if square and covers(square:getX(),square:getY(),square:getZ()) and R.IsLoaded(object) then
+            preparePowerBoundary(object)
         end
     end
+end
+
+local function prepareLegacyAnchor(config,anchor)
+    local radius,floors=config.tileRange(),config.verticalRange()
+    local radiusSquared=radius*radius
+    prepareCoveredBatches(function(x,y,z)
+        local dx,dy=x-anchor.x,y-anchor.y
+        return dx*dx+dy*dy<=radiusSquared and math.abs(z-anchor.z)<=floors
+    end)
+end
+
+local function prepareModernAnchor(coverage,anchor,id)
+    prepareCoveredBatches(function(x,y,z) return coverage.covers(id,anchor,x,y,z) end)
 end
 
 local function prepareChunk(chunk)
-    for object,pending in pairs(R.pendingLoads) do
-        if pending==chunk and object:getChunk()==chunk then
-            local container=C.Container(object)
-            if container then preparePowerBoundary(object,container) end
-        end
-    end
-    for object in pairs(R.objects) do
-        if not R.pendingLoads[object] and object.getChunk and object:getChunk()==chunk then
-            local container=C.Container(object)
-            if container then preparePowerBoundary(object,container) end
+    for object in pairs(R.observed) do
+        if object.getChunk and object:getChunk()==chunk then
+            preparePowerBoundary(object)
         end
     end
 end
@@ -268,43 +267,69 @@ local function beforeLiveWire(prepare,...)
     if not ok then report(errorText) end
 end
 
-function R.InstallLiveWire()
-    local appliances=C.LiveWireAppliances()
-    if not C.SP() or not appliances or type(appliances.apply)~="function"
-       or R.liveWireInstalled==appliances then return end
+local function installApplianceHook(appliances)
+    if R.liveWireAppliances==appliances or type(appliances.apply)~="function" then return end
     local apply=appliances.apply
     appliances.apply=function(object,saved,off)
-        if R.ready and type(saved)=="table" and saved.kind=="fridge" then
-            beforeLiveWire(prepareCircuit,object,saved,off)
-        end
+        if R.ready and R.observed[object] then beforeLiveWire(prepareCircuit,object,saved,off) end
         return apply(object,saved,off)
     end
-    local anchor,config=LiveWire.Anchor,LiveWire.Config
-    if anchor and type(anchor.set)=="function" and type(anchor.appliedState)=="table"
-       and config and type(config.tileRange)=="function" and type(config.verticalRange)=="function" then
-        local set=anchor.set
+    R.liveWireAppliances=appliances
+end
+
+local function installAnchorHook(lw)
+    local anchor=lw.Anchor
+    if not anchor or R.liveWireAnchor==anchor or type(anchor.set)~="function"
+       or type(anchor.appliedState)~="table" then return end
+    local set=anchor.set
+    if lw.VERSION=="1.7.2" then
+        local config=lw.Config
+        if not config or type(config.tileRange)~="function" or type(config.verticalRange)~="function" then return end
         anchor.set=function(id,entry,on)
             if R.ready and (anchor.appliedState[id]==true)~=(on==true) then
-                beforeLiveWire(prepareAnchor,config,entry)
+                beforeLiveWire(prepareLegacyAnchor,config,entry)
             end
             return set(id,entry,on)
         end
-    end
-    local catchup=LiveWire.FridgeCatchup
-    if catchup and type(catchup.onLoadChunk)=="function" then
-        local onLoadChunk=catchup.onLoadChunk
-        catchup.onLoadChunk=function(chunk)
-            beforeLiveWire(prepareChunk,chunk)
-            local ok,result=pcall(onLoadChunk,chunk)
-            for object,pending in pairs(R.pendingLoads) do
-                if pending==chunk then R.pendingLoads[object]=nil end
-            end
-            if not ok then error(result) end
-            return result
+    else
+        local events,coverage=lw.Events,lw.Coverage
+        if not events or not events.ANCHOR_CHANGING or type(events.on)~="function"
+           or not coverage or type(coverage.covers)~="function" then return end
+        local function prepare(entry,id)
+            if R.ready then beforeLiveWire(prepareModernAnchor,coverage,entry,id) end
         end
-        R.liveWireCatchup=catchup.onLoadChunk
+        events.on(events.ANCHOR_CHANGING,prepare)
+        anchor.set=function(id,entry,on)
+            -- Live Wire emits the event for later changes and on both sides of reshape.
+            if on==true and anchor.appliedState[id]==nil then prepare(entry,id) end
+            return set(id,entry,on)
+        end
     end
-    R.liveWireInstalled=appliances
+    R.liveWireAnchor=anchor
+end
+
+local function installReplayHook(catchup)
+    if not catchup or R.liveWireCatchupOwner==catchup or type(catchup.onLoadChunk)~="function" then return end
+    local onLoadChunk=catchup.onLoadChunk
+    catchup.onLoadChunk=function(chunk)
+        beforeLiveWire(prepareChunk,chunk)
+        local ok,result=pcall(onLoadChunk,chunk)
+        for object,pending in pairs(R.pendingLoads) do
+            if pending==chunk then R.pendingLoads[object]=nil end
+        end
+        if not ok then error(result,0) end
+        return result
+    end
+    R.liveWireCatchup=catchup.onLoadChunk
+    R.liveWireCatchupOwner=catchup
+end
+
+function R.InstallLiveWire()
+    local appliances=C.LiveWireAppliances()
+    if not C.SP() or not appliances then return end
+    installApplianceHook(appliances)
+    installAnchorHook(LiveWire)
+    installReplayHook(LiveWire.FridgeCatchup)
 end
 
 
