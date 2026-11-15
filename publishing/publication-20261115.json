@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "app_id": 108600,
+  "workshop_item_id": "3834692923",
+  "version": "0.2.0-rc.9",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3834692923",
+  "title": "蘇清的返鲜冰箱 | SuQing's Freshness Fridge [B42.22.2 SP]",
+  "visibility": "public",
+  "visibility_value": 0,
+  "status": "verified_public",
+  "mod_versions": {
+    "SuQingFreshnessFridge": "0.2.0-rc.9"
+  },
+  "verified_at_bjt": "2026-11-15T18:25:47.565194+08:00",
+  "content_tree_sha256": "a9db053326e8696e924ddbd6964c094e680fcfb9145033e886b318e8c1682cb0",
+  "content_bytes": 3881490,
+  "content_file_count": 52,
+  "tags": [
+    "Build 42",
+    "building",
+    "Food",
+    "Models",
+    "QOL",
+    "WIP"
+  ],
+  "actual_workshop_children": [],
+  "actual_preview_bytes": 602054,
+  "verification_scope": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download."
+}

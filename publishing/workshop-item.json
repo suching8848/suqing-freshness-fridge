@@ -13,11 +13,11 @@
   "upload_acknowledged": true,
   "native_readback_verified": true,
   "gameplay_acceptance_changed": false,
-  "recorded_at_bjt": "2026-11-11T09:46:30.421421+08:00",
+  "recorded_at_bjt": "2026-11-15T18:25:47.565194+08:00",
   "identity_policy": "Reuse this item for later updates; never create another item merely because a new local candidate is prepared.",
   "uploaded": true,
   "uploaded_verified_private": false,
-  "verified_at_bjt": "2026-11-11T09:46:30.421421+08:00",
+  "verified_at_bjt": "2026-11-15T18:25:47.565194+08:00",
   "verification_scope": "Native success plus exact text, metadata tree hash, content-byte total, tags and preview presence; not a remote per-file SHA download.",
   "preparation_record_policy": "Current mutable item identity/status. Historical release snapshots remain unchanged. current_update_uploaded distinguishes the newly prepared update.",
   "previous_verified_upload": {
@@ -27,13 +27,37 @@
     "recorded_at_bjt": "2026-11-06T22:12:38.901484+08:00",
     "verification_scope": "Native uploaded title, description, metadata, content bytes, tags, preview, dependencies and visibility2 read back. Gameplay acceptance unchanged."
   },
-  "live_visibility_verified_at_bjt": "2026-11-11T09:46:30.421421+08:00",
-  "current_update_version": "0.2.0-rc.3",
+  "live_visibility_verified_at_bjt": "2026-11-15T18:25:47.565194+08:00",
+  "current_update_version": "0.2.0-rc.9",
   "current_update_uploaded": true,
   "uploaded_verified_public": true,
-  "current_publication": "publishing/publication-20261111.json",
-  "current_content_tree_sha256": "e3ca8c5b83f230375cd41cb87b521715e66e2135ec27b82a1307833d01d51772",
+  "current_publication": "publishing/publication-20261115.json",
+  "current_content_tree_sha256": "a9db053326e8696e924ddbd6964c094e680fcfb9145033e886b318e8c1682cb0",
   "current_mod_versions": {
-    "SuQingFreshnessFridge": "0.2.0-rc.3"
+    "SuQingFreshnessFridge": "0.2.0-rc.9"
+  },
+  "version": "0.2.0-rc.9",
+  "title": "蘇清的返鲜冰箱 | SuQing's Freshness Fridge [B42.22.2 SP]",
+  "mod_versions": {
+    "SuQingFreshnessFridge": "0.2.0-rc.9"
+  },
+  "content_tree_sha256": "a9db053326e8696e924ddbd6964c094e680fcfb9145033e886b318e8c1682cb0",
+  "content_bytes": 3881490,
+  "content_file_count": 52,
+  "tags": [
+    "Build 42",
+    "building",
+    "Food",
+    "Models",
+    "QOL",
+    "WIP"
+  ],
+  "actual_workshop_children": [],
+  "actual_preview_bytes": 602054,
+  "previous_publication_summary": {
+    "current_update_version": "0.2.0-rc.3",
+    "visibility": "public",
+    "current_content_tree_sha256": "e3ca8c5b83f230375cd41cb87b521715e66e2135ec27b82a1307833d01d51772",
+    "verified_at_bjt": "2026-11-11T09:46:30.421421+08:00"
   }
 }
