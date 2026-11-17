@@ -1,0 +1,22 @@
+{
+  "item_id": "3834692923",
+  "version": "0.2.0-rc.12",
+  "verified_at_bjt": "2026-11-18T02:56:56.296062+08:00",
+  "visibility": "public",
+  "mod_versions": {
+    "SuQingFreshnessFridge": "0.2.0-rc.12"
+  },
+  "content_tree_sha256": "77be9716f70f54c60729aab1fb58309cef4eb3986fa577a32a8b054c23fc8779",
+  "content_files": 52,
+  "content_bytes": 3874456,
+  "checks": {
+    "title": true,
+    "description": true,
+    "metadata": true,
+    "content_bytes": true,
+    "preview_policy": true,
+    "tags": true,
+    "dependencies": true
+  },
+  "verification_scope": "Uncached Steam item metadata, description, size, preview, tags, dependencies and public visibility readback."
+}
