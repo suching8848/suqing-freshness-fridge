@@ -2,14 +2,14 @@ SuQing's Freshness Fridge / 蘇清的返鲜冰箱
 Runtime resources for B42.21 and B42.22 are in the 42 directory.
 This common directory intentionally contains no overrides.
 
-0.2.0-rc.9 — 2026-11-15
+0.2.0-rc.10 — 2026-11-16
 
 通电后将标准可腐坏食物直接放入冰箱，右键选择「密封冰箱并开始返鲜」。密封期间无法打开或存取。冰箱累计达到设定的通电游戏时长后，原有食物恢复新鲜并自动开封。默认 12 小时，沙盒可设 0.25–24 小时。断电、离区、离线或供电不明时暂停计时。受污染、烧焦、受精或缺少有效保鲜期的食物，以及容器和其他物品，会使封箱失败。
 
 Connect power, place standard perishable food directly inside, then right-click and select “Seal fridge and start restoration.” The sealed fridge blocks access and transfers. The original food becomes fresh and the fridge unseals after the configured powered game time. The default is 12 hours, configurable from 0.25 to 24 hours. Timing pauses during outages, unloading, offline time, and unverified power. Tainted, burnt, fertilized, or unsupported food, bags, and other objects prevent sealing.
 
-可选适配 Live Wire 1.7.2、2.0.0、2.0.1、2.0.2、2.0.3、2.1.0、2.1.1 和 2.1.2。分路停复电和逆变器覆盖变化后重新观察供电。
-Optional support for Live Wire 1.7.2, 2.0.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0, 2.1.1 and 2.1.2. Circuit interruptions and changes in inverter coverage restart power observation.
+可选适配 Live Wire 1.7.2、2.0.0、2.0.1、2.0.2、2.0.3、2.1.0、2.1.1、2.1.2 和 2.1.3。分路停复电和逆变器覆盖变化后重新观察供电。
+Optional support for Live Wire 1.7.2, 2.0.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0, 2.1.1, 2.1.2 and 2.1.3. Circuit interruptions and changes in inverter coverage restart power observation.
 
 回退或停用前完成所有密封批次。B42.22.2 单人批次模型和原生存读档已离线验证，游戏内操作及帧率待验收。
 

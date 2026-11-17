@@ -1,3 +1,9 @@
+# 0.2.0-rc.12 — 2026-11-18
+
+适配 Live Wire 2.1.3–2.1.5。沿用设备分路、区块老化补算及密封批次记录。B42.22.2 单人供电离线验证通过。
+
+Supports Live Wire 2.1.3–2.1.5 while retaining circuit handling, chunk aging replay and sealed-batch records. B42.22.2 single-player power integration passed offline validation.
+
 # 0.2.0-rc.9 — 2026-11-15
 
 适配 Live Wire 2.1.2。

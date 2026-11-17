@@ -1,6 +1,8 @@
 # SuQing's Freshness Fridge
 
-**0.2.0-rc.9** is a **B42.22.2 single-player sealed-batch candidate** for Project Zomboid. It supports Live Wire 2.1.2 and retains existing batch records, the fridge's Mod ID, building and movable item IDs, four-facing sprites, and capacity settings. The mod metadata covers B42.21 and B42.22.
+**0.2.0-rc.12** is a **B42.22.2 single-player sealed-batch candidate** for Project Zomboid. It supports Live Wire 2.1.5 and retains existing batch records, the fridge's Mod ID, building and movable item IDs, four-facing sprites, and capacity settings. The mod metadata covers B42.21 and B42.22.
+
+Supports Live Wire 2.1.3–2.1.5 while retaining circuit handling, chunk aging replay and sealed-batch records. B42.22.2 single-player power integration passed offline validation.
 
 Preserves Loot Tracker 1.8.5 search tracking and sealed-container restrictions when they share inventory selection.
 
@@ -46,7 +48,7 @@ The scoped Lua capacity bridge covers ordinary single-player storage in this mod
 ## Compatibility, maintenance, and rollback
 
 - Standard isometric use is independent. The mod registers its included 3D model when it detects Viewpoint.
-- Live Wire 1.7.2, 2.0.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0, 2.1.1 and 2.1.2 are optional integrations. An open circuit pauses restoration while keeping the status menu available and sealed contents locked. Circuit interruptions and changes in inverter coverage reset the start of the observed interval. On chunk load, the fridge waits for Live Wire to replay ordinary aging and freeze/thaw before observing power again. Extended coverage and chunk loading in 2.x passed offline checks and await in-game verification. Live Wire can still apply an outer fridge's power history to food in an upgraded cooling bag inside it. Third-party automation that bypasses the Lua transfer paths needs separate verification.
+- Live Wire 1.7.2, 2.0.0, 2.0.1, 2.0.2, 2.0.3, 2.1.0 through 2.1.5 are optional integrations. An open circuit pauses restoration while keeping the status menu available and sealed contents locked. Circuit interruptions and changes in inverter coverage reset the start of the observed interval. On chunk load, the fridge waits for Live Wire to replay ordinary aging and freeze/thaw before observing power again. Extended coverage and chunk loading in 2.x passed offline checks and await in-game verification. Live Wire can still apply an outer fridge's power history to food in an upgraded cooling bag inside it. Third-party automation that bypasses the Lua transfer paths needs separate verification.
 - SuQing's Refrigeration Performance Patch `SuQingRefrigerationNative_4221` is an optional ordinary refrigeration backend. Version `0.1.0-rc.2` in the B42.22.2 environment requires SuQing's Refrigeration Upgrades `1.0.0-rc.2-perf.8` and ZombieBuddy. This mod's Lua handles sealed batches. Fully quit and restart after changing the refrigeration backend.
 - **Finish every sealed batch before rolling back or disabling the mod.** The temporary protection is saved with the native food. Unsealing restores the original values. If the interface reports that a batch needs recovery, retain the save and check the log.
 - Unseal and empty the fridge before native pickup or dismantling. Re-placement applies the current sandbox capacity. Dismantling uses the native furniture refund rules. To remove the mod entirely, finish batches, empty and dismantle the custom fridges, then save and exit normally.
