@@ -1,7 +1,7 @@
 name=SuQing's Freshness Fridge
 id=SuQingFreshnessFridge
 author=SuQing
-modversion=0.2.0-rc.12
+modversion=0.2.0-rc.15
 versionMin=42.21
 versionMax=42.22
 icon=icon.png

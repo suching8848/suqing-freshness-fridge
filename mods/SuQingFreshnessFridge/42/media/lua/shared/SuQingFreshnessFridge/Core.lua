@@ -3,7 +3,7 @@ SuQingFreshnessFridge = SuQingFreshnessFridge or {}
 local C = SuQingFreshnessFridge
 if C.coreLoaded then return C end
 C.coreLoaded = true
-C.version = "0.2.0-rc.12"
+C.version = "0.2.0-rc.15"
 C.objectKey = "SuQingFreshnessFridge"
 C.foodKey = "SuQingFreshnessFridgeFood"
 C.maxObservedGapHours = 0.25 -- larger clock jumps have unprovable power history
@@ -42,7 +42,7 @@ function C.IsFridge(object)
     return sprite and sprite.getName and C.sprites[sprite:getName()]==true or false
 end
 
-local liveWireVersions = { ["1.7.2"]=true, ["2.0.0"]=true, ["2.0.1"]=true, ["2.0.2"]=true, ["2.0.3"]=true, ["2.1.0"]=true, ["2.1.1"]=true, ["2.1.2"]=true, ["2.1.3"]=true, ["2.1.4"]=true, ["2.1.5"]=true }
+local liveWireVersions = { ["1.7.2"]=true, ["2.0.0"]=true, ["2.0.1"]=true, ["2.0.2"]=true, ["2.0.3"]=true, ["2.1.0"]=true, ["2.1.1"]=true, ["2.1.2"]=true, ["2.1.3"]=true, ["2.1.4"]=true, ["2.1.5"]=true, ["2.1.6"]=true, ["2.1.8"]=true, ["2.2.0"]=true }
 
 function C.LiveWireAppliances()
     -- The 2.0.1 Workshop package still reports 2.0.0 in Lua.

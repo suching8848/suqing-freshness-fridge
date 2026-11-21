@@ -1,3 +1,21 @@
+# 0.2.0-rc.15 — 2026-11-20
+
+适配 LiveWire 2.2.0 的设备分路断电与区块老化补算，沿用现有密封批次记录。
+
+Supports LiveWire 2.2.0 circuit cuts and chunk aging replay with the existing sealed batch records.
+
+# 0.2.0-rc.14 — 2026-11-20
+
+适配 LiveWire 2.1.8，沿用分路断电、区块老化补算和密封批次记录。
+
+Supports LiveWire 2.1.8 with existing circuit handling, chunk aging replay and sealed batches.
+
+# 0.2.0-rc.13 — 2026-11-18
+
+适配 Live Wire 2.1.6，沿用分路断电、区块老化补算与密封批次记录。
+
+Supports Live Wire 2.1.6 with the existing circuit handling, chunk aging replay and sealed-batch records.
+
 # 0.2.0-rc.12 — 2026-11-18
 
 适配 Live Wire 2.1.3–2.1.5。沿用设备分路、区块老化补算及密封批次记录。B42.22.2 单人供电离线验证通过。

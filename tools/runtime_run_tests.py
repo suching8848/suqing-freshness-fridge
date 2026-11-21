@@ -126,7 +126,7 @@ def main():
         for upstream in args.livewire_upstream:
             upstream = upstream.resolve()
             info = (upstream / "mod.info").read_text(encoding="utf-8-sig")
-            version_match = re.search(r"(?m)^modversion=(1\.7\.2|2\.0\.[0123]|2\.1\.[012])\s*$", info)
+            version_match = re.search(r"(?m)^modversion=(1\.7\.2|2\.0\.[0123]|2\.1\.[01234568]|2\.2\.0)\s*$", info)
             if not version_match:
                 raise AssertionError(f"Unsupported Live Wire test input: {upstream}")
             version = version_match.group(1)
@@ -135,7 +135,7 @@ def main():
             modules = ["LW_Core", "LW_Compat", "LW_SquareScan", "LW_ServiceSync"]
             if version != "1.7.2":
                 modules.extend(("LW_Extension", "LW_Coverage", "LW_EventBus", "LW_ApplianceFamilies"))
-            if version in ("2.1.0", "2.1.1", "2.1.2"):
+            if version in ("2.1.0", "2.1.1", "2.1.2", "2.1.3", "2.1.4", "2.1.5", "2.1.6", "2.1.8", "2.2.0"):
                 modules.append("LW_Consumers")
             modules.extend(("LW_Anchor", "LW_Appliances"))
             wire_log = java(f"livewire_{version}", "runtime_KahluaAudit",
